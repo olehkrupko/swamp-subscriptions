@@ -8,7 +8,7 @@ import './App.css';
 export default function App() {
     return (
         <div>
-            <Navigation /> 
+            <Navigation />
             <Outlet />
         </div>
     );
