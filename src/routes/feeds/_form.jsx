@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export default function FeedForm(props) {
     const navigate = useNavigate();
 
-    const [frequencies, setFrequencies] = useState('');
+    const [frequencies, setFrequencies] = useState(['minutes', 'hours', 'days', 'weeks', 'months', 'years', 'never']);
 
     const [inputTitle, setTitle] = useState('');
     const [inputHref, setHref] = useState('');
@@ -20,40 +20,6 @@ export default function FeedForm(props) {
     const [inputFrequency, setFrequency] = useState(0);
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(0);
-
-    useEffect(() => {
-        FeedsApi.getFrequencies()
-            .then(
-                (result) => {
-                    // setIsLoaded(true);
-                    setFrequencies(result.response);
-                    setFrequency(result.response.length - 3)
-                },
-                // // Note: it's important to handle errors here
-                // // instead of a catch() block so that we don't swallow
-                // // exceptions from actual bugs in components.
-                // (error) => {
-                //     setIsLoaded(true);
-                //     setError(error);
-                // }
-            )
-
-        if (props.feed_id) {
-            FeedsApi.readFeed(props.feed_id)
-                .then((result) => {
-                    setTitle(result.response.title)
-                    setHref(result.response.href)
-                    setPrivate(result.response.private)
-                    if (frequencies) {
-                        frequencies.forEach((element, index) => {
-                            if (result.response.frequency === element) {
-                                setFrequency(index)
-                            }
-                        });
-                    }
-                })
-        }
-    }, [])
 
     const HandleSubmit = event => {
         event.preventDefault();
