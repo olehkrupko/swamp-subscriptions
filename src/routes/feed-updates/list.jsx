@@ -26,13 +26,25 @@ export default function FeedsList() {
             )
     }, [kwargs])
 
-    function FeedList(props) {
+    function openInNewTab(href) {
+        window.open(href, '_blank')
+            .focus();
+    }
+
+    function FeedUpdateList(props) {
         console.log(typeof props.feedUpdates, props.feedUpdates)
         return(
             <ListGroup>
                 {props.feedUpdates.map((update) => (
                     <ListGroup.Item>
-                        {update.title}
+                        <div
+                            style={{
+                                cursor: "pointer"
+                            }}
+                            onClick={() => openInNewTab( update.href )}
+                        >
+                            {update.name} ({ update.datetime })
+                        </div>
                     </ListGroup.Item>
                 ))}
             </ListGroup>
@@ -42,7 +54,7 @@ export default function FeedsList() {
     return (
         <main>
             {feedUpdates &&
-                <FeedList
+                <FeedUpdateList
                     feedUpdates={feedUpdates}
                 />
             }
