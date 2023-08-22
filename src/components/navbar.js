@@ -11,6 +11,9 @@ export default function Navigation() {
                     <b>SUBSCRIPTIONS</b>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Nav.Link href="/feed-updates/list">
+                    Feed Updates
+                </Nav.Link>
                 <Nav.Link href="/feeds/list">
                     Feeds
                 </Nav.Link>

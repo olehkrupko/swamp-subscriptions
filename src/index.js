@@ -13,6 +13,8 @@ import FeedsView from "./routes/feeds/view";
 import FeedEdit from "./routes/feeds/edit";
 import FeedsCreate from "./routes/feeds/create";
 import FeedsLayout from "./routes/feeds/_layout"
+import FeedUpdatesLayout from "./routes/feed-updates/_layout"
+import FeedUpdatesList from "./routes/feed-updates/list"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -42,6 +44,16 @@ root.render(
                     <Route path="create" element={<FeedsCreate />} />
                     <Route path=":feedId" element={<FeedsView />} />
                     <Route path=":feedId/edit" element={<FeedEdit />} />
+                </Route>
+                <Route
+                    path="feed-updates"
+                    element={<FeedUpdatesLayout />}
+                >
+                    <Route
+                        path="list"
+                        element={<FeedUpdatesList />}
+                    />
+                    <Route path="create" element={<FeedsCreate />} />
                 </Route>
                 <Route
                     path="*"
