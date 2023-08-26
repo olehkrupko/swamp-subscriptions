@@ -43,7 +43,7 @@ export default function FeedsList() {
                             }}
                             onClick={() => openInNewTab( update.href )}
                         >
-                            {update.name} ({ update.datetime })
+                            <b>{update.name}</b> ({ update.datetime })
                         </div>
                     </ListGroup.Item>
                 ))}
