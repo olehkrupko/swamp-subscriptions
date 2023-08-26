@@ -37,14 +37,16 @@ export default function FeedsList() {
             <ListGroup>
                 {props.feedUpdates.map((update) => (
                     <ListGroup.Item>
-                        <div
+                        <a
                             style={{
-                                cursor: "pointer"
+                                cursor: "pointer",
+                                fontWeight: "bold"
                             }}
                             onClick={() => openInNewTab( update.href )}
                         >
-                            <b>{update.name}</b> ({ update.datetime })
-                        </div>
+                            {update.name}
+                        </a>
+                        &nbsp;(by { update.feed_data.title } on { update.datetime })
                     </ListGroup.Item>
                 ))}
             </ListGroup>
