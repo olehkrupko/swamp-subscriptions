@@ -55,6 +55,7 @@ export default function FeedsList() {
 
     return (
         <main>
+            <h1>Updates</h1>
             {feedUpdates &&
                 <FeedUpdateList
                     feedUpdates={feedUpdates}
