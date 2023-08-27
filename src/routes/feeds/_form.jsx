@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -53,7 +53,7 @@ export default function FeedForm(props) {
                     }
                 })
         }
-    }, [])
+    }, [ frequencies, props.feed_id, ])
 
     const HandleSubmit = event => {
         event.preventDefault();
@@ -163,7 +163,7 @@ export default function FeedForm(props) {
                 onChange={e => setFrequency(e.target.value)}
                 disabled={props.read_only}
             />
-            <ButtonGroup className="float-end">
+            <ButtonGroup>
                 <Button
                     variant={props.read_only ? "secondary" : "primary"}
                     type="submit"
