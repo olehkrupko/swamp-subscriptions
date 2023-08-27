@@ -12,15 +12,14 @@ export default function FeedUpdatesList(props) {
 
     console.log(typeof props.feedUpdates, props.feedUpdates)
     return(
-        <ListGroup>
+        <ListGroup
+            style={{
+                fontWeight: 200,
+            }}
+        >
             {props.feedUpdates.map((update) => (
                 <ListGroup.Item>
-                    <span
-                        style={{
-                            color: 'red',
-                            fontWeight: 500,
-                        }}
-                    >
+                    <span style={{ color: 'red', }}>
                         »
                     </span>
                     &nbsp;
