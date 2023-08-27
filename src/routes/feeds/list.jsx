@@ -13,8 +13,8 @@ export default function FeedsList() {
         FeedsApi.getFeeds()
             .then(
                 (result) => {
-                    console.log(typeof result.response, result.response)
-                    setFeeds(result.response);
+                    console.log('getFeeds() ->', typeof result, result)
+                    setFeeds(result);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow

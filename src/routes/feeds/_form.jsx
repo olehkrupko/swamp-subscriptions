@@ -26,8 +26,8 @@ export default function FeedForm(props) {
             .then(
                 (result) => {
                     // setIsLoaded(true);
-                    setFrequencies(result.response);
-                    setFrequency(result.response.length - 3)
+                    console.log('getFrequencies() ->', typeof result, result)
+                    setFrequencies(result);
                 },
                 // // Note: it's important to handle errors here
                 // // instead of a catch() block so that we don't swallow
@@ -41,12 +41,12 @@ export default function FeedForm(props) {
         if (props.feed_id) {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
-                    setTitle(result.response.title)
-                    setHref(result.response.href)
-                    setPrivate(result.response.private)
+                    setTitle(result.title)
+                    setHref(result.href)
+                    setPrivate(result.private)
                     if (frequencies) {
                         frequencies.forEach((element, index) => {
-                            if (result.response.frequency === element) {
+                            if (result.frequency === element) {
                                 setFrequency(index)
                             }
                         });
@@ -102,7 +102,8 @@ export default function FeedForm(props) {
         FeedsApi.deleteFeed(props.feed_id)
             .then(
                 (result) => {
-                    if (result.response === "Feed deleted") {
+                    console.log('deleteFeed() ->', typeof result, result)
+                    if (result === "Feed deleted") {
                         navigate("/feeds/list");
                     }
                 },
@@ -110,7 +111,6 @@ export default function FeedForm(props) {
                 // // instead of a catch() block so that we don't swallow
                 // // exceptions from actual bugs in components.
                 // (error) => {
-                //     setIsLoaded(true);
                 //     setError(error);
                 // }
             )
