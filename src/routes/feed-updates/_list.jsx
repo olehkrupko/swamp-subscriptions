@@ -19,14 +19,17 @@ export default function FeedUpdatesList(props) {
         >
             {props.feedUpdates.map((update) => (
                 <ListGroup.Item>
-                    <span style={{ color: 'red', }}>
+                    <span style={{
+                        color: 'red',
+                        fontWeight: 400,
+                    }}>
                         »
                     </span>
                     &nbsp;
                     <span
                         style={{
                             cursor: "pointer",
-                            fontWeight: "bold"
+                            fontWeight: "bold",
                         }}
                         onClick={() => openInNewTab( update.href )}
                     >
@@ -36,7 +39,7 @@ export default function FeedUpdatesList(props) {
                     <span
                         style={{
                             cursor: "pointer",
-                            fontWeight: "bolder"
+                            fontWeight: 400,
                         }}
                         onClick={() => navigate("/feeds/"+ update.feed_id)}
                     >
