@@ -9,7 +9,7 @@ export default function FeedEdit() {
 
     return (
         <main>
-            <h2>Create Feed</h2>
+            <h2>Edit Feed</h2>
             <FeedForm
                 feed_id={feed_id}
             />

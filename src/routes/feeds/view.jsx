@@ -9,7 +9,7 @@ export default function FeedsView() {
 
     return (
         <main>
-            <h2>Create Feed</h2>
+            <h2>View Feed</h2>
             <FeedForm
                 read_only={true}
                 feed_id={feed_id}

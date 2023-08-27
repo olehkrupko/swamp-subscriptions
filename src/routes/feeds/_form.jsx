@@ -165,11 +165,25 @@ export default function FeedForm(props) {
             />
             <ButtonGroup className="float-end">
                 <Button
-                    variant="primary"
+                    variant={props.read_only ? "secondary" : "primary"}
                     type="submit"
                     disabled={props.read_only}
                 >
                     Submit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={!props.read_only}
+                    onClick={() => navigate("/feeds/"+ props.feed_id +"/edit")}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={props.read_only}
+                    onClick={() => navigate("/feeds/"+ props.feed_id )}
+                >
+                    View
                 </Button>
                 <Button
                     variant="secondary"
