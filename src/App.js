@@ -9,7 +9,14 @@ export default function App() {
     return (
         <div>
             <Navigation /> 
-            <Outlet />
+            <div
+                style={{
+                    maxWidth: '800px',
+                    margin: '0 auto'
+                }}
+            >
+                <Outlet />
+            </div>
         </div>
     );
   }

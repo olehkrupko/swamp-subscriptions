@@ -1,7 +1,9 @@
-const FEEDS_API_BASE_URL  = 'http://127.0.0.1:30010'
+import { SWAMP_API_BASE_URL } from './_settings.js';
+
+
 const FEEDS_API_ENDPOINTS = {
-    FEED_FREQUENCIES: `${FEEDS_API_BASE_URL}/feeds/frequencies`,
-    FEEDS: `${FEEDS_API_BASE_URL}/feeds/`,
+    FEED_FREQUENCIES: `${SWAMP_API_BASE_URL}/feeds/frequencies`,
+    FEEDS: `${SWAMP_API_BASE_URL}/feeds/`,
 }
 
 
