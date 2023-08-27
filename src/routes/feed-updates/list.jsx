@@ -39,6 +39,15 @@ export default function FeedsList() {
                     <ListGroup.Item>
                         <a
                             style={{
+                                color: 'red',
+                                fontWeight: "bold"
+                            }}
+                        >
+                            »
+                        </a>
+                        &nbsp;
+                        <a
+                            style={{
                                 cursor: "pointer",
                                 fontWeight: "bold"
                             }}
