@@ -25,7 +25,6 @@ export default function FeedForm(props) {
         FeedsApi.getFrequencies()
             .then(
                 (result) => {
-                    // setIsLoaded(true);
                     console.log('getFrequencies() ->', typeof result, result)
                     setFrequencies(result);
                 },
@@ -41,6 +40,7 @@ export default function FeedForm(props) {
         if (props.feed_id) {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
+                    console.log('readFeed() ->', typeof result, result)
                     setTitle(result.title)
                     setHref(result.href)
                     setPrivate(result.private)
@@ -69,7 +69,7 @@ export default function FeedForm(props) {
             FeedsApi.updateFeed(props.feed_id, data)
                 .then(
                     (result) => {
-                        console.log(result)
+                        console.log('updateFeed() ->', typeof result, result)
                     },
                     // // Note: it's important to handle errors here
                     // // instead of a catch() block so that we don't swallow
@@ -84,13 +84,12 @@ export default function FeedForm(props) {
             FeedsApi.createFeed(data)
                 .then(
                     (result) => {
-                        console.log(result)
+                        console.log('createFeed() ->', typeof result, result)
                     },
-                    // // Note: it's important to handle errors here
-                    // // instead of a catch() block so that we don't swallow
-                    // // exceptions from actual bugs in components.
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
                     // (error) => {
-                    //     setIsLoaded(true);
                     //     setError(error);
                     // }
                 )
@@ -107,9 +106,9 @@ export default function FeedForm(props) {
                         navigate("/feeds/list");
                     }
                 },
-                // // Note: it's important to handle errors here
-                // // instead of a catch() block so that we don't swallow
-                // // exceptions from actual bugs in components.
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
                 // (error) => {
                 //     setError(error);
                 // }
@@ -120,6 +119,15 @@ export default function FeedForm(props) {
         <Form
             onSubmit={HandleSubmit}
         >
+            <Form.Group>
+                <Form.Label>Feed Title</Form.Label>
+                <Form.Control
+                    value={inputTitle}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder="Enter feed name. TODO: generate from URL"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
             <Form.Group>
                 <Form.Label>Feed URL</Form.Label>
                 <Form.Control
@@ -134,15 +142,6 @@ export default function FeedForm(props) {
                 >
                     Test URL
                 </Button>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Feed Title</Form.Label>
-                <Form.Control
-                    value={inputTitle}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="Enter feed name. TODO: generate from URL"
-                    disabled={props.read_only}
-                />
             </Form.Group>
             <Form.Group>
                 <Form.Check 
