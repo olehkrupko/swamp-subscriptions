@@ -55,12 +55,15 @@ export default function FeedsList() {
 
     return (
         <main>
-            <Button
-                href='/feeds/create'
-                target="_blank"
-            >
-                Create Feed
-            </Button>
+            <h1>Feeds</h1>
+            <ButtonGroup>
+                <Button
+                    href='/feeds/create'
+                    target="_blank"
+                >
+                    Create Feed
+                </Button>
+            </ButtonGroup>
             {feeds &&
                 <FeedList
                     feeds={feeds}
