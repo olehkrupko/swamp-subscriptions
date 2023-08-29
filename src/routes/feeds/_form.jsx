@@ -53,7 +53,8 @@ export default function FeedForm(props) {
                     }
                 })
         }
-    }, [ frequencies, props.feed_id, ])
+    // eslint-disable-next-line
+    }, [])
 
     const HandleSubmit = event => {
         event.preventDefault();
