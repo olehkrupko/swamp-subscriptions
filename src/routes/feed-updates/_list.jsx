@@ -2,11 +2,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { useNavigate } from "react-router-dom";
 
 
-function openInNewTab(href) {
-    window.open(href, '_blank')
-        .focus();
-}
-
 export default function FeedUpdatesList(props) {
     const navigate = useNavigate();
 
@@ -31,7 +26,7 @@ export default function FeedUpdatesList(props) {
                             cursor: "pointer",
                             fontWeight: "bold",
                         }}
-                        onClick={() => openInNewTab( update.href )}
+                        onClick={() => window.open(update.href, '_blank')}
                     >
                         {update.name}
                     </span>
