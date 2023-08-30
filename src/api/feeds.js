@@ -13,6 +13,16 @@ export default class FeedsApi {
             .then(res => res.json())
     }
 
+    static async getFeeds() {
+        return fetch(FEEDS_API_ENDPOINTS.FEEDS, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(res => res.json())
+    }
+
     static async createFeed(data) {
         return fetch(FEEDS_API_ENDPOINTS.FEEDS, {
             method: 'PUT',
@@ -48,16 +58,6 @@ export default class FeedsApi {
     static async deleteFeed(feed_id) {
         return fetch(FEEDS_API_ENDPOINTS.FEEDS+feed_id, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(res => res.json())
-    }
-
-    static async getFeeds() {
-        return fetch(FEEDS_API_ENDPOINTS.FEEDS, {
-            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },

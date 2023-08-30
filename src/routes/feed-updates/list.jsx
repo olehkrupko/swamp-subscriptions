@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import ListGroup from 'react-bootstrap/ListGroup';
 import FeedUpdatesApi from '../../api/feed-updates';
+import FeedUpdatesList from './_list';
 
   
 export default function FeedsList() {
@@ -24,47 +24,11 @@ export default function FeedsList() {
             )
     }, [kwargs])
 
-    function openInNewTab(href) {
-        window.open(href, '_blank')
-            .focus();
-    }
-
-    function FeedUpdateList(props) {
-        console.log(typeof props.feedUpdates, props.feedUpdates)
-        return(
-            <ListGroup>
-                {props.feedUpdates.map((update) => (
-                    <ListGroup.Item>
-                        <a
-                            style={{
-                                color: 'red',
-                                fontWeight: "bold"
-                            }}
-                        >
-                            »
-                        </a>
-                        &nbsp;
-                        <a
-                            style={{
-                                cursor: "pointer",
-                                fontWeight: "bold"
-                            }}
-                            onClick={() => openInNewTab( update.href )}
-                        >
-                            {update.name}
-                        </a>
-                        &nbsp;(by { update.feed_data.title } on { update.datetime })
-                    </ListGroup.Item>
-                ))}
-            </ListGroup>
-        )
-    }
-
     return (
         <main>
             <h1>Updates</h1>
             {feedUpdates &&
-                <FeedUpdateList
+                <FeedUpdatesList
                     feedUpdates={feedUpdates}
                 />
             }

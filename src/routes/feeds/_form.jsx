@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -25,9 +25,8 @@ export default function FeedForm(props) {
         FeedsApi.getFrequencies()
             .then(
                 (result) => {
-                    // setIsLoaded(true);
-                    setFrequencies(result.response);
-                    setFrequency(result.response.length - 3)
+                    console.log('getFrequencies() ->', typeof result, result)
+                    setFrequencies(result);
                 },
                 // // Note: it's important to handle errors here
                 // // instead of a catch() block so that we don't swallow
@@ -37,23 +36,24 @@ export default function FeedForm(props) {
                 //     setError(error);
                 // }
             )
-
-        if (props.feed_id) {
-            FeedsApi.readFeed(props.feed_id)
-                .then((result) => {
-                    setTitle(result.response.title)
-                    setHref(result.response.href)
-                    setPrivate(result.response.private)
-                    if (frequencies) {
-                        frequencies.forEach((element, index) => {
-                            if (result.response.frequency === element) {
-                                setFrequency(index)
-                            }
-                        });
-                    }
-                })
-        }
     }, [])
+
+    useEffect(() => {
+        FeedsApi.readFeed(props.feed_id)
+            .then((result) => {
+                console.log('readFeed() ->', typeof result, result);
+                setTitle(result.title);
+                setHref(result.href);
+                setPrivate(result.private);
+
+                frequencies.forEach((element, index) => {
+                    if (result.frequency === element) {
+                        console.log('---> '+index);
+                        setFrequency(index);
+                    }
+                });
+            })
+    }, [ frequencies, props.feed_id, ])
 
     const HandleSubmit = event => {
         event.preventDefault();
@@ -69,7 +69,8 @@ export default function FeedForm(props) {
             FeedsApi.updateFeed(props.feed_id, data)
                 .then(
                     (result) => {
-                        console.log(result)
+                        console.log('updateFeed() ->', typeof result, result)
+                        navigate("/feeds/"+ props.feed_id);
                     },
                     // // Note: it's important to handle errors here
                     // // instead of a catch() block so that we don't swallow
@@ -79,18 +80,17 @@ export default function FeedForm(props) {
                     //     setError(error);
                     // }
                 )
-            window.location.reload();
         } else {
             FeedsApi.createFeed(data)
                 .then(
                     (result) => {
-                        console.log(result)
+                        console.log('createFeed() ->', typeof result, result)
+                        navigate("/feeds/"+ result.id);
                     },
-                    // // Note: it's important to handle errors here
-                    // // instead of a catch() block so that we don't swallow
-                    // // exceptions from actual bugs in components.
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
                     // (error) => {
-                    //     setIsLoaded(true);
                     //     setError(error);
                     // }
                 )
@@ -102,15 +102,15 @@ export default function FeedForm(props) {
         FeedsApi.deleteFeed(props.feed_id)
             .then(
                 (result) => {
-                    if (result.response === "Feed deleted") {
+                    console.log('deleteFeed() ->', typeof result, result)
+                    if (result === "Feed deleted") {
                         navigate("/feeds/list");
                     }
                 },
-                // // Note: it's important to handle errors here
-                // // instead of a catch() block so that we don't swallow
-                // // exceptions from actual bugs in components.
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
                 // (error) => {
-                //     setIsLoaded(true);
                 //     setError(error);
                 // }
             )
@@ -120,6 +120,15 @@ export default function FeedForm(props) {
         <Form
             onSubmit={HandleSubmit}
         >
+            <Form.Group>
+                <Form.Label>Feed Title</Form.Label>
+                <Form.Control
+                    value={inputTitle}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder="Enter feed name. TODO: generate from URL"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
             <Form.Group>
                 <Form.Label>Feed URL</Form.Label>
                 <Form.Control
@@ -134,15 +143,6 @@ export default function FeedForm(props) {
                 >
                     Test URL
                 </Button>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Feed Title</Form.Label>
-                <Form.Control
-                    value={inputTitle}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="Enter feed name. TODO: generate from URL"
-                    disabled={props.read_only}
-                />
             </Form.Group>
             <Form.Group>
                 <Form.Check 
@@ -164,13 +164,28 @@ export default function FeedForm(props) {
                 onChange={e => setFrequency(e.target.value)}
                 disabled={props.read_only}
             />
-            <ButtonGroup className="float-end">
+            <br/><br/>
+            <ButtonGroup>
                 <Button
-                    variant="primary"
+                    variant={props.read_only ? "secondary" : "primary"}
                     type="submit"
                     disabled={props.read_only}
                 >
                     Submit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={!props.read_only}
+                    onClick={() => navigate("/feeds/"+ props.feed_id +"/edit")}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={props.read_only}
+                    onClick={() => navigate("/feeds/"+ props.feed_id )}
+                >
+                    View
                 </Button>
                 <Button
                     variant="secondary"
