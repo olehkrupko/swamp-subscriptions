@@ -80,7 +80,7 @@ export default function FeedForm(props) {
                     //     setError(error);
                     // }
                 )
-            window.location.reload();
+            // window.location.reload();
         } else {
             FeedsApi.createFeed(data)
                 .then(
