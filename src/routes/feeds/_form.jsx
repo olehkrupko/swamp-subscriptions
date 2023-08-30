@@ -36,25 +36,24 @@ export default function FeedForm(props) {
                 //     setError(error);
                 // }
             )
-
-        if (props.feed_id) {
-            FeedsApi.readFeed(props.feed_id)
-                .then((result) => {
-                    console.log('readFeed() ->', typeof result, result)
-                    setTitle(result.title)
-                    setHref(result.href)
-                    setPrivate(result.private)
-                    if (frequencies) {
-                        frequencies.forEach((element, index) => {
-                            if (result.frequency === element) {
-                                setFrequency(index)
-                            }
-                        });
-                    }
-                })
-        }
-    // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        FeedsApi.readFeed(props.feed_id)
+            .then((result) => {
+                console.log('readFeed() ->', typeof result, result);
+                setTitle(result.title);
+                setHref(result.href);
+                setPrivate(result.private);
+
+                frequencies.forEach((element, index) => {
+                    if (result.frequency === element) {
+                        console.log('---> '+index);
+                        setFrequency(index);
+                    }
+                });
+            })
+    }, [ frequencies, props.feed_id, ])
 
     const HandleSubmit = event => {
         event.preventDefault();
