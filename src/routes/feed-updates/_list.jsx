@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function FeedUpdatesList(props) {
     const navigate = useNavigate();
 
-    console.log(typeof props.feedUpdates, props.feedUpdates)
     return(
         <ListGroup
             style={{
