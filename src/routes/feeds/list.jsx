@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import FeedsApi from '../../api/feeds';
 
-  
+
 export default function FeedsList() {
+    const navigate = useNavigate();
+
     const [feeds, setFeeds] = useState([]);
 
     useEffect(() => {
@@ -30,7 +33,11 @@ export default function FeedsList() {
             <ListGroup>
                 {props.feeds.map((feed) => (
                     <ListGroup.Item>
-                        {feed.title}
+                        <span
+                            onClick={() =>  navigate("/feeds/"+ feed.id)}
+                        >
+                            {feed.title}
+                        </span>
                         <ButtonGroup className="float-end">
                             <Button
                                 variant="secondary"

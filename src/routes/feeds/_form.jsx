@@ -70,6 +70,7 @@ export default function FeedForm(props) {
                 .then(
                     (result) => {
                         console.log('updateFeed() ->', typeof result, result)
+                        navigate("/feeds/"+ props.feed_id);
                     },
                     // // Note: it's important to handle errors here
                     // // instead of a catch() block so that we don't swallow
@@ -79,12 +80,12 @@ export default function FeedForm(props) {
                     //     setError(error);
                     // }
                 )
-            // window.location.reload();
         } else {
             FeedsApi.createFeed(data)
                 .then(
                     (result) => {
                         console.log('createFeed() ->', typeof result, result)
+                        navigate("/feeds/"+ result.id);
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow
@@ -163,6 +164,7 @@ export default function FeedForm(props) {
                 onChange={e => setFrequency(e.target.value)}
                 disabled={props.read_only}
             />
+            <br/><br/>
             <ButtonGroup>
                 <Button
                     variant={props.read_only ? "secondary" : "primary"}
