@@ -1,45 +1,71 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
 
 
 export default function FeedUpdatesList(props) {
-    const navigate = useNavigate();
+    const COLOR = 'black'
+    const COLOR_ACCENT = 'red'
+    const COLOR_VISITED = 'grey'
+
+    const UpdatePrefix = styled.a`
+        all: unset;  // removing defaults
+        color: ${COLOR_ACCENT};
+        &:hover {
+            color: ${COLOR_ACCENT};
+        };
+        &:visited {
+            color: ${COLOR_VISITED};
+        };
+    `;
+    const UpdateName = styled.a`
+        all: unset;  // removing defaults
+        cursor: pointer;
+        font-weight: bold;
+        color: ${COLOR};
+        &:hover {
+            color: ${COLOR_ACCENT};
+        };
+        &:visited {
+            color: ${COLOR_VISITED};
+        };
+    `;
+    const UpdateSecondary = styled.div`
+        color: ${COLOR_VISITED};
+    `;
+    const UpdateSecondaryA = styled.a`
+        all: unset;  // removing defaults
+        cursor: pointer;
+        color: ${COLOR};
+        &:hover {
+            color: ${COLOR_ACCENT};
+        };
+    `;
 
     return(
-        <ListGroup
-            style={{
-                fontWeight: 200,
-            }}
-        >
+        <ListGroup>
             {props.feedUpdates.map((update) => (
                 <ListGroup.Item>
-                    <span style={{
-                        color: 'red',
-                        fontWeight: 400,
-                    }}>
-                        »
-                    </span>
-                    &nbsp;
-                    <span
-                        style={{
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                        }}
-                        onClick={() => window.open(update.href, '_blank')}
-                    >
-                        {update.name}
-                    </span>
-                    &nbsp;(by&nbsp;
-                    <span
-                        style={{
-                            cursor: "pointer",
-                            fontWeight: 400,
-                        }}
-                        onClick={() => navigate("/feeds/"+ update.feed_id)}
-                    >
-                        { update.feed_data.title }
-                    </span>
-                    &nbsp;on { update.datetime })
+                    <div>
+                        <UpdatePrefix
+                            href={update.href}
+                            target='_blank'
+                        >»&nbsp;</UpdatePrefix>
+                        <UpdateName
+                            href={update.href}
+                            target='_blank'
+                        >
+                            {update.name}
+                        </UpdateName>
+                    </div>
+                    <UpdateSecondary>
+                        by <UpdateSecondaryA
+                            href={"/feeds/"+ update.feed_id}
+                            target='_blank'
+                        >
+                            { update.feed_data.title }
+                        </UpdateSecondaryA>
+                        &nbsp;on { update.datetime }
+                    </UpdateSecondary>
                 </ListGroup.Item>
             ))}
         </ListGroup>
