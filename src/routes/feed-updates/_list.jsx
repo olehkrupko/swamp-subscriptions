@@ -45,7 +45,7 @@ export default function FeedUpdatesList(props) {
         <ListGroup>
             {props.feedUpdates.map((update) => (
                 <ListGroup.Item>
-                    <div>
+                    <div id="Primary">
                         <UpdatePrefix
                             href={update.href}
                             target='_blank'
