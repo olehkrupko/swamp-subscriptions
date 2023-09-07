@@ -64,7 +64,7 @@ export default function FeedUpdatesList(props) {
                         >
                             { update.feed_data.title }
                         </UpdateSecondaryA>
-                        &nbsp;on { update.datetime }
+                        &nbsp;on { Date(update.datetime.replace(' ', 'T')+"Z") }
                     </UpdateSecondary>
                 </ListGroup.Item>
             ))}
