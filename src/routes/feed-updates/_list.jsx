@@ -1,5 +1,6 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import styled from 'styled-components';
+import { format } from "date-fns";
 
 
 export default function FeedUpdatesList(props) {
@@ -64,7 +65,12 @@ export default function FeedUpdatesList(props) {
                         >
                             { update.feed_data.title }
                         </UpdateSecondaryA>
-                        &nbsp;on { Date(update.datetime.replace(' ', 'T')+"Z") }
+                        &nbsp;on {
+                            format(
+                                new Date(update.datetime.replace(' ', 'T')+"Z"),
+                                "yyyy-MM-dd HH:mm"
+                            )
+                        }
                     </UpdateSecondary>
                 </ListGroup.Item>
             ))}
