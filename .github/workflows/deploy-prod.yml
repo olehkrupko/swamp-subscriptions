@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - '21-updates-datetime-transform-from-utc-time'
 jobs:
   deploy_code:
     runs-on: self-hosted
