@@ -17,6 +17,6 @@ export function getFeeds() {
 
 export function getFeed(id) {
     return feeds.find(
-        (feed) => feed.id === id
+        (feed) => feed._id === id
     );
 }

@@ -146,8 +146,8 @@ export default function FeedForm(props) {
             </Form.Group>
             <Form.Group>
                 <Form.Check 
-                    value={inputPrivate}
-                    onChange={e => setPrivate(e.target.value)}
+                    checked={inputPrivate}
+                    onChange={e => setPrivate(e.target.checked)}
                     type="switch"
                     label="Feed is private?"
                     disabled={props.read_only}

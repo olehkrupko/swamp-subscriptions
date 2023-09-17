@@ -34,21 +34,21 @@ export default function FeedsList() {
                 {props.feeds.map((feed) => (
                     <ListGroup.Item>
                         <span
-                            onClick={() =>  navigate("/feeds/"+ feed.id)}
+                            onClick={() =>  navigate("/feeds/"+ feed._id)}
                         >
                             {feed.title}
                         </span>
                         <ButtonGroup className="float-end">
                             <Button
                                 variant="secondary"
-                                href={feed.id}
+                                href={feed._id}
                                 target="_blank"
                             >
                                 View
                             </Button>
                             <Button
                                 variant="secondary"
-                                href={feed.id+'/edit'}
+                                href={feed._id+'/edit'}
                                 target="_blank"
                             >
                                 Edit
