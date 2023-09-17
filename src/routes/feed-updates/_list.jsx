@@ -59,6 +59,11 @@ export default function FeedUpdatesList(props) {
                         </UpdateName>
                     </div>
                     <UpdateSecondary>
+                        <span style={{
+                            opacity: .2,
+                        }}>
+                            { update.feed_data.private ? '🏮' : '💎'}
+                        </span>
                         by <UpdateSecondaryA
                             href={"/feeds/"+ update.feed_id}
                             target='_blank'
