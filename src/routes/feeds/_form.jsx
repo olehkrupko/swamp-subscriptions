@@ -8,6 +8,8 @@ import FeedsApi from '../../api/feeds';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
+import FeedUpdatesList from './../feed-updates/_list';
+
 
 export default function FeedForm(props) {
     const navigate = useNavigate();
@@ -20,6 +22,8 @@ export default function FeedForm(props) {
     const [inputFrequency, setFrequency] = useState(0);
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(0);
+
+    const [feedUpdates, setFeedUpdates] = useState([]);
 
     useEffect(() => {
         FeedsApi.getFrequencies()
@@ -97,6 +101,23 @@ export default function FeedForm(props) {
         }
     };
 
+    const HandleTestUrl = event => {
+        console.log(1, typeof inputHref, inputHref);
+        FeedsApi.testFeedUrl(inputHref)
+            .then(
+                (result) => {
+                    // console.log(typeof result, result)
+                    setFeedUpdates(result);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    }
+
     const HandleDelete = event => {
         event.preventDefault();
         FeedsApi.deleteFeed(props.feed_id)
@@ -139,7 +160,7 @@ export default function FeedForm(props) {
                 />
                 <Button
                     variant="secondary"
-                    disabled={true}
+                    onClick={() => HandleTestUrl()}
                 >
                     Test URL
                 </Button>
@@ -221,6 +242,12 @@ export default function FeedForm(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {feedUpdates &&
+                <FeedUpdatesList
+                    feedUpdates={feedUpdates}
+                />
+            }
         </Form>
     )
 }
