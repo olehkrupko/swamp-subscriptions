@@ -203,13 +203,14 @@ export default function FeedForm(props) {
                 </Button>
                 <Button
                     variant="secondary"
-                    disabled={props.read_only}
+                    disabled={props.read_only || (props.feed_id ? false : true)}
                     onClick={() => navigate("/feeds/"+ props.feed_id )}
                 >
                     View
                 </Button>
                 <Button
                     variant="secondary"
+                    disabled={props.feed_id ? false : true}
                     onClick={() => setModalDeleteVisible(true)}
                 >
                     Delete
