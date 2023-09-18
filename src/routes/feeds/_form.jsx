@@ -21,8 +21,9 @@ export default function FeedForm(props) {
     const [inputPrivate, setPrivate] = useState(false);
     const [inputFrequency, setFrequency] = useState(2);
 
-    const [modalDeleteVisible, setModalDeleteVisible] = useState(0);
-
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
+    const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
+    
     const [feedUpdates, setFeedUpdates] = useState([]);
 
     useEffect(() => {
@@ -108,6 +109,7 @@ export default function FeedForm(props) {
                 (result) => {
                     // console.log(typeof result, result)
                     setFeedUpdates(result);
+                    setModalTestUrlVisible(true);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -217,8 +219,6 @@ export default function FeedForm(props) {
                 </Button>
             </ButtonGroup>
 
-
-
             <Modal
                 show={modalDeleteVisible}
                 onHide={() => setModalDeleteVisible(false)}
@@ -243,12 +243,30 @@ export default function FeedForm(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-            {feedUpdates &&
-                <FeedUpdatesList
-                    feedUpdates={feedUpdates}
-                />
-            }
+            
+            <Modal
+                show={modalTestUrlVisible}
+                onHide={() => setModalTestUrlVisible(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Data returned by test request to URL:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FeedUpdatesList
+                        feedUpdates={feedUpdates}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setModalTestUrlVisible(false)}
+                    >
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Form>
     )
 }
