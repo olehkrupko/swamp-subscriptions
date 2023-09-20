@@ -66,7 +66,6 @@ export default class FeedsApi {
     }
 
     static async testFeedUrl(href) {
-        console.log(2, typeof href, href);
         return fetch(`${FEEDS_API_ENDPOINTS.FEEDS}parse/href?href=${href}`, {
             method: 'GET',
         })
