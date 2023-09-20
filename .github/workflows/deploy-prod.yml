@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - '26-fix-adding-new-feeds-on-front-end'
 jobs:
   deploy_code:
     runs-on: self-hosted
