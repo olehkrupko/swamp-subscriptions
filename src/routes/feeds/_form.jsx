@@ -19,7 +19,7 @@ export default function FeedForm(props) {
     const [inputTitle, setTitle] = useState('');
     const [inputHref, setHref] = useState('');
     const [inputPrivate, setPrivate] = useState(false);
-    const [inputFrequency, setFrequency] = useState(2);
+    const [inputFrequency, setFrequency] = useState(1);
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
