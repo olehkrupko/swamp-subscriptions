@@ -188,6 +188,14 @@ export default function FeedForm(props) {
                 >
                     Open URL
                 </Button>
+                {/* <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Generate main URL from user-friendly one (placeholder)
+                </Button> */}
             </Form.Group>
             <Form.Group>
                 <Form.Check 
