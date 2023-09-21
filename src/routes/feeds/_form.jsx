@@ -18,6 +18,7 @@ export default function FeedForm(props) {
 
     const [inputTitle, setTitle] = useState('');
     const [inputHref, setHref] = useState('');
+    const [inputHrefUser, setHrefUser] = useState('');
     const [inputPrivate, setPrivate] = useState(false);
     const [inputFrequency, setFrequency] = useState(1);
 
@@ -49,6 +50,7 @@ export default function FeedForm(props) {
                 console.log('readFeed() ->', typeof result, result);
                 setTitle(result.title);
                 setHref(result.href);
+                setHrefUser(result.href_user);
                 setPrivate(result.private);
 
                 frequencies.forEach((element, index) => {
@@ -165,6 +167,26 @@ export default function FeedForm(props) {
                     onClick={() => HandleTestUrl()}
                 >
                     Test URL
+                </Button>
+                <Form.Control
+                    value={inputHrefUser}
+                    onChange={e => setHrefUser(e.target.value)}
+                    placeholder="Optional user-frienly URL"
+                    disabled={props.read_only}
+                />
+                <Button
+                    variant="secondary"
+                    onClick={() => setHrefUser(inputHref)}
+                >
+                    Copy URL
+                </Button>
+                <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Open URL
                 </Button>
             </Form.Group>
             <Form.Group>
