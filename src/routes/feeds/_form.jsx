@@ -47,22 +47,24 @@ export default function FeedForm(props) {
     }, [])
 
     useEffect(() => {
-        FeedsApi.readFeed(props.feed_id)
-            .then((result) => {
-                console.log('readFeed() ->', typeof result, result);
-                setTitle(result.title);
-                setHref(result.href);
-                setHrefUser(result.href_user);
-                setPrivate(result.private);
-                setNotes(result.notes);
-                setJson(JSON.stringify(result.json));
+        if (typeof props.feed_id !== "undefined") {
+            FeedsApi.readFeed(props.feed_id)
+                .then((result) => {
+                    console.log('readFeed() ->', typeof result, result);
+                    setTitle(result.title);
+                    setHref(result.href);
+                    setHrefUser(result.href_user);
+                    setPrivate(result.private);
+                    setNotes(result.notes);
+                    setJson(JSON.stringify(result.json));
 
-                frequencies.forEach((element, index) => {
-                    if (result.frequency === element) {
-                        setFrequency(index);
-                    }
-                });
-            })
+                    frequencies.forEach((element, index) => {
+                        if (result.frequency === element) {
+                            setFrequency(index);
+                        }
+                    });
+                })
+        }
     }, [ frequencies, props.feed_id, ])
 
     const HandleSubmit = event => {
