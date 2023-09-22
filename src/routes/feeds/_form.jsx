@@ -21,6 +21,7 @@ export default function FeedForm(props) {
     const [inputHrefUser, setHrefUser] = useState('');
     const [inputPrivate, setPrivate] = useState(false);
     const [inputFrequency, setFrequency] = useState(1);
+    const [inputNotes, setNotes] = useState('');
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
@@ -52,6 +53,7 @@ export default function FeedForm(props) {
                 setHref(result.href);
                 setHrefUser(result.href_user);
                 setPrivate(result.private);
+                setNotes(result.notes);
 
                 frequencies.forEach((element, index) => {
                     if (result.frequency === element) {
@@ -196,6 +198,12 @@ export default function FeedForm(props) {
                 >
                     Generate main URL from user-friendly one (placeholder)
                 </Button> */}
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputNotes}
+                    onClick={e => setNotes(e.target.value)}
+                />
             </Form.Group>
             <Form.Group>
                 <Form.Check 
