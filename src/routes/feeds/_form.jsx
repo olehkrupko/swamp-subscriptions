@@ -212,6 +212,22 @@ export default function FeedForm(props) {
                     value={inputJson}
                     onClick={e => setJson(e.target.value)}
                 />
+                {/* <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Verify JSON
+                </Button> */}
+                {/* <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Format JSON
+                </Button> */}
             </Form.Group>
             <Form.Group>
                 <Form.Check 
