@@ -22,6 +22,7 @@ export default function FeedForm(props) {
     const [inputPrivate, setPrivate] = useState(false);
     const [inputFrequency, setFrequency] = useState(1);
     const [inputNotes, setNotes] = useState('');
+    const [inputJson, setJson] = useState('');
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
@@ -54,6 +55,7 @@ export default function FeedForm(props) {
                 setHrefUser(result.href_user);
                 setPrivate(result.private);
                 setNotes(result.notes);
+                setJson(result.json);
 
                 frequencies.forEach((element, index) => {
                     if (result.frequency === element) {
@@ -203,6 +205,12 @@ export default function FeedForm(props) {
                     rows="3"
                     value={inputNotes}
                     onClick={e => setNotes(e.target.value)}
+                />
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputJson}
+                    onClick={e => setJson(e.target.value)}
                 />
             </Form.Group>
             <Form.Group>
