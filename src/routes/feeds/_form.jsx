@@ -8,6 +8,8 @@ import FeedsApi from '../../api/feeds';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
+import FeedUpdatesList from './../feed-updates/_list';
+
 
 export default function FeedForm(props) {
     const navigate = useNavigate();
@@ -16,10 +18,16 @@ export default function FeedForm(props) {
 
     const [inputTitle, setTitle] = useState('');
     const [inputHref, setHref] = useState('');
+    const [inputHrefUser, setHrefUser] = useState('');
     const [inputPrivate, setPrivate] = useState(false);
-    const [inputFrequency, setFrequency] = useState(0);
+    const [inputFrequency, setFrequency] = useState(1);
+    const [inputNotes, setNotes] = useState('');
+    const [inputJson, setJson] = useState('{}');
 
-    const [modalDeleteVisible, setModalDeleteVisible] = useState(0);
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
+    const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
+    
+    const [feedUpdates, setFeedUpdates] = useState([]);
 
     useEffect(() => {
         FeedsApi.getFrequencies()
@@ -39,30 +47,36 @@ export default function FeedForm(props) {
     }, [])
 
     useEffect(() => {
-        FeedsApi.readFeed(props.feed_id)
-            .then((result) => {
-                console.log('readFeed() ->', typeof result, result);
-                setTitle(result.title);
-                setHref(result.href);
-                setPrivate(result.private);
+        if (typeof props.feed_id !== "undefined") {
+            FeedsApi.readFeed(props.feed_id)
+                .then((result) => {
+                    console.log('readFeed() ->', typeof result, result);
+                    setTitle(result.title);
+                    setHref(result.href);
+                    setHrefUser(result.href_user);
+                    setPrivate(result.private);
+                    setNotes(result.notes);
+                    setJson(JSON.stringify(result.json));
 
-                frequencies.forEach((element, index) => {
-                    if (result.frequency === element) {
-                        console.log('---> '+index);
-                        setFrequency(index);
-                    }
-                });
-            })
+                    frequencies.forEach((element, index) => {
+                        if (result.frequency === element) {
+                            setFrequency(index);
+                        }
+                    });
+                })
+        }
     }, [ frequencies, props.feed_id, ])
 
     const HandleSubmit = event => {
         event.preventDefault();
-        // console.log(inputTitle, inputHref, inputPrivate, inputFrequency);
         let data = {
             title: inputTitle,
             href: inputHref,
+            href_user: inputHrefUser,
             private: inputPrivate,
             frequency: frequencies[inputFrequency],
+            notes: inputNotes,
+            json: JSON.parse(inputJson),
         }
 
         if (props.feed_id) {
@@ -85,7 +99,7 @@ export default function FeedForm(props) {
                 .then(
                     (result) => {
                         console.log('createFeed() ->', typeof result, result)
-                        navigate("/feeds/"+ result.id);
+                        navigate("/feeds/"+ result._id);
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow
@@ -96,6 +110,22 @@ export default function FeedForm(props) {
                 )
         }
     };
+
+    const HandleTestUrl = event => {
+        FeedsApi.testFeedUrl(inputHref)
+            .then(
+                (result) => {
+                    setFeedUpdates(result);
+                    setModalTestUrlVisible(true);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    }
 
     const HandleDelete = event => {
         event.preventDefault();
@@ -121,7 +151,7 @@ export default function FeedForm(props) {
             onSubmit={HandleSubmit}
         >
             <Form.Group>
-                <Form.Label>Feed Title</Form.Label>
+                <Form.Label>Title</Form.Label>
                 <Form.Control
                     value={inputTitle}
                     onChange={e => setTitle(e.target.value)}
@@ -129,22 +159,105 @@ export default function FeedForm(props) {
                     disabled={props.read_only}
                 />
             </Form.Group>
+            <br/>
             <Form.Group>
-                <Form.Label>Feed URL</Form.Label>
+                <Form.Label>URL</Form.Label>
                 <Form.Control
                     value={inputHref}
                     onChange={e => setHref(e.target.value)}
-                    placeholder="Enter feed URL. TODO: test URL parsing"
+                    placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
-                <Button
-                    variant="secondary"
-                    disabled={true}
-                >
-                    Test URL
-                </Button>
+                <ButtonGroup>
+                    <Button
+                        variant="secondary"
+                        onClick={() => HandleTestUrl()}
+                    >
+                        Test URL
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => navigator.clipboard.writeText(inputHref)}
+                    >
+                        Copy URL
+                    </Button>
+                </ButtonGroup>
             </Form.Group>
+            <br/>
             <Form.Group>
+                <Form.Label>Public URL</Form.Label>
+                <Form.Control
+                    value={inputHrefUser}
+                    onChange={e => setHrefUser(e.target.value)}
+                    placeholder="Optional user-frienly URL"
+                    disabled={props.read_only}
+                />
+                <ButtonGroup>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setHrefUser(inputHref)}
+                    >
+                        Copy URL
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        href={inputHrefUser}
+                        target="_blank"
+                        disabled={!props.read_only}
+                    >
+                        Open URL
+                    </Button>
+                    {/* <Button
+                        variant="secondary"
+                        href={inputHrefUser}
+                        target="_blank"
+                        disabled={!props.read_only}
+                    >
+                        Generate main URL from user-friendly one (placeholder)
+                    </Button> */}
+                </ButtonGroup>
+            </Form.Group>
+            <br/>
+            <Form.Group>
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputNotes}
+                    onChange={e => setNotes(e.target.value)}
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <br/>
+            <Form.Group>
+                <Form.Label>JSON</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputJson}
+                    onChange={e => setJson(e.target.value)}
+                    disabled={props.read_only}
+                />
+                {/* <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Verify JSON
+                </Button> */}
+                {/* <Button
+                    variant="secondary"
+                    href={inputHrefUser}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Format JSON
+                </Button> */}
+            </Form.Group>
+            <br/>
+            <Form.Group>
+                <Form.Label>Private</Form.Label>
                 <Form.Check 
                     checked={inputPrivate}
                     onChange={e => setPrivate(e.target.checked)}
@@ -153,18 +266,23 @@ export default function FeedForm(props) {
                     disabled={props.read_only}
                 />
             </Form.Group>
-            <RangeSlider
-                value={inputFrequency}
-                min={0}
-                max={frequencies.length-1}
+            <br/>
+            <Form.Group>
+                <Form.Label>Frequency</Form.Label>
+                <RangeSlider
+                    value={inputFrequency}
+                    min={0}
+                    max={frequencies.length-1}
 
-                tooltip='on'
-                tooltipLabel={currentValue => frequencies[currentValue]}
+                    tooltip='on'
+                    tooltipLabel={currentValue => frequencies[currentValue]}
 
-                onChange={e => setFrequency(e.target.value)}
-                disabled={props.read_only}
-            />
-            <br/><br/>
+                    onChange={e => setFrequency(e.target.value)}
+                    disabled={props.read_only}
+                />
+                <br/>
+            </Form.Group>
+            <br/>
             <ButtonGroup>
                 <Button
                     variant={props.read_only ? "secondary" : "primary"}
@@ -182,20 +300,19 @@ export default function FeedForm(props) {
                 </Button>
                 <Button
                     variant="secondary"
-                    disabled={props.read_only}
+                    disabled={props.read_only || (props.feed_id ? false : true)}
                     onClick={() => navigate("/feeds/"+ props.feed_id )}
                 >
                     View
                 </Button>
                 <Button
                     variant="secondary"
+                    disabled={props.feed_id ? false : true}
                     onClick={() => setModalDeleteVisible(true)}
                 >
                     Delete
                 </Button>
             </ButtonGroup>
-
-
 
             <Modal
                 show={modalDeleteVisible}
@@ -218,6 +335,30 @@ export default function FeedForm(props) {
                         onClick={HandleDelete}
                     >
                         Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            
+            <Modal
+                show={modalTestUrlVisible}
+                onHide={() => setModalTestUrlVisible(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Data returned by test request to URL:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FeedUpdatesList
+                        feedUpdates={feedUpdates}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setModalTestUrlVisible(false)}
+                    >
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>

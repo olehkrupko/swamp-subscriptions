@@ -64,4 +64,11 @@ export default class FeedsApi {
         })
             .then(res => res.json())
     }
+
+    static async testFeedUrl(href) {
+        return fetch(`${FEEDS_API_ENDPOINTS.FEEDS}parse/href?href=${href}`, {
+            method: 'GET',
+        })
+            .then(res => res.json())
+    }
 }

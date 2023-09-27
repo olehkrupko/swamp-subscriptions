@@ -58,6 +58,7 @@ export default function FeedUpdatesList(props) {
                             {update.name}
                         </UpdateName>
                     </div>
+                    { update.feed_id != null ? 
                     <UpdateSecondary>
                         <span style={{
                             opacity: .2,
@@ -77,6 +78,7 @@ export default function FeedUpdatesList(props) {
                             )
                         }
                     </UpdateSecondary>
+                    : ''}
                 </ListGroup.Item>
             ))}
         </ListGroup>
