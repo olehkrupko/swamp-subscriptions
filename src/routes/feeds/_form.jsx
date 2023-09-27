@@ -99,7 +99,7 @@ export default function FeedForm(props) {
                 .then(
                     (result) => {
                         console.log('createFeed() ->', typeof result, result)
-                        navigate("/feeds/"+ result.id);
+                        navigate("/feeds/"+ result._id);
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow
