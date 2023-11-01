@@ -13,7 +13,7 @@ export default function FeedsView() {
     const [feedUpdates, setFeedUpdates] = useState([]);
 
     useEffect(() => {
-        FeedUpdatesApi.getFeedUpdates({feed_id: params.feedId})
+        FeedUpdatesApi.getFeedUpdates({_id: params.feedId})
             .then(
                 (result) => {
                     // console.log(typeof result, result)
