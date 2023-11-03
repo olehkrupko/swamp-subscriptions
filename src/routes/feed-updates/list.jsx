@@ -6,7 +6,7 @@ import FeedUpdatesList from './_list';
   
 export default function FeedsList() {
     const [feedUpdates, setFeedUpdates] = useState([]);
-    const [kwargs, setKwargs] = useState({});
+    const [kwargs, setKwargs] = useState({limit: 500});
 
     useEffect(() => {
         FeedUpdatesApi.getFeedUpdates(kwargs)
