@@ -59,9 +59,19 @@ export default function FeedUpdatesList(props) {
     })
 
     function UpdateGroup(group) {
-        return (
-            <UpdateGroupDiv>
-                <ListGroup>
+        const group_header = (
+            <h4>
+                <UpdateSecondaryA
+                    href={`/feeds/${group.feed_data._id}`}
+                    target='_blank'
+                >
+                    { group.feed_data.title }
+                </UpdateSecondaryA>
+            </h4>
+        )
+
+        const group_updates = (
+            <ListGroup>
                 {group.updates.map((update) => (
                     <ListGroup.Item>
                         <div>
@@ -78,17 +88,6 @@ export default function FeedUpdatesList(props) {
                         </div>
                         { update.feed_id != null &&
                         <UpdateSecondary>
-                            <span style={{
-                                opacity: .2,
-                            }}>
-                                { group.feed_data.private ? '🏮' : '💎'}
-                            </span>
-                            by <UpdateSecondaryA
-                                href={"/feeds/"+ update.feed_id}
-                                target='_blank'
-                            >
-                                { group.feed_data.title }
-                            </UpdateSecondaryA>
                             &nbsp;on {
                                 format(
                                     new Date(update.datetime.replace(' ', 'T')+"Z"),
@@ -99,7 +98,34 @@ export default function FeedUpdatesList(props) {
                     }
                     </ListGroup.Item>
                 ))}
-                </ListGroup>
+            </ListGroup>
+        )
+
+        const group_details = (
+            <UpdateSecondary>
+                &nbsp;&nbsp;&nbsp;by <UpdateSecondaryA
+                    href={"/feeds/"+ group.feed_data._id}
+                    target='_blank'
+                >
+                    { group.feed_data.title }
+                </UpdateSecondaryA>
+                {group.feed_data.private && (
+                    <span style={{
+                        opacity: .5,
+                    }}>
+                        { group.feed_data.private ? '🏮' : ''}
+                    </span>
+                )}
+                {'region' in group.feed_data.json && `, ${group.feed_data.json.region}`}
+                {'tags' in group.feed_data.json && `, [${group.feed_data.json.tags}]`}
+            </UpdateSecondary>
+        )
+
+        return (
+            <UpdateGroupDiv>
+                {group_header}
+                {group_updates}
+                {group_details}
             </UpdateGroupDiv>
         )
     }
