@@ -23,12 +23,13 @@ export default function FeedUpdatesList(props) {
             color: ${COLOR_VISITED};
         };
     `;
-    const Prefix = styled.span`
+    const PrimaryPrefix = styled.span`
         all: unset;  // removing defaults
         color: ${COLOR_ACCENT};
     `;
     const Secondary = styled.span`
         color: ${COLOR_VISITED};
+        cursor: default;
     `;
     const SecondaryA = styled.a`
         all: unset;  // removing defaults
@@ -72,7 +73,7 @@ export default function FeedUpdatesList(props) {
                             href={update.href}
                             target='_blank'
                         >
-                            <Prefix>»&nbsp;</Prefix>
+                            <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
                             {update.name}
                         </Primary>
                         { update.feed_id != null &&
