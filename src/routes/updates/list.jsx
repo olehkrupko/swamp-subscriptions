@@ -32,7 +32,7 @@ export default function FeedsList() {
             <h1>Updates</h1>
 
             <Updates
-                feedUpdates={feedUpdates}
+                updates={feedUpdates}
             />
 
             <UpdatesFooter

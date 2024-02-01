@@ -37,7 +37,7 @@ export default function FeedsView() {
             />
             {feedUpdates &&
                 <Updates
-                    feedUpdates={feedUpdates}
+                    updates={feedUpdates}
                 />
             }
         </main>

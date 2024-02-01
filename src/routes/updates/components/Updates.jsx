@@ -3,46 +3,85 @@ import styled from 'styled-components';
 import { format } from "date-fns";
 
 
-export default function UpdatesList(props) {
-    const COLOR = 'black'
-    const COLOR_ACCENT = 'red'
-    const COLOR_VISITED = 'grey'
+const COLOR = 'black'
+const COLOR_ACCENT = 'red'
+const COLOR_VISITED = 'grey'
 
-    const Group = styled.div`
-        margin: 15px 0;
-    `;
-    const Primary = styled.a`
-        all: unset;  // removing defaults
-        cursor: pointer;
-        font-weight: bold;
-        color: ${COLOR};
-        &:hover {
-            color: ${COLOR_ACCENT};
-        };
-        &:visited {
-            color: ${COLOR_VISITED};
-        };
-    `;
-    const PrimaryPrefix = styled.span`
-        all: unset;  // removing defaults
+
+const Group = styled.div`
+    margin: 15px 0;
+`;
+const Primary = styled.a`
+    all: unset;  // removing defaults
+    cursor: pointer;
+    font-weight: bold;
+    color: ${COLOR};
+    &:hover {
         color: ${COLOR_ACCENT};
-    `;
-    const Secondary = styled.span`
+    };
+    &:visited {
         color: ${COLOR_VISITED};
-        cursor: default;
-    `;
-    const SecondaryA = styled.a`
-        all: unset;  // removing defaults
-        cursor: pointer;
-        color: ${COLOR};
-        &:hover {
-            color: ${COLOR_ACCENT};
-        };
-    `;
+    };
+`;
+const PrimaryPrefix = styled.span`
+    all: unset;  // removing defaults
+    color: ${COLOR_ACCENT};
+`;
+const Secondary = styled.span`
+    color: ${COLOR_VISITED};
+    cursor: default;
+`;
+const SecondaryA = styled.a`
+    all: unset;  // removing defaults
+    cursor: pointer;
+    color: ${COLOR};
+    &:hover {
+        color: ${COLOR_ACCENT};
+    };
+`;
 
-    const group_updates = (
+
+function GroupHeader(props) {
+    return (
+        <h4>
+            <SecondaryA
+                href={`/feeds/${props.feed_data._id}`}
+                target='_blank'
+            >
+                { props.feed_data.title }
+            </SecondaryA>
+        </h4>
+    )
+}
+
+
+function GroupFooter(props) {
+    return (
+        <Secondary>
+            &nbsp;&nbsp;&nbsp;by <SecondaryA
+                href={"/feeds/"+ props.feed_data._id}
+                target='_blank'
+            >
+                { props.feed_data.title }
+            </SecondaryA>
+            {props.feed_data.private && (
+                <span style={{
+                    opacity: .5,
+                }}>
+                    { props.feed_data.private ? '🏮' : ''}
+                </span>
+            )}
+            {'region' in props.feed_data.json && `, ${props.feed_data.json.region}`}
+            {'tags' in props.feed_data.json && `, [${props.feed_data.json.tags}]`}
+        </Secondary>
+    )
+}
+
+
+export function UpdatesList(props) {
+    return (
         <ListGroup>
-            {group.updates.map((update) => (
+            {props.updates.map((update) => (
                 <ListGroup.Item>
                     <Primary
                         href={update.href}
@@ -60,14 +99,17 @@ export default function UpdatesList(props) {
                             )
                         }
                     </Secondary>
-                }
+                    }
                 </ListGroup.Item>
             ))}
         </ListGroup>
     )
+}
 
+
+export default function Updates(props) {
     let processed = [];
-    props.feedUpdates.forEach((item) => {
+    props.updates.forEach((item) => {
         if (processed.length === 0 || processed.at(-1).feed_data._id !== item.feed_id) {
             let { feed_data, ...item_only } = item;
             processed.push({
@@ -79,56 +121,21 @@ export default function UpdatesList(props) {
         }
     })
 
-    function UpdateGroup(group) {
-        const group_header = (
-            <h4>
-                <SecondaryA
-                    href={`/feeds/${group.feed_data._id}`}
-                    target='_blank'
-                >
-                    { group.feed_data.title }
-                </SecondaryA>
-            </h4>
-        )
-
-        const group_details = (
-            <Secondary>
-                &nbsp;&nbsp;&nbsp;by <SecondaryA
-                    href={"/feeds/"+ group.feed_data._id}
-                    target='_blank'
-                >
-                    { group.feed_data.title }
-                </SecondaryA>
-                {group.feed_data.private && (
-                    <span style={{
-                        opacity: .5,
-                    }}>
-                        { group.feed_data.private ? '🏮' : ''}
-                    </span>
-                )}
-                {'region' in group.feed_data.json && `, ${group.feed_data.json.region}`}
-                {'tags' in group.feed_data.json && `, [${group.feed_data.json.tags}]`}
-            </Secondary>
-        )
-
-        return (
-            <Group>
-                {group_header}
-                {group_updates}
-                {group_details}
-            </Group>
-        )
-    }
-
-    function GenerateUpdateGroup(processed) {
-        return (
-            <div>
-                {processed.map(feed => UpdateGroup(feed))}
-            </div>
-        )
-    }
-
     return (
-        GenerateUpdateGroup(processed)
+        <div>
+            {processed.map(feed => (
+                <Group>
+                    <GroupHeader
+                        feed_data={feed.feed_data}
+                    />
+                    <UpdatesList
+                        updates={feed.updates}
+                    />
+                    <GroupFooter
+                        feed_data={feed.feed_data}
+                    />
+                </Group>
+            ))}
+        </div>
     )
 }

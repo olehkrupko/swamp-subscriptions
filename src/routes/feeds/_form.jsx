@@ -8,7 +8,7 @@ import FeedsApi from '../../api/feeds';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
-import Updates from './../updates/components/Updates';
+import { UpdatesList } from './../updates/components/Updates';
 
 
 export default function FeedForm(props) {
@@ -349,8 +349,8 @@ export default function FeedForm(props) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Updates
-                        feedUpdates={feedUpdates}
+                    <UpdatesList
+                        updates={feedUpdates}
                     />
                 </Modal.Body>
                 <Modal.Footer>
