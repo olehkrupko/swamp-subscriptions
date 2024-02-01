@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 import FeedUpdatesApi from '../../api/feed-updates';
-import FeedUpdatesList from './_list';
-import UpdatesFooter from './_list_footer';
+import Updates from './components/Updates';
+import UpdatesFooter from './components/UpdatesFooter';
 
   
 export default function FeedsList() {
@@ -31,7 +31,7 @@ export default function FeedsList() {
         <main>
             <h1>Updates</h1>
 
-            <FeedUpdatesList
+            <Updates
                 feedUpdates={feedUpdates}
             />
 

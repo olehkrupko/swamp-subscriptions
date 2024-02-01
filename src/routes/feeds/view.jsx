@@ -3,7 +3,7 @@ import { useParams, } from "react-router-dom";
 
 import FeedForm from './_form';
 import FeedUpdatesApi from '../../api/feed-updates';
-import FeedUpdatesList from './../feed-updates/_list';
+import Updates from './../updates/components/Updates';
 
 
 export default function FeedsView() {
@@ -36,7 +36,7 @@ export default function FeedsView() {
                 feed_id={feed_id}
             />
             {feedUpdates &&
-                <FeedUpdatesList
+                <Updates
                     feedUpdates={feedUpdates}
                 />
             }

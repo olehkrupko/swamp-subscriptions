@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { format } from "date-fns";
 
 
-export default function FeedUpdatesList(props) {
+export default function UpdatesList(props) {
     const COLOR = 'black'
     const COLOR_ACCENT = 'red'
     const COLOR_VISITED = 'grey'
@@ -40,6 +40,32 @@ export default function FeedUpdatesList(props) {
         };
     `;
 
+    const group_updates = (
+        <ListGroup>
+            {group.updates.map((update) => (
+                <ListGroup.Item>
+                    <Primary
+                        href={update.href}
+                        target='_blank'
+                    >
+                        <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
+                        {update.name}
+                    </Primary>
+                    { update.feed_id != null &&
+                    <Secondary>
+                        &nbsp;on {
+                            format(
+                                new Date(update.datetime.replace(' ', 'T')+"Z"),
+                                "yyyy-MM-dd HH:mm"
+                            )
+                        }
+                    </Secondary>
+                }
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
+    )
+
     let processed = [];
     props.feedUpdates.forEach((item) => {
         if (processed.length === 0 || processed.at(-1).feed_data._id !== item.feed_id) {
@@ -63,32 +89,6 @@ export default function FeedUpdatesList(props) {
                     { group.feed_data.title }
                 </SecondaryA>
             </h4>
-        )
-
-        const group_updates = (
-            <ListGroup>
-                {group.updates.map((update) => (
-                    <ListGroup.Item>
-                        <Primary
-                            href={update.href}
-                            target='_blank'
-                        >
-                            <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
-                            {update.name}
-                        </Primary>
-                        { update.feed_id != null &&
-                        <Secondary>
-                            &nbsp;on {
-                                format(
-                                    new Date(update.datetime.replace(' ', 'T')+"Z"),
-                                    "yyyy-MM-dd HH:mm"
-                                )
-                            }
-                        </Secondary>
-                    }
-                    </ListGroup.Item>
-                ))}
-            </ListGroup>
         )
 
         const group_details = (
