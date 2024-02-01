@@ -8,20 +8,10 @@ export default function FeedUpdatesList(props) {
     const COLOR_ACCENT = 'red'
     const COLOR_VISITED = 'grey'
 
-    const UpdateGroupDiv = styled.div`
+    const Group = styled.div`
         margin: 15px 0;
     `;
-    const UpdatePrefix = styled.a`
-        all: unset;  // removing defaults
-        color: ${COLOR_ACCENT};
-        &:hover {
-            color: ${COLOR_ACCENT};
-        };
-        &:visited {
-            color: ${COLOR_VISITED};
-        };
-    `;
-    const UpdateName = styled.a`
+    const Primary = styled.a`
         all: unset;  // removing defaults
         cursor: pointer;
         font-weight: bold;
@@ -33,10 +23,14 @@ export default function FeedUpdatesList(props) {
             color: ${COLOR_VISITED};
         };
     `;
-    const UpdateSecondary = styled.div`
+    const Prefix = styled.span`
+        all: unset;  // removing defaults
+        color: ${COLOR_ACCENT};
+    `;
+    const Secondary = styled.span`
         color: ${COLOR_VISITED};
     `;
-    const UpdateSecondaryA = styled.a`
+    const SecondaryA = styled.a`
         all: unset;  // removing defaults
         cursor: pointer;
         color: ${COLOR};
@@ -61,12 +55,12 @@ export default function FeedUpdatesList(props) {
     function UpdateGroup(group) {
         const group_header = (
             <h4>
-                <UpdateSecondaryA
+                <SecondaryA
                     href={`/feeds/${group.feed_data._id}`}
                     target='_blank'
                 >
                     { group.feed_data.title }
-                </UpdateSecondaryA>
+                </SecondaryA>
             </h4>
         )
 
@@ -74,27 +68,22 @@ export default function FeedUpdatesList(props) {
             <ListGroup>
                 {group.updates.map((update) => (
                     <ListGroup.Item>
-                        <div>
-                            <UpdatePrefix
-                                href={update.href}
-                                target='_blank'
-                            >»&nbsp;</UpdatePrefix>
-                            <UpdateName
-                                href={update.href}
-                                target='_blank'
-                            >
-                                {update.name}
-                            </UpdateName>
-                        </div>
+                        <Primary
+                            href={update.href}
+                            target='_blank'
+                        >
+                            <Prefix>»&nbsp;</Prefix>
+                            {update.name}
+                        </Primary>
                         { update.feed_id != null &&
-                        <UpdateSecondary>
+                        <Secondary>
                             &nbsp;on {
                                 format(
                                     new Date(update.datetime.replace(' ', 'T')+"Z"),
                                     "yyyy-MM-dd HH:mm"
                                 )
                             }
-                        </UpdateSecondary>
+                        </Secondary>
                     }
                     </ListGroup.Item>
                 ))}
@@ -102,13 +91,13 @@ export default function FeedUpdatesList(props) {
         )
 
         const group_details = (
-            <UpdateSecondary>
-                &nbsp;&nbsp;&nbsp;by <UpdateSecondaryA
+            <Secondary>
+                &nbsp;&nbsp;&nbsp;by <SecondaryA
                     href={"/feeds/"+ group.feed_data._id}
                     target='_blank'
                 >
                     { group.feed_data.title }
-                </UpdateSecondaryA>
+                </SecondaryA>
                 {group.feed_data.private && (
                     <span style={{
                         opacity: .5,
@@ -118,15 +107,15 @@ export default function FeedUpdatesList(props) {
                 )}
                 {'region' in group.feed_data.json && `, ${group.feed_data.json.region}`}
                 {'tags' in group.feed_data.json && `, [${group.feed_data.json.tags}]`}
-            </UpdateSecondary>
+            </Secondary>
         )
 
         return (
-            <UpdateGroupDiv>
+            <Group>
                 {group_header}
                 {group_updates}
                 {group_details}
-            </UpdateGroupDiv>
+            </Group>
         )
     }
 
