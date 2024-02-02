@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 import FeedUpdatesApi from '../../api/feed-updates';
-import FeedUpdatesList from './_list';
+import Updates from './components/Updates';
+import UpdatesFilter from './components/UpdatesFilter';
+import UpdatesFooter from './components/UpdatesFooter';
 
   
 export default function FeedsList() {
+    const LIMIT_DEFAULT = 300;
+
     const [feedUpdates, setFeedUpdates] = useState([]);
-    const [kwargs, setKwargs] = useState({});
+    const [kwargs, setKwargs] = useState({limit: LIMIT_DEFAULT});
 
     useEffect(() => {
         FeedUpdatesApi.getFeedUpdates(kwargs)
@@ -27,11 +31,21 @@ export default function FeedsList() {
     return (
         <main>
             <h1>Updates</h1>
-            {feedUpdates &&
-                <FeedUpdatesList
-                    feedUpdates={feedUpdates}
-                />
-            }
+
+            {/* <UpdatesFilter
+                kwargs={kwargs}
+                setKwargs={setKwargs}
+            /> */}
+
+            <Updates
+                updates={feedUpdates}
+            />
+
+            <UpdatesFooter
+                kwargs={kwargs}
+                setKwargs={setKwargs}
+                LIMIT_DEFAULT={LIMIT_DEFAULT}
+            />
         </main>
     );
 }
