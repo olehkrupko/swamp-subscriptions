@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import FeedUpdatesApi from '../../api/feed-updates';
 import Updates from './components/Updates';
+import UpdatesFilter from './components/UpdatesFilter';
 import UpdatesFooter from './components/UpdatesFooter';
 
   
@@ -30,6 +31,11 @@ export default function FeedsList() {
     return (
         <main>
             <h1>Updates</h1>
+
+            <UpdatesFilter
+                kwargs={kwargs}
+                setKwargs={setKwargs}
+            />
 
             <Updates
                 updates={feedUpdates}
