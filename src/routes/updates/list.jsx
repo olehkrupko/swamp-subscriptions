@@ -32,10 +32,10 @@ export default function FeedsList() {
         <main>
             <h1>Updates</h1>
 
-            <UpdatesFilter
+            {/* <UpdatesFilter
                 kwargs={kwargs}
                 setKwargs={setKwargs}
-            />
+            /> */}
 
             <Updates
                 updates={feedUpdates}
