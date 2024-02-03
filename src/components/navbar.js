@@ -2,10 +2,16 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
+import styled from 'styled-components';
+
 
 export default function Navigation() {
+    const NavbarDarker = styled(Navbar)`
+        background-color: rgba(0,0,0, 0.25);
+    `;
+
     return (
-        <Navbar bg="light">
+        <NavbarDarker>
             <Container>
                 <Navbar.Brand href="/">
                     <b>SUBSCRIPTIONS</b>
@@ -18,6 +24,6 @@ export default function Navigation() {
                     Feeds
                 </Nav.Link>
             </Container>
-        </Navbar>
+        </NavbarDarker>
     );
   }
