@@ -88,7 +88,6 @@ export function UpdatesList(props) {
                         <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
                         {update.name}
                     </Primary>
-                    { update.feed_id != null &&
                     <Secondary>
                         &nbsp;on {
                             format(
@@ -97,7 +96,6 @@ export function UpdatesList(props) {
                             )
                         }
                     </Secondary>
-                    }
                 </ListGroup.Item>
             ))}
         </ListGroup>
