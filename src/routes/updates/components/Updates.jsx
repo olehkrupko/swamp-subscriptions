@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import { format } from "date-fns";
 
 
-const COLOR = 'black'
-const COLOR_ACCENT = 'red'
-const COLOR_VISITED = 'grey'
+const COLOR_ACCENT = 'red';
+const COLOR_VISITED = 'grey';
 
 
 const Group = styled.div`
@@ -16,7 +15,6 @@ const Primary = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     font-weight: bold;
-    color: ${COLOR};
     &:hover {
         color: ${COLOR_ACCENT};
     };
@@ -35,7 +33,6 @@ const Secondary = styled.span`
 const SecondaryA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
-    color: ${COLOR};
     &:hover {
         color: ${COLOR_ACCENT};
     };
