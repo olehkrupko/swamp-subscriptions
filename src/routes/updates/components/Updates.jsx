@@ -115,7 +115,7 @@ export default function Updates(props) {
         } else {
             processed.at(-1).updates.push(item)
         }
-    })
+    });
 
     return (
         <div>

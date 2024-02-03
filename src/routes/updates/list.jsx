@@ -11,6 +11,7 @@ export default function FeedsList() {
 
     const [feedUpdates, setFeedUpdates] = useState([]);
     const [kwargs, setKwargs] = useState({limit: LIMIT_DEFAULT});
+    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         FeedUpdatesApi.getFeedUpdates(kwargs)
@@ -30,12 +31,17 @@ export default function FeedsList() {
 
     return (
         <main>
-            <h1>Updates</h1>
+            <h1
+                onClick={() => setShowFilters(!showFilters)}
+                style={{cursor: 'pointer'}}
+            >
+                Updates
+            </h1>
 
-            {/* <UpdatesFilter
+            { showFilters && <UpdatesFilter
                 kwargs={kwargs}
                 setKwargs={setKwargs}
-            /> */}
+            /> }
 
             <Updates
                 updates={feedUpdates}
