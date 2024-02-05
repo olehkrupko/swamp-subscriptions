@@ -60,7 +60,7 @@ function GroupFooter(props) {
                 href={"/feeds/"+ props.feed_data._id}
                 target='_blank'
             >
-                { props.feed_data.title }
+                <b>{ props.feed_data.title }</b>
             </SecondaryA>
             {props.feed_data.private && (
                 <span style={{
