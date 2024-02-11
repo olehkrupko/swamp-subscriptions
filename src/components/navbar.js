@@ -18,10 +18,10 @@ export default function Navigation() {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Nav.Link href="/feed-updates/list">
-                    Feed Updates
+                    <b>Updates</b>
                 </Nav.Link>
                 <Nav.Link href="/feeds/list">
-                    Feeds
+                    <b>Feeds</b>
                 </Nav.Link>
             </Container>
         </NavbarDarker>
