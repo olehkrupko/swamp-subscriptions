@@ -90,9 +90,14 @@ export function UpdatesList(props) {
                     </Primary>
                     <Secondary>
                         &nbsp;on {
-                            format(
+                            update.datetime.includes('+') || update.datetime.includes('-')
+                            ? format(
+                                new Date(update.datetime),
+                                "yyyy-MM-dd HH:mm z"
+                            )
+                            : format(
                                 new Date(update.datetime.replace(' ', 'T')+"Z"),
-                                "yyyy-MM-dd HH:mm"
+                                "yyyy-MM-dd HH:mm z"
                             )
                         }
                     </Secondary>
