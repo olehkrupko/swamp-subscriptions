@@ -2,7 +2,7 @@
 
 This is front-end part of Swamp project, made in order to parse feeds for updates. If you can't destroy [FOMO](https://en.wikipedia.org/wiki/Fear_of_missing_out) — you can conquer it!
 
-You can access it [here](http://192.168.0.155:30011/feed-updates/list) from local network.
+You can access it [here](http://192.168.0.155:30011/feed-updates/list) (requires local network access).
 
 ## Getting Started with Create React App
 
