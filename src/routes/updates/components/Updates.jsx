@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import { format } from "date-fns";
 
 
-const COLOR = 'black'
-const COLOR_ACCENT = 'red'
-const COLOR_VISITED = 'grey'
+const COLOR_ACCENT = 'red';
+const COLOR_VISITED = 'grey';
 
 
 const Group = styled.div`
@@ -16,7 +15,6 @@ const Primary = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     font-weight: bold;
-    color: ${COLOR};
     &:hover {
         color: ${COLOR_ACCENT};
     };
@@ -35,7 +33,6 @@ const Secondary = styled.span`
 const SecondaryA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
-    color: ${COLOR};
     &:hover {
         color: ${COLOR_ACCENT};
     };
@@ -63,7 +60,7 @@ function GroupFooter(props) {
                 href={"/feeds/"+ props.feed_data._id}
                 target='_blank'
             >
-                { props.feed_data.title }
+                <b>{ props.feed_data.title }</b>
             </SecondaryA>
             {props.feed_data.private && (
                 <span style={{
@@ -91,16 +88,19 @@ export function UpdatesList(props) {
                         <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
                         {update.name}
                     </Primary>
-                    { update.feed_id != null &&
                     <Secondary>
                         &nbsp;on {
-                            format(
+                            update.datetime.includes('+') || update.datetime.includes('-')
+                            ? format(
+                                new Date(update.datetime),
+                                "yyyy-MM-dd HH:mm z"
+                            )
+                            : format(
                                 new Date(update.datetime.replace(' ', 'T')+"Z"),
-                                "yyyy-MM-dd HH:mm"
+                                "yyyy-MM-dd HH:mm z"
                             )
                         }
                     </Secondary>
-                    }
                 </ListGroup.Item>
             ))}
         </ListGroup>
@@ -120,7 +120,7 @@ export default function Updates(props) {
         } else {
             processed.at(-1).updates.push(item)
         }
-    })
+    });
 
     return (
         <div>

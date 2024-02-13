@@ -1,11 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 import Navigation from './components/navbar';
 
+import themeRunner from './components/theme-picker';
 import './App.css';
 
 
 export default function App() {
+    themeRunner();
+
     return (
         <div>
             <Navigation /> 
@@ -19,4 +22,4 @@ export default function App() {
             </div>
         </div>
     );
-  }
+}

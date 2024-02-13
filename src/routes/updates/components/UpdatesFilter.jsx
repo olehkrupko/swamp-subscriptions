@@ -1,3 +1,4 @@
+import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
@@ -26,6 +27,18 @@ export default function UpdatesFilter(props) {
 
     return(
         <>
+            <Button
+                variant="secondary"
+                onClick={() => {
+                    let dict = {};
+                    Object.assign(dict, props.kwargs);
+            
+                    props.setKwargs(dict);
+                }}
+            >
+                Reload
+            </Button>
+
             <DropdownButton
                 title='Privacy'
                 variant={privateButtonVariant[props.kwargs.private]}

@@ -14,7 +14,7 @@ import { UpdatesList } from './../updates/components/Updates';
 export default function FeedForm(props) {
     const navigate = useNavigate();
 
-    const [frequencies, setFrequencies] = useState('');
+    const [frequencies, setFrequencies] = useState([]);
 
     const [inputTitle, setTitle] = useState('');
     const [inputHref, setHref] = useState('');
