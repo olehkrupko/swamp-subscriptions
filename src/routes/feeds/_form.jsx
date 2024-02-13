@@ -27,7 +27,7 @@ export default function FeedForm(props) {
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
     
-    const [feedUpdates, setFeedUpdates] = useState([]);
+    const [updates, setUpdates] = useState([]);
 
     useEffect(() => {
         FeedsApi.getFrequencies()
@@ -115,7 +115,7 @@ export default function FeedForm(props) {
         FeedsApi.testFeedUrl(inputHref)
             .then(
                 (result) => {
-                    setFeedUpdates(result);
+                    setUpdates(result);
                     setModalTestUrlVisible(true);
                 },
                 // Note: it's important to handle errors here
@@ -350,7 +350,7 @@ export default function FeedForm(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <UpdatesList
-                        updates={feedUpdates}
+                        updates={updates}
                     />
                 </Modal.Body>
                 <Modal.Footer>

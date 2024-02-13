@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import FeedUpdatesApi from '../../api/feed-updates';
+import UpdatesApi from '../../api/updates';
 import Updates from './components/Updates';
 import UpdatesFilter from './components/UpdatesFilter';
 import UpdatesFooter from './components/UpdatesFooter';
@@ -9,16 +9,16 @@ import UpdatesFooter from './components/UpdatesFooter';
 export default function FeedsList() {
     const LIMIT_DEFAULT = 300;
 
-    const [feedUpdates, setFeedUpdates] = useState([]);
+    const [updates, setUpdates] = useState([]);
     const [kwargs, setKwargs] = useState({limit: LIMIT_DEFAULT});
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
-        FeedUpdatesApi.getFeedUpdates(kwargs)
+        UpdatesApi.getUpdates(kwargs)
             .then(
                 (result) => {
                     // console.log(typeof result, result)
-                    setFeedUpdates(result);
+                    setUpdates(result);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -44,7 +44,7 @@ export default function FeedsList() {
             /> }
 
             <Updates
-                updates={feedUpdates}
+                updates={updates}
             />
 
             <UpdatesFooter
