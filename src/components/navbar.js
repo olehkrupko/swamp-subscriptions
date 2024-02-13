@@ -8,20 +8,21 @@ import styled from 'styled-components';
 export default function Navigation() {
     const NavbarDarker = styled(Navbar)`
         background-color: rgba(0,0,0, 0.25);
+        font-weight: bold;
     `;
 
     return (
         <NavbarDarker>
             <Container>
                 <Navbar.Brand href="/">
-                    <b>SUBSCRIPTIONS</b>
+                    SUBSCRIPTIONS
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Nav.Link href="/feed-updates/list">
-                    <b>Updates</b>
+                    Updates
                 </Nav.Link>
                 <Nav.Link href="/feeds/list">
-                    <b>Feeds</b>
+                    Feeds
                 </Nav.Link>
             </Container>
         </NavbarDarker>
