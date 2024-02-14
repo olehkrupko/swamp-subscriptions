@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - '42-pass-dependabot-security-checks'
 jobs:
   deploy_code:
     runs-on: self-hosted
