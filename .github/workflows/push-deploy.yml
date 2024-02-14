@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - '35-clean-up-files'
 jobs:
   deploy_code:
     runs-on: self-hosted
