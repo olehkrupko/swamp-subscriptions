@@ -2,7 +2,7 @@ import { useEffect, useState, } from "react";
 import { useParams, } from "react-router-dom";
 
 import FeedForm from './_form';
-import FeedUpdatesApi from '../../api/feed-updates';
+import UpdatesApi from '../../api/updates';
 import Updates from './../updates/components/Updates';
 
 
@@ -10,14 +10,14 @@ export default function FeedsView() {
     const params = useParams();
     const feed_id = parseInt(params.feedId, 10);
 
-    const [feedUpdates, setFeedUpdates] = useState([]);
+    const [updates, setUpdates] = useState([]);
 
     useEffect(() => {
-        FeedUpdatesApi.getFeedUpdates({_id: params.feedId})
+        UpdatesApi.getUpdates({_id: params.feedId})
             .then(
                 (result) => {
                     // console.log(typeof result, result)
-                    setFeedUpdates(result);
+                    setUpdates(result);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -35,9 +35,9 @@ export default function FeedsView() {
                 read_only={true}
                 feed_id={feed_id}
             />
-            {feedUpdates &&
+            {updates &&
                 <Updates
-                    updates={feedUpdates}
+                    updates={updates}
                 />
             }
         </main>

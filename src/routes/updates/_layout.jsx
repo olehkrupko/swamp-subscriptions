@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 
-export default function FeedUpdatesLayout() {
+export default function UpdatesLayout() {
   return (
     <Outlet />
   );
