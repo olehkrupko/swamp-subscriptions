@@ -1,7 +1,6 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import styled from 'styled-components';
-import { format } from "date-fns";
 
 
 const COLOR_ACCENT = 'red';
@@ -77,6 +76,40 @@ function GroupFooter(props) {
 
 
 export function UpdatesList(props) {
+    function datetime_str_format(dt_str) {
+        const not_including = ['+', '-']
+        if (!not_including.some(function(v) { return dt_str.includes(v); })) {
+            dt_str.replace(' ', 'T')+"Z";
+        }
+
+        const dt = new Date(dt_str);
+        const dt_formatted = dt.toISOString()
+            .replace('T', ' ')
+            .slice(0, 16)  // seconds and later are removed
+
+        const dt_now = new Date();
+        const diff_minutes = Math.ceil((dt_now - dt)/(      60*1000));
+        const diff_hours   = Math.ceil((dt_now - dt)/(   60*60*1000));
+        const diff_days    = Math.ceil((dt_now - dt)/(24*60*60*1000));
+        let diff_str = '';
+        if (diff_minutes === 1) {
+            diff_str = '1 minute';
+        } else if (1 < diff_minutes && diff_minutes <= 60) {
+            diff_str = `${diff_minutes} minutes`;
+        } else if (1 < diff_hours && diff_hours <= 24) {
+            diff_str = `${diff_hours} hours`;
+        } else if (1 < diff_days && diff_days <= 12) {
+            diff_str = `${diff_days} days`;
+        }
+
+        if (diff_str !== '') {
+            return `${dt_formatted} (${diff_str} ago)`
+        } else {
+            return dt_formatted;
+        }
+        
+    }
+
     return (
         <ListGroup>
             {props.updates.map((update) => (
@@ -89,17 +122,7 @@ export function UpdatesList(props) {
                         {update.name}
                     </Primary>
                     <Secondary>
-                        &nbsp;on {
-                            update.datetime.includes('+') || update.datetime.includes('-')
-                            ? format(
-                                new Date(update.datetime),
-                                "yyyy-MM-dd HH:mm z"
-                            )
-                            : format(
-                                new Date(update.datetime.replace(' ', 'T')+"Z"),
-                                "yyyy-MM-dd HH:mm z"
-                            )
-                        }
+                        &nbsp;on { datetime_str_format(update.datetime) }
                     </Secondary>
                 </ListGroup.Item>
             ))}
