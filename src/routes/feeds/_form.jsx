@@ -24,6 +24,10 @@ export default function FeedForm(props) {
     const [inputNotes, setNotes] = useState('');
     const [inputJson, setJson] = useState('{}');
 
+    const [readonlyId, setReadonlyId] = useState('');
+    const [readonlyCreated, setReadonlyCreated] = useState('');
+    const [readonlyDelayed, setReadonlyDelayed] = useState('');
+
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
     
@@ -57,6 +61,10 @@ export default function FeedForm(props) {
                     setPrivate(result.private);
                     setNotes(result.notes);
                     setJson(JSON.stringify(result.json));
+
+                    setReadonlyId(result._id);
+                    setReadonlyCreated(result._created);
+                    setReadonlyDelayed(result._delayed);
 
                     frequencies.forEach((element, index) => {
                         if (result.frequency === element) {
@@ -133,7 +141,7 @@ export default function FeedForm(props) {
             .then(
                 (result) => {
                     console.log('deleteFeed() ->', typeof result, result)
-                    if (result === "Feed deleted") {
+                    if (result.success === true) {
                         navigate("/feeds/list");
                     }
                 },
@@ -313,6 +321,12 @@ export default function FeedForm(props) {
                     Delete
                 </Button>
             </ButtonGroup>
+            <br/><br/>
+            <div>
+                ID: {readonlyId ? readonlyId : 'undefined'}<br/>
+                Created: {readonlyCreated ? readonlyCreated : 'now()'}<br/>
+                Delayed: {readonlyDelayed ? readonlyDelayed : 'undefined'}
+            </div>
 
             <Modal
                 show={modalDeleteVisible}
