@@ -141,7 +141,7 @@ export default function FeedForm(props) {
             .then(
                 (result) => {
                     console.log('deleteFeed() ->', typeof result, result)
-                    if (result === "Feed deleted") {
+                    if (result.success === true) {
                         navigate("/feeds/list");
                     }
                 },
