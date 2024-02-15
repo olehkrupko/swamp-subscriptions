@@ -79,7 +79,7 @@ export function UpdatesList(props) {
     function datetime_str_format(dt_str) {
         const not_including = ['+', '-']
         if (!not_including.some(function(v) { return dt_str.includes(v); })) {
-            dt_str.replace(' ', 'T')+"Z";
+            dt_str = dt_str.replace(' ', 'T')+"Z";
         }
 
         const dt = new Date(dt_str);
