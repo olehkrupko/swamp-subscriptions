@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - '31-updates-list-datetime-update'
 jobs:
   deploy_code:
     runs-on: self-hosted
