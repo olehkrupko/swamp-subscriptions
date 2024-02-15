@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - '17-feeds-make-sure-_form-works'
 jobs:
   deploy_code:
     runs-on: self-hosted
