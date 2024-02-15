@@ -83,14 +83,15 @@ export function UpdatesList(props) {
         }
 
         const dt = new Date(dt_str);
-        const dt_formatted = dt.toISOString()
-            .replace('T', ' ')
-            .slice(0, 16)  // seconds and later are removed
+        const dt_str_date = `${ dt.getFullYear() }/${ ('0'+dt.getMonth()).slice(-2) }/${ dt.getDay() }`
+        const dt_fmt_time = `${ dt.getHours() }:${ dt.getMinutes() }`
+        const dt_fmt_tz   = `GMT${ dt.getTimezoneOffset()<0 ? '+' : '' }${ -dt.getTimezoneOffset()/60 }`
+        const dt_fmt      = `${dt_str_date} ${dt_fmt_time} ${dt_fmt_tz}`
 
         const dt_now = new Date();
-        const diff_minutes = Math.ceil((dt_now - dt)/(      60*1000));
-        const diff_hours   = Math.ceil((dt_now - dt)/(   60*60*1000));
-        const diff_days    = Math.ceil((dt_now - dt)/(24*60*60*1000));
+        const diff_minutes = Math.round((dt_now - dt)/(      60*1000));
+        const diff_hours   = Math.round((dt_now - dt)/(   60*60*1000));
+        const diff_days    = Math.round((dt_now - dt)/(24*60*60*1000));
         let diff_str = '';
         if (diff_minutes === 1) {
             diff_str = '1 minute';
@@ -103,11 +104,10 @@ export function UpdatesList(props) {
         }
 
         if (diff_str !== '') {
-            return `${dt_formatted} (${diff_str} ago)`
+            return `${dt_fmt} (${diff_str} ago)`
         } else {
-            return dt_formatted;
+            return dt_fmt;
         }
-        
     }
 
     return (
