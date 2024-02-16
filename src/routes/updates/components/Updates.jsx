@@ -25,7 +25,8 @@ const PrimaryPrefix = styled.span`
     all: unset;  // removing defaults
     color: ${COLOR_ACCENT};
 `;
-const Secondary = styled.span`
+const Secondary = styled.div`
+    padding-left: 16px;
     color: ${COLOR_VISITED};
     cursor: default;
 `;
@@ -35,6 +36,14 @@ const SecondaryA = styled.a`
     &:hover {
         color: ${COLOR_ACCENT};
     };
+`;
+const Attr = styled.span`
+    display: inline-block;
+    padding: 5px;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    border-color: var(--bs-border-color);
+    border-radius: 0 0 0 6px;
 `;
 
 
@@ -55,21 +64,37 @@ function GroupHeader(props) {
 function GroupFooter(props) {
     return (
         <Secondary>
-            &nbsp;&nbsp;&nbsp;by <SecondaryA
-                href={"/feeds/"+ props.feed._id}
-                target='_blank'
-            >
-                <b>{ props.feed.title }</b>
-            </SecondaryA>
+            <Attr>
+                by <SecondaryA
+                    href={"/feeds/"+ props.feed._id}
+                    target='_blank'
+                >
+                    <b>{ props.feed.title }</b>
+                </SecondaryA>
+            </Attr>
             {props.feed.private && (
-                <span style={{
-                    opacity: .5,
-                }}>
-                    { props.feed.private ? '🏮' : ''}
-                </span>
+                <Attr
+                    // style={{'color': 'red'}}
+                >
+                    ⛌private
+                </Attr>
             )}
-            {'region' in props.feed.json && `, ${props.feed.json.region}`}
-            {'tags' in props.feed.json && `, [${props.feed.json.tags}]`}
+            <Attr>
+                @{
+                    props.feed.href
+                        .replace('http://','')
+                        .replace('https://','')
+                        .replace('www.','')
+                        .split('/')[0]
+                }
+            </Attr>
+            <Attr>⏲{ props.feed.frequency }</Attr>
+            {'region' in props.feed.json && (
+                <Attr>◎{props.feed.json.region}</Attr>
+            )}
+            {'tags' in props.feed.json && props.feed.json.tags.map(item => (
+                <Attr>#{item}</Attr>
+            ))}
         </Secondary>
     )
 }
