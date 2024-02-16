@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - '10-updates-custom-list'
 jobs:
   deploy_code:
     runs-on: self-hosted
