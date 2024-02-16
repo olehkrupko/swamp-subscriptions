@@ -56,20 +56,20 @@ function GroupFooter(props) {
     return (
         <Secondary>
             &nbsp;&nbsp;&nbsp;by <SecondaryA
-                href={"/feeds/"+ props.feed_data._id}
+                href={"/feeds/"+ props.feed._id}
                 target='_blank'
             >
-                <b>{ props.feed_data.title }</b>
+                <b>{ props.feed.title }</b>
             </SecondaryA>
-            {props.feed_data.private && (
+            {props.feed.private && (
                 <span style={{
                     opacity: .5,
                 }}>
-                    { props.feed_data.private ? '🏮' : ''}
+                    { props.feed.private ? '🏮' : ''}
                 </span>
             )}
-            {'region' in props.feed_data.json && `, ${props.feed_data.json.region}`}
-            {'tags' in props.feed_data.json && `, [${props.feed_data.json.tags}]`}
+            {'region' in props.feed.json && `, ${props.feed.json.region}`}
+            {'tags' in props.feed.json && `, [${props.feed.json.tags}]`}
         </Secondary>
     )
 }
@@ -156,7 +156,7 @@ export default function Updates(props) {
                         updates={feed.updates}
                     />
                     <GroupFooter
-                        feed_data={feed.feed_data}
+                        feed={feed.feed_data}
                     />
                 </Group>
             ))}
