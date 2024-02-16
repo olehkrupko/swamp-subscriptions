@@ -108,7 +108,7 @@ export function UpdatesList(props) {
         }
 
         const dt = new Date(dt_str);
-        const dt_str_date = `${ dt.getFullYear() }/${ ('0'+dt.getMonth()).slice(-2) }/${ dt.getDay() }`
+        const dt_str_date = `${ dt.getFullYear() }/${ ('0'+(dt.getMonth()+1)).slice(-2) }/${ ('0'+dt.getDate()).slice(-2) }`
         const dt_fmt_time = `${ dt.getHours() }:${ dt.getMinutes() }`
         const dt_fmt_tz   = `GMT${ dt.getTimezoneOffset()<0 ? '+' : '' }${ -dt.getTimezoneOffset()/60 }`
         const dt_fmt      = `${dt_str_date} ${dt_fmt_time} ${dt_fmt_tz}`
