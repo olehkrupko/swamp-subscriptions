@@ -10,7 +10,32 @@ const COLOR_VISITED = 'grey';
 const Group = styled.div`
     margin: 15px 0;
 `;
-const Primary = styled.a`
+const Update = styled.ul`
+    all: unset;  // removing defaults
+    font-size: 19px;
+`;
+const UpdateLi = styled.li`
+    list-style-type: none;
+    text-decoration: none;
+    word-break: normal;
+    overflow-wrap: break-word;
+    &:before {
+        content: "»";
+        color: rgba(0, 0, 0, 0);
+        font-weight: bold;
+        padding-right: 7px;
+    };
+`;
+const Primary = styled(UpdateLi)`
+    &:before {
+        color: red;
+    };
+`;
+const Secondary = styled(UpdateLi)`
+    color: ${COLOR_VISITED};
+    cursor: default;
+`;
+const PrimaryA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     font-weight: bold;
@@ -21,56 +46,108 @@ const Primary = styled.a`
         color: ${COLOR_VISITED};
     };
 `;
-const PrimaryPrefix = styled.span`
-    all: unset;  // removing defaults
-    color: ${COLOR_ACCENT};
-`;
-const Secondary = styled.span`
-    color: ${COLOR_VISITED};
-    cursor: default;
-`;
-const SecondaryA = styled.a`
+const AccentA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     &:hover {
         color: ${COLOR_ACCENT};
     };
 `;
+const GroupSecondary = styled.div`
+    padding-left: 16px;
+    color: ${COLOR_VISITED};
+    cursor: default;
+`;
+const Attr = styled.span`
+    display: inline-block;
+    padding: 5px;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    border-color: var(--bs-border-color);
+    border-radius: 0 0 0 6px;
+`;
+const AttrPositive = styled(Attr)`
+    color: green;
+    font-weight: bold;
+`;
+const AttrWarning = styled(Attr)`
+    color: red;
+`;
 
 
 function GroupHeader(props) {
     return (
         <h4>
-            <SecondaryA
+            <AccentA
                 href={`/feeds/${props.feed_data._id}`}
                 target='_blank'
             >
                 { props.feed_data.title }
-            </SecondaryA>
+            </AccentA>
         </h4>
     )
 }
 
 
 function GroupFooter(props) {
+    function renderRegion(region) {
+        if (region === 'Ukraine') {
+            return(
+                <AttrPositive>◎{region}</AttrPositive>
+            )
+        } else if (region === 'Russia') {
+            return(
+                <AttrWarning>◎{region}</AttrWarning>
+            )
+        } else {
+            return(
+                <Attr>◎{region}</Attr>
+            )
+        }
+    }
+
+    function renderTag(tag) {
+        if (['journalism', 'favourite'].includes(tag)) {
+            return(
+                <AttrPositive>#{tag}</AttrPositive>
+            )
+        } else if ([].includes(tag)) {
+            return(
+                <AttrWarning>#{tag}</AttrWarning>
+            )
+        } else {
+            return(
+                <Attr>#{tag}</Attr>
+            )
+        }
+    }
+
     return (
-        <Secondary>
-            &nbsp;&nbsp;&nbsp;by <SecondaryA
-                href={"/feeds/"+ props.feed_data._id}
-                target='_blank'
-            >
-                <b>{ props.feed_data.title }</b>
-            </SecondaryA>
-            {props.feed_data.private && (
-                <span style={{
-                    opacity: .5,
-                }}>
-                    { props.feed_data.private ? '🏮' : ''}
-                </span>
+        <GroupSecondary>
+            <Attr>
+                by <AccentA
+                    href={"/feeds/"+ props.feed._id}
+                    target='_blank'
+                >
+                    <b>{ props.feed.title }</b>
+                </AccentA>
+            </Attr>
+            {props.feed.private && (
+                <AttrWarning>⛌private</AttrWarning>
             )}
-            {'region' in props.feed_data.json && `, ${props.feed_data.json.region}`}
-            {'tags' in props.feed_data.json && `, [${props.feed_data.json.tags}]`}
-        </Secondary>
+            <Attr>
+                @{
+                    props.feed.href
+                        .replace('http://','')
+                        .replace('https://','')
+                        .replace('www.','')
+                        .split('/')[0]
+                }
+            </Attr>
+            <Attr>⏲{ props.feed.frequency }</Attr>
+            {'region' in props.feed.json && renderRegion(props.feed.json.region)}
+            {'tags' in props.feed.json && props.feed.json.tags.map(item => renderTag(item))}
+        </GroupSecondary>
     )
 }
 
@@ -82,9 +159,12 @@ export function UpdatesList(props) {
             dt_str = dt_str.replace(' ', 'T')+"Z";
         }
 
+        function pre_zero(num) {
+            return ('0'+num.toString()).slice(-2)
+        }
         const dt = new Date(dt_str);
-        const dt_str_date = `${ dt.getFullYear() }/${ ('0'+dt.getMonth()).slice(-2) }/${ dt.getDay() }`
-        const dt_fmt_time = `${ dt.getHours() }:${ dt.getMinutes() }`
+        const dt_str_date = `${ dt.getFullYear() }/${pre_zero( dt.getMonth()+1 )}/${pre_zero( dt.getDate() )}`
+        const dt_fmt_time = `${pre_zero( dt.getHours() )}:${pre_zero( dt.getMinutes() )}`
         const dt_fmt_tz   = `GMT${ dt.getTimezoneOffset()<0 ? '+' : '' }${ -dt.getTimezoneOffset()/60 }`
         const dt_fmt      = `${dt_str_date} ${dt_fmt_time} ${dt_fmt_tz}`
 
@@ -114,16 +194,19 @@ export function UpdatesList(props) {
         <ListGroup>
             {props.updates.map((update) => (
                 <ListGroup.Item>
-                    <Primary
-                        href={update.href}
-                        target='_blank'
-                    >
-                        <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
-                        {update.name}
-                    </Primary>
-                    <Secondary>
-                        &nbsp;on { datetime_str_format(update.datetime) }
-                    </Secondary>
+                    <Update>
+                        <Primary>
+                            <PrimaryA
+                                href={update.href}
+                                target='_blank'
+                            >
+                                {update.name}
+                            </PrimaryA>
+                        </Primary>
+                        <Secondary>
+                            on { datetime_str_format(update.datetime) }
+                        </Secondary>
+                    </Update>
                 </ListGroup.Item>
             ))}
         </ListGroup>
@@ -156,7 +239,7 @@ export default function Updates(props) {
                         updates={feed.updates}
                     />
                     <GroupFooter
-                        feed_data={feed.feed_data}
+                        feed={feed.feed_data}
                     />
                 </Group>
             ))}
