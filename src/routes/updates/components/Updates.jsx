@@ -10,7 +10,32 @@ const COLOR_VISITED = 'grey';
 const Group = styled.div`
     margin: 15px 0;
 `;
-const Primary = styled.a`
+const Update = styled.ul`
+    all: unset;  // removing defaults
+    font-size: 19px;
+`;
+const UpdateLi = styled.li`
+    list-style-type: none;
+    text-decoration: none;
+    word-break: normal;
+    overflow-wrap: break-word;
+    &:before {
+        content: "»";
+        color: rgba(0, 0, 0, 0);
+        font-weight: bold;
+        padding-right: 7px;
+    };
+`;
+const Primary = styled(UpdateLi)`
+    &:before {
+        color: red;
+    };
+`;
+const Secondary = styled(UpdateLi)`
+    color: ${COLOR_VISITED};
+    cursor: default;
+`;
+const PrimaryA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     font-weight: bold;
@@ -20,15 +45,6 @@ const Primary = styled.a`
     &:visited {
         color: ${COLOR_VISITED};
     };
-`;
-const PrimaryPrefix = styled.span`
-    all: unset;  // removing defaults
-    color: ${COLOR_ACCENT};
-`;
-const Secondary = styled.div`
-    padding-left: 12px;
-    color: ${COLOR_VISITED};
-    cursor: default;
 `;
 const AccentA = styled.a`
     all: unset;  // removing defaults
@@ -178,16 +194,19 @@ export function UpdatesList(props) {
         <ListGroup>
             {props.updates.map((update) => (
                 <ListGroup.Item>
-                    <Primary
-                        href={update.href}
-                        target='_blank'
-                    >
-                        <PrimaryPrefix>»&nbsp;</PrimaryPrefix>
-                        {update.name}
-                    </Primary>
-                    <Secondary>
-                        &nbsp;on { datetime_str_format(update.datetime) }
-                    </Secondary>
+                    <Update>
+                        <Primary>
+                            <PrimaryA
+                                href={update.href}
+                                target='_blank'
+                            >
+                                {update.name}
+                            </PrimaryA>
+                        </Primary>
+                        <Secondary>
+                            on { datetime_str_format(update.datetime) }
+                        </Secondary>
+                    </Update>
                 </ListGroup.Item>
             ))}
         </ListGroup>
