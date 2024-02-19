@@ -26,7 +26,7 @@ const PrimaryPrefix = styled.span`
     color: ${COLOR_ACCENT};
 `;
 const Secondary = styled.div`
-    padding-left: 16px;
+    padding-left: 12px;
     color: ${COLOR_VISITED};
     cursor: default;
 `;
@@ -36,6 +36,11 @@ const AccentA = styled.a`
     &:hover {
         color: ${COLOR_ACCENT};
     };
+`;
+const GroupSecondary = styled.div`
+    padding-left: 16px;
+    color: ${COLOR_VISITED};
+    cursor: default;
 `;
 const Attr = styled.span`
     display: inline-block;
@@ -102,7 +107,7 @@ function GroupFooter(props) {
     }
 
     return (
-        <Secondary>
+        <GroupSecondary>
             <Attr>
                 by <AccentA
                     href={"/feeds/"+ props.feed._id}
@@ -126,7 +131,7 @@ function GroupFooter(props) {
             <Attr>⏲{ props.feed.frequency }</Attr>
             {'region' in props.feed.json && renderRegion(props.feed.json.region)}
             {'tags' in props.feed.json && props.feed.json.tags.map(item => renderTag(item))}
-        </Secondary>
+        </GroupSecondary>
     )
 }
 
