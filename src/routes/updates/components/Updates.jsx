@@ -30,7 +30,7 @@ const Secondary = styled.div`
     color: ${COLOR_VISITED};
     cursor: default;
 `;
-const SecondaryA = styled.a`
+const AccentA = styled.a`
     all: unset;  // removing defaults
     cursor: pointer;
     &:hover {
@@ -57,12 +57,12 @@ const AttrWarning = styled(Attr)`
 function GroupHeader(props) {
     return (
         <h4>
-            <SecondaryA
+            <AccentA
                 href={`/feeds/${props.feed_data._id}`}
                 target='_blank'
             >
                 { props.feed_data.title }
-            </SecondaryA>
+            </AccentA>
         </h4>
     )
 }
@@ -104,12 +104,12 @@ function GroupFooter(props) {
     return (
         <Secondary>
             <Attr>
-                by <SecondaryA
+                by <AccentA
                     href={"/feeds/"+ props.feed._id}
                     target='_blank'
                 >
                     <b>{ props.feed.title }</b>
-                </SecondaryA>
+                </AccentA>
             </Attr>
             {props.feed.private && (
                 <AttrWarning>⛌private</AttrWarning>
