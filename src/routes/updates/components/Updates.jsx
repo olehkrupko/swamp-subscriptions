@@ -45,6 +45,10 @@ const Attr = styled.span`
     border-color: var(--bs-border-color);
     border-radius: 0 0 0 6px;
 `;
+const AttrPositive = styled(Attr)`
+    color: green;
+    font-weight: bold;
+`;
 const AttrWarning = styled(Attr)`
     color: red;
 `;
@@ -66,13 +70,34 @@ function GroupHeader(props) {
 
 function GroupFooter(props) {
     function renderRegion(region) {
-        if (region === 'Russia') {
+        if (region === 'Ukraine') {
+            return(
+                <AttrPositive>◎{region}</AttrPositive>
+            )
+        } else if (region === 'Russia') {
             return(
                 <AttrWarning>◎{region}</AttrWarning>
             )
         } else {
             return(
                 <Attr>◎{region}</Attr>
+            )
+        }
+    }
+
+    function renderTag(tag) {
+        console.log(tag, ['journalism', 'favourite', 'apple'].includes(tag))
+        if (['journalism', 'favourite'].includes(tag)) {
+            return(
+                <AttrPositive>#{tag}</AttrPositive>
+            )
+        } else if ([].includes(tag)) {
+            return(
+                <AttrWarning>#{tag}</AttrWarning>
+            )
+        } else {
+            return(
+                <Attr>#{tag}</Attr>
             )
         }
     }
@@ -101,9 +126,7 @@ function GroupFooter(props) {
             </Attr>
             <Attr>⏲{ props.feed.frequency }</Attr>
             {'region' in props.feed.json && renderRegion(props.feed.json.region)}
-            {'tags' in props.feed.json && props.feed.json.tags.map(item => (
-                <Attr>#{item}</Attr>
-            ))}
+            {'tags' in props.feed.json && props.feed.json.tags.map(item => renderTag(item))}
         </Secondary>
     )
 }
