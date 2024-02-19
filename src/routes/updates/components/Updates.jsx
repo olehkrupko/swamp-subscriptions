@@ -13,6 +13,7 @@ const Group = styled.div`
 const Update = styled.ul`
     all: unset;  // removing defaults
     font-size: 19px;
+    line-height: 1.2;
 `;
 const UpdateLi = styled.li`
     list-style-type: none;
