@@ -86,7 +86,6 @@ function GroupFooter(props) {
     }
 
     function renderTag(tag) {
-        console.log(tag, ['journalism', 'favourite', 'apple'].includes(tag))
         if (['journalism', 'favourite'].includes(tag)) {
             return(
                 <AttrPositive>#{tag}</AttrPositive>
