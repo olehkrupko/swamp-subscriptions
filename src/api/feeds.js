@@ -2,11 +2,6 @@ import { SWAMP_API } from './_settings.js';
 
 
 export default class FeedsApi {
-    static async getFrequencies() {
-        return fetch(`${SWAMP_API}/feeds/frequencies`)
-            .then(res => res.json())
-    }
-
     static async getFeeds() {
         return fetch(`${SWAMP_API}/feeds/`, {
             method: 'GET',
