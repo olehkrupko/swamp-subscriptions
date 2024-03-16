@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - '41-review-official-articles'
 jobs:
   deploy_code:
     runs-on: self-hosted
