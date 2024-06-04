@@ -144,9 +144,13 @@ export default function FeedForm(props) {
                     setHref(result['href']);
                     setHrefUser(result['href_user']);
                     setPrivate(result['private']);
-                    setFrequency(result['frequency']);
+                    frequencies.forEach((element, index) => {
+                        if (result.frequency === element) {
+                            setFrequency(index);
+                        }
+                    });
                     setNotes(result['notes']);
-                    setJson(result['json']);
+                    setJson(JSON.stringify(result['json']));
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
