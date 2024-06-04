@@ -65,4 +65,11 @@ export default class FeedsApi {
         })
             .then(res => res.json())
     }
+
+    static async explainFeedUrl(href) {
+        return fetch(`${SWAMP_API}/feeds/parse/explain/?href=${href}`, {
+            method: 'GET',
+        })
+            .then(res => res.json())
+    }
 }

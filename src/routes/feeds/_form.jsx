@@ -135,6 +135,27 @@ export default function FeedForm(props) {
             )
     }
 
+    const HandleExplainUrl = event => {
+        FeedsApi.explainFeedUrl(inputHref)
+            .then(
+                (result) => {
+                    setTitle(result['title']);
+                    setHref(result['href']);
+                    setHrefUser(result['href_user']);
+                    setPrivate(result['private']);
+                    setFrequency(result['frequency']);
+                    setNotes(result['notes']);
+                    setJson(result['json']);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    };
+
     const HandleDelete = event => {
         event.preventDefault();
         FeedsApi.deleteFeed(props.feed_id)
@@ -177,6 +198,12 @@ export default function FeedForm(props) {
                     disabled={props.read_only}
                 />
                 <ButtonGroup>
+                    <Button
+                        variant="secondary"
+                        onClick={() => HandleExplainUrl()}
+                    >
+                        Explain URL
+                    </Button>
                     <Button
                         variant="secondary"
                         onClick={() => HandleTestUrl()}
