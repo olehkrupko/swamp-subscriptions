@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
 import FeedsApi from '../../api/feeds';
+import FrequencyApi from '../../api/frequencies';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +35,7 @@ export default function FeedForm(props) {
     const [updates, setUpdates] = useState([]);
 
     useEffect(() => {
-        FeedsApi.getFrequencies()
+        FrequencyApi.getFrequencies()
             .then(
                 (result) => {
                     console.log('getFrequencies() ->', typeof result, result)
