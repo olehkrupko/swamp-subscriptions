@@ -141,7 +141,9 @@ export default function FeedForm(props) {
             .then(
                 (result) => {
                     setTitle(result['title']);
-                    setHref(result['href']);
+                    if (result['href'] !== null) {
+                        setHref(result['href']);
+                    }
                     setHrefUser(result['href_user']);
                     setPrivate(result['private']);
                     frequencies.forEach((element, index) => {
