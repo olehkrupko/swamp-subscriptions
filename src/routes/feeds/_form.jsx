@@ -31,8 +31,10 @@ export default function FeedForm(props) {
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
+    const [modalSimilarFeedsVisible, setModalSimilarFeedsVisible] = useState(false);
     
     const [updates, setUpdates] = useState([]);
+    const [similarFeeds, setSimilarFeeds] = useState([]);
 
     useEffect(() => {
         FrequencyApi.getFrequencies()
@@ -140,6 +142,10 @@ export default function FeedForm(props) {
         FeedsApi.explainFeedUrl(inputHref, readonlyId)
             .then(
                 (result) => {
+                    if (result.similar_feeds) {
+                        setModalSimilarFeedsVisible(true);
+                        setSimilarFeeds(result.similar_feeds);
+                    }
                     const explained = result.explained;
 
                     setTitle(explained.title);
@@ -427,6 +433,48 @@ export default function FeedForm(props) {
                     <Button
                         variant="primary"
                         onClick={() => setModalTestUrlVisible(false)}
+                    >
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            
+            <Modal
+                show={modalSimilarFeedsVisible}
+                onHide={() => setModalSimilarFeedsVisible(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Similar feeds detected:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ul>
+                        <li><b>CURRENT</b></li>
+                        <ul>
+                            <li>{inputTitle}</li>
+                            <li style={{ wordWrap: 'break-word' }}>{inputHref}</li>
+                        </ul>
+                        {similarFeeds.map(feed => (
+                            <li>
+                                <a
+                                    href={"/feeds/"+feed._id}
+                                    title={"href: "+feed.href}
+                                >
+                                    <b>{feed._id}</b>: {feed.title}
+                                </a>
+                                <ul>
+                                    <li>{feed.title}</li>
+                                    <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setModalSimilarFeedsVisible(false)}
                     >
                         Close
                     </Button>
