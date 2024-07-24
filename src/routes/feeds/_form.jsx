@@ -142,7 +142,7 @@ export default function FeedForm(props) {
         FeedsApi.explainFeedUrl(inputHref, readonlyId)
             .then(
                 (result) => {
-                    if (result.similar_feeds) {
+                    if (result.similar_feeds.length) {
                         setModalSimilarFeedsVisible(true);
                         setSimilarFeeds(result.similar_feeds);
                     }
