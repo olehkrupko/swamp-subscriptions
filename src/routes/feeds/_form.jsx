@@ -25,7 +25,7 @@ export default function FeedForm(props) {
     const [inputNotes, setNotes] = useState('');
     const [inputJson, setJson] = useState('{}');
 
-    const [readonlyId, setReadonlyId] = useState('');
+    const [readonlyId, setReadonlyId] = useState(null);
     const [readonlyCreated, setReadonlyCreated] = useState('');
     const [readonlyDelayed, setReadonlyDelayed] = useState('');
 
@@ -137,22 +137,20 @@ export default function FeedForm(props) {
     }
 
     const HandleExplainUrl = event => {
-        FeedsApi.explainFeedUrl(inputHref)
+        FeedsApi.explainFeedUrl(inputHref, readonlyId)
             .then(
                 (result) => {
-                    setTitle(result['title']);
-                    if (result['href'] !== null) {
-                        setHref(result['href']);
+                    const explained = result.explained;
+
+                    setTitle(explained.title);
+                    setHref(explained.href);
+                    setHrefUser(explained.href_user);
+                    setPrivate(explained.private);
+                    if (frequencies.includes(explained.frequency)) {
+                        setFrequency(explained.frequency);
                     }
-                    setHrefUser(result['href_user']);
-                    setPrivate(result['private']);
-                    frequencies.forEach((element, index) => {
-                        if (result.frequency === element) {
-                            setFrequency(index);
-                        }
-                    });
-                    setNotes(result['notes']);
-                    setJson(JSON.stringify(result['json']));
+                    setNotes(explained.notes);
+                    setJson(JSON.stringify(explained.json));
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -383,6 +381,30 @@ export default function FeedForm(props) {
                         onClick={HandleDelete}
                     >
                         Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            
+            <Modal
+                show={modalTestUrlVisible}
+                onHide={() => setModalTestUrlVisible(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Data returned by test request to URL:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <UpdatesList
+                        updates={updates}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setModalTestUrlVisible(false)}
+                    >
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
