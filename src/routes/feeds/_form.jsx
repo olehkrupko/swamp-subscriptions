@@ -152,9 +152,7 @@ export default function FeedForm(props) {
                     setHref(explained.href);
                     setHrefUser(explained.href_user);
                     setPrivate(explained.private);
-                    if (frequencies.includes(explained.frequency)) {
-                        setFrequency(explained.frequency);
-                    }
+                    setFrequency(frequencies.indexOf(explained.frequency));
                     setNotes(explained.notes);
                     setJson(JSON.stringify(explained.json));
                 },
