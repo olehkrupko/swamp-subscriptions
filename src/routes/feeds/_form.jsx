@@ -229,6 +229,7 @@ export default function FeedForm(props) {
                         frequencies={frequencies}
                         inputFeed={inputFeed}
                         setInputFeed={setInputFeed}
+                        feed_id={props.feed_id}
                     />
                     <Button
                         variant="secondary"
