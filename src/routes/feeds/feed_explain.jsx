@@ -15,7 +15,10 @@ export default function FeedExplain(props) {
     const [visible, setVisible] = useState(false);
 
 
-    const HandleExplainUrl = event => {
+    /*
+     * Explain Feed from URL
+     */
+    function HandleExplain() {
         FeedsApi.explainFeedUrl(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
@@ -47,11 +50,16 @@ export default function FeedExplain(props) {
     }
 
 
-    const HandleExplainPushUrl = event => {
+    /*
+     * Explain Feed from URL & push it to DB
+     * If there are similat feeds — it blocks push with ExplainModal
+     * check_similar=false allows to ignore similar feeds, Feed is not pushed in this case & page reset
+     */
+    function HandlePush(check_similar=true) {
         FeedsApi.explainFeedUrl(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
-                    if (result.similar_feeds.length) {
+                    if (result.similar_feeds.length && check_similar) {
                         props.setInputFeed({
                             ...props.inputFeed,
                             ...{
@@ -67,6 +75,8 @@ export default function FeedExplain(props) {
                         
                         setSimilarFeeds(result.similar_feeds);
                         setVisible(true);
+                    } else if (result.similar_feeds.length && !check_similar) {
+                        HandleResetFeed()
                     } else {
                         let data = {
                             title: result.explained.title,
@@ -102,13 +112,12 @@ export default function FeedExplain(props) {
             )
     }
 
-    const HandleResetFeed = event => {
-        setVisible(false);
+    function HandleResetFeed() {
         window.location.reload();
     }
 
 
-    const ExplainModal = event => {
+    function ExplainModal() {
         return (
             <Modal
                 show={visible}
@@ -176,17 +185,25 @@ export default function FeedExplain(props) {
         <>
             <Button
                 variant="secondary"
-                onClick={() => HandleExplainUrl()}
+                onClick={() => HandleExplain()}
             >
                 Explain
             </Button>
 
             <Button
                 variant="secondary"
-                onClick={() => HandleExplainPushUrl()}
+                onClick={() => HandlePush()}
                 disabled={props.feed_id}
             >
-                Explain&Push
+                Push
+            </Button>
+
+            <Button
+                variant="secondary"
+                onClick={() => HandlePush(false)}
+                disabled={props.feed_id}
+            >
+                Push&Ignore
             </Button>
             
             {ExplainModal()}

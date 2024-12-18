@@ -90,7 +90,23 @@ export default function FeedForm(props) {
                     })
                 })
         }
-    }, [ frequencies, props.feed_id, ])
+    }, [ frequencies, props.feed_id, ]);
+
+    function HandleTestUrl() {
+        FeedsApi.testFeedUrl(inputFeed['href'])
+            .then(
+                (result) => {
+                    setUpdates(result);
+                    setModalTestUrlVisible(true);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    };
 
     const HandleSubmit = event => {
         event.preventDefault();
@@ -136,22 +152,6 @@ export default function FeedForm(props) {
         }
     };
 
-    const HandleTestUrl = event => {
-        FeedsApi.testFeedUrl(inputFeed['href'])
-            .then(
-                (result) => {
-                    setUpdates(result);
-                    setModalTestUrlVisible(true);
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
-            )
-    }
-
     const HandleDelete = event => {
         event.preventDefault();
         FeedsApi.deleteFeed(props.feed_id)
@@ -171,7 +171,7 @@ export default function FeedForm(props) {
             )
     };
 
-    const renderMainButtons = event => {
+    function renderMainButtons() {
         return (
             <CustomButtonGroup>
                 <Button
