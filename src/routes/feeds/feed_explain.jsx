@@ -12,11 +12,9 @@ export default function FeedExplain(props) {
 
 
     const HandleExplainUrl = event => {
-        console.log(">>>> it clicked");
         FeedsApi.explainFeedUrl(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
-                    console.log(">>>> it loaded")
                     props.setInputFeed({
                         ...props.inputFeed,
                         ...{
@@ -30,9 +28,7 @@ export default function FeedExplain(props) {
                         }
                     });
 
-                    console.log(">>>> similar feeds length", result.similar_feeds.length)
                     if (result.similar_feeds.length) {
-                        console.log(">>>> similar feeds", result.similar_feeds)
                         setSimilarFeeds(result.similar_feeds);
                         setVisible(true);
                     }
@@ -109,7 +105,7 @@ export default function FeedExplain(props) {
                 variant="secondary"
                 onClick={() => HandleExplainUrl()}
             >
-                Explain URL
+                Explain
             </Button>
             
             {ExplainModal()}
