@@ -41,10 +41,8 @@ export default function FeedForm(props) {
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
-    const [modalSimilarFeedsVisible, setModalSimilarFeedsVisible] = useState(false);
     
     const [updates, setUpdates] = useState([]);
-    const [similarFeeds, setSimilarFeeds] = useState([]);
 
     useEffect(() => {
         FrequencyApi.getFrequencies()
@@ -152,37 +150,6 @@ export default function FeedForm(props) {
             )
     }
 
-    const HandleExplainUrl = event => {
-        FeedsApi.explainFeedUrl(inputFeed['href'], inputFeed['readonly_id'])
-            .then(
-                (result) => {
-                    if (result.similar_feeds.length) {
-                        setModalSimilarFeedsVisible(true);
-                        setSimilarFeeds(result.similar_feeds);
-                    }
-                    
-                    setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'title': result.explained.title,
-                            'href': result.explained.href,
-                            'href_user': result.explained.href_user,
-                            'private': result.explained.private,
-                            'frequency': frequencies.indexOf(result.explained.frequency),
-                            'notes': result.explained.notes,
-                            'json': JSON.stringify(result.explained.json),
-                        }
-                    })
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
-            )
-    };
-
     const HandleDelete = event => {
         event.preventDefault();
         FeedsApi.deleteFeed(props.feed_id)
@@ -235,12 +202,11 @@ export default function FeedForm(props) {
                     disabled={props.read_only}
                 />
                 <ButtonGroup>
-                    <Button
-                        variant="secondary"
-                        onClick={() => HandleExplainUrl()}
-                    >
-                        Explain URL
-                    </Button>
+                    <FeedExplain
+                        frequencies={frequencies}
+                        inputFeed={inputFeed}
+                        setInputFeed={setInputFeed}
+                    />
                     <Button
                         variant="secondary"
                         onClick={() => HandleTestUrl()}
@@ -494,14 +460,6 @@ export default function FeedForm(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            
-            <FeedExplain
-                visible={modalSimilarFeedsVisible}
-                setVisible={setModalSimilarFeedsVisible}
-                frequencies={frequencies}
-                inputFeed={inputFeed}
-                similarFeeds={similarFeeds}
-            />
         </Form>
     )
 }
