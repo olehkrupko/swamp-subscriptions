@@ -6,11 +6,20 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
 
 import FeedExplain from './feed_explain';
 import { UpdatesList } from '../updates/components/Updates';
 import FeedsApi from '../../api/feeds';
 import FrequencyApi from '../../api/frequencies';
+
+const CustomButtonGroup = styled(ButtonGroup)`
+    margin: 10px 0;
+`;
+const CustomFormLabel = styled(Form.Label)`
+    margin-top: 10px;
+    margin-bottom: 0;
+`;
 
 
 export default function FeedForm(props) {
@@ -162,27 +171,48 @@ export default function FeedForm(props) {
             )
     };
 
+    const renderMainButtons = event => {
+        return (
+            <CustomButtonGroup>
+                <Button
+                    variant={props.read_only ? "secondary" : "primary"}
+                    type="submit"
+                    disabled={props.read_only}
+                >
+                    Submit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={!props.read_only}
+                    onClick={() => navigate("/feeds/"+ props.feed_id +"/edit")}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={props.read_only || (props.feed_id ? false : true)}
+                    onClick={() => navigate("/feeds/"+ props.feed_id )}
+                >
+                    View
+                </Button>
+                <Button
+                    variant="secondary"
+                    disabled={props.feed_id ? false : true}
+                    onClick={() => setModalDeleteVisible(true)}
+                >
+                    Delete
+                </Button>
+            </CustomButtonGroup>
+        )
+    }
+
     return (
         <Form
             onSubmit={HandleSubmit}
         >
+            {renderMainButtons()}
             <Form.Group>
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                    value={inputFeed['title']}
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'title': e.target.value,
-                        }
-                    })}
-                    placeholder="Enter feed name. TODO: generate from URL"
-                    disabled={props.read_only}
-                />
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>URL</Form.Label>
+                <CustomFormLabel>URL</CustomFormLabel>
                 <Form.Control
                     value={inputFeed['href']}
                     onChange={e => setInputFeed({
@@ -214,9 +244,88 @@ export default function FeedForm(props) {
                     </Button>
                 </ButtonGroup>
             </Form.Group>
-            <br/>
             <Form.Group>
-                <Form.Label>Public URL</Form.Label>
+                <CustomFormLabel>Title</CustomFormLabel>
+                <Form.Control
+                    value={inputFeed['title']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'title': e.target.value,
+                        }
+                    })}
+                    placeholder="Enter feed name. TODO: generate from URL"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>JSON</CustomFormLabel>
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputFeed['json']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'json': e.target.value,
+                        }
+                    })}
+                    disabled={props.read_only}
+                />
+                {/* <Button
+                    variant="secondary"
+                    href={inputFeed['href_user']}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Verify JSON
+                </Button> */}
+                {/* <Button
+                    variant="secondary"
+                    href={inputFeed['href_user']}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Format JSON
+                </Button> */}
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Private</CustomFormLabel>
+                <Form.Check 
+                    checked={inputFeed['private']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'private': e.target.checked,
+                        }
+                    })}
+                    type="switch"
+                    label="Feed is private?"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Frequency</CustomFormLabel>
+                <RangeSlider
+                    value={inputFeed['frequency']}
+                    min={0}
+                    max={frequencies.length-1}
+
+                    tooltip='on'
+                    tooltipLabel={currentValue => frequencies[currentValue]}
+
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'frequency': e.target.value,
+                        }
+                    })}
+                    disabled={props.read_only}
+                />
+                <br/>
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Public URL</CustomFormLabel>
                 <Form.Control
                     value={inputFeed['href_user']}
                     onChange={e => setInputFeed({
@@ -258,9 +367,8 @@ export default function FeedForm(props) {
                     </Button> */}
                 </ButtonGroup>
             </Form.Group>
-            <br/>
             <Form.Group>
-                <Form.Label>Notes</Form.Label>
+                <CustomFormLabel>Notes</CustomFormLabel>
                 <Form.Control
                     as="textarea"
                     rows="3"
@@ -274,112 +382,13 @@ export default function FeedForm(props) {
                     disabled={props.read_only}
                 />
             </Form.Group>
-            <br/>
             <Form.Group>
-                <Form.Label>JSON</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows="3"
-                    value={inputFeed['json']}
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'json': e.target.value,
-                        }
-                    })}
-                    disabled={props.read_only}
-                />
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Verify JSON
-                </Button> */}
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Format JSON
-                </Button> */}
+                <CustomFormLabel>System</CustomFormLabel>
+                <div>ID: {inputFeed['readonly_id'] ? inputFeed['readonly_id'] : 'undefined'}</div>
+                <div>Created: {inputFeed['readonly_created'] ? inputFeed['readonly_created'] : 'now()'}</div>
+                <div>Delayed: {inputFeed['readonly_delayed'] ? inputFeed['readonly_delayed'] : 'undefined'}</div>
             </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Private</Form.Label>
-                <Form.Check 
-                    checked={inputFeed['private']}
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'private': e.target.checked,
-                        }
-                    })}
-                    type="switch"
-                    label="Feed is private?"
-                    disabled={props.read_only}
-                />
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Frequency</Form.Label>
-                <RangeSlider
-                    value={inputFeed['frequency']}
-                    min={0}
-                    max={frequencies.length-1}
-
-                    tooltip='on'
-                    tooltipLabel={currentValue => frequencies[currentValue]}
-
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'frequency': e.target.value,
-                        }
-                    })}
-                    disabled={props.read_only}
-                />
-                <br/>
-            </Form.Group>
-            <br/>
-            <ButtonGroup>
-                <Button
-                    variant={props.read_only ? "secondary" : "primary"}
-                    type="submit"
-                    disabled={props.read_only}
-                >
-                    Submit
-                </Button>
-                <Button
-                    variant="secondary"
-                    disabled={!props.read_only}
-                    onClick={() => navigate("/feeds/"+ props.feed_id +"/edit")}
-                >
-                    Edit
-                </Button>
-                <Button
-                    variant="secondary"
-                    disabled={props.read_only || (props.feed_id ? false : true)}
-                    onClick={() => navigate("/feeds/"+ props.feed_id )}
-                >
-                    View
-                </Button>
-                <Button
-                    variant="secondary"
-                    disabled={props.feed_id ? false : true}
-                    onClick={() => setModalDeleteVisible(true)}
-                >
-                    Delete
-                </Button>
-            </ButtonGroup>
-            <br/><br/>
-            <div>
-                ID: {inputFeed['readonly_id'] ? inputFeed['readonly_id'] : 'undefined'}<br/>
-                Created: {inputFeed['readonly_created'] ? inputFeed['readonly_created'] : 'now()'}<br/>
-                Delayed: {inputFeed['readonly_delayed'] ? inputFeed['readonly_delayed'] : 'undefined'}
-            </div>
+            {renderMainButtons()}
 
             <Modal
                 show={modalDeleteVisible}
