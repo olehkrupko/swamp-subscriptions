@@ -17,17 +17,26 @@ export default function FeedForm(props) {
 
     const [frequencies, setFrequencies] = useState([]);
 
-    const [inputTitle, setTitle] = useState('');
-    const [inputHref, setHref] = useState('');
-    const [inputHrefUser, setHrefUser] = useState('');
-    const [inputPrivate, setPrivate] = useState(false);
-    const [inputFrequency, setFrequency] = useState(1);
-    const [inputNotes, setNotes] = useState('');
-    const [inputJson, setJson] = useState('{}');
+    // inputFeed['title']
+    // setInputFeed({
+    //     ...inputFeed,
+    //     ...{
+    //         'title': result.title,
+    //     }
+    // })
+    const [inputFeed, setInputFeed] = useState({
+        'title': '',
+        'href': '',
+        'href_user': '',
+        'private': false,
+        'frequency': 1,
+        'notes': '',
+        'json': '{}',
 
-    const [readonlyId, setReadonlyId] = useState(null);
-    const [readonlyCreated, setReadonlyCreated] = useState('');
-    const [readonlyDelayed, setReadonlyDelayed] = useState('');
+        'readonly_id': null,
+        'readonly_created': '',
+        'readonly_delayed': '',
+    });
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
     const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
@@ -58,22 +67,26 @@ export default function FeedForm(props) {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
                     console.log('readFeed() ->', typeof result, result);
-                    setTitle(result.title);
-                    setHref(result.href);
-                    setHrefUser(result.href_user);
-                    setPrivate(result.private);
-                    setNotes(result.notes);
-                    setJson(JSON.stringify(result.json));
+                    const frequency = (frequencies) => {
+                        frequencies.forEach((element, index) => {
+                            if (result.frequency === element) {
+                                return index;
+                            }
+                        })
+                    };
+                    setInputFeed({
+                        'title': result.title,
+                        'href': result.href,
+                        'href_user': result.href_user,
+                        'private': result.private,
+                        'frequency': frequencies.indexOf(result.frequency),
+                        'notes': result.notes,
+                        'json': JSON.stringify(result.json),
 
-                    setReadonlyId(result._id);
-                    setReadonlyCreated(result._created);
-                    setReadonlyDelayed(result._delayed);
-
-                    frequencies.forEach((element, index) => {
-                        if (result.frequency === element) {
-                            setFrequency(index);
-                        }
-                    });
+                        'readonly_id': result._id,
+                        'readonly_created': result._created,
+                        'readonly_delayed': result._delayed,
+                    })
                 })
         }
     }, [ frequencies, props.feed_id, ])
@@ -81,13 +94,13 @@ export default function FeedForm(props) {
     const HandleSubmit = event => {
         event.preventDefault();
         let data = {
-            title: inputTitle,
-            href: inputHref,
-            href_user: inputHrefUser,
-            private: inputPrivate,
-            frequency: frequencies[inputFrequency],
-            notes: inputNotes,
-            json: JSON.parse(inputJson),
+            title: inputFeed['title'],
+            href: inputFeed['href'],
+            href_user: inputFeed['href_user'],
+            private: inputFeed['private'],
+            frequency: frequencies[inputFeed['frequency']],
+            notes: inputFeed['notes'],
+            json: JSON.parse(inputFeed['json']),
         }
 
         if (props.feed_id) {
@@ -123,7 +136,7 @@ export default function FeedForm(props) {
     };
 
     const HandleTestUrl = event => {
-        FeedsApi.testFeedUrl(inputHref)
+        FeedsApi.testFeedUrl(inputFeed['href'])
             .then(
                 (result) => {
                     setUpdates(result);
@@ -139,22 +152,26 @@ export default function FeedForm(props) {
     }
 
     const HandleExplainUrl = event => {
-        FeedsApi.explainFeedUrl(inputHref, readonlyId)
+        FeedsApi.explainFeedUrl(inputFeed['href'], inputFeed['readonly_id'])
             .then(
                 (result) => {
                     if (result.similar_feeds.length) {
                         setModalSimilarFeedsVisible(true);
                         setSimilarFeeds(result.similar_feeds);
                     }
-                    const explained = result.explained;
-
-                    setTitle(explained.title);
-                    setHref(explained.href);
-                    setHrefUser(explained.href_user);
-                    setPrivate(explained.private);
-                    setFrequency(frequencies.indexOf(explained.frequency));
-                    setNotes(explained.notes);
-                    setJson(JSON.stringify(explained.json));
+                    
+                    setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'title': result.explained.title,
+                            'href': result.explained.href,
+                            'href_user': result.explained.href_user,
+                            'private': result.explained.private,
+                            'frequency': frequencies.indexOf(result.explained.frequency),
+                            'notes': result.explained.notes,
+                            'json': JSON.stringify(result.explained.json),
+                        }
+                    })
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -191,8 +208,13 @@ export default function FeedForm(props) {
             <Form.Group>
                 <Form.Label>Title</Form.Label>
                 <Form.Control
-                    value={inputTitle}
-                    onChange={e => setTitle(e.target.value)}
+                    value={inputFeed['title']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'title': e.target.value,
+                        }
+                    })}
                     placeholder="Enter feed name. TODO: generate from URL"
                     disabled={props.read_only}
                 />
@@ -201,8 +223,13 @@ export default function FeedForm(props) {
             <Form.Group>
                 <Form.Label>URL</Form.Label>
                 <Form.Control
-                    value={inputHref}
-                    onChange={e => setHref(e.target.value)}
+                    value={inputFeed['href']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'href': e.target.value,
+                        }
+                    })}
                     placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
@@ -221,7 +248,7 @@ export default function FeedForm(props) {
                     </Button>
                     <Button
                         variant="secondary"
-                        onClick={() => navigator.clipboard.writeText(inputHref)}
+                        onClick={() => navigator.clipboard.writeText(inputFeed['href'])}
                     >
                         Copy URL
                     </Button>
@@ -231,21 +258,31 @@ export default function FeedForm(props) {
             <Form.Group>
                 <Form.Label>Public URL</Form.Label>
                 <Form.Control
-                    value={inputHrefUser}
-                    onChange={e => setHrefUser(e.target.value)}
+                    value={inputFeed['href_user']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'href_user': e.target.value,
+                        }
+                    })}
                     placeholder="Optional user-frienly URL"
                     disabled={props.read_only}
                 />
                 <ButtonGroup>
                     <Button
                         variant="secondary"
-                        onClick={() => setHrefUser(inputHref)}
+                        onClick={() => setInputFeed({
+                            ...inputFeed,
+                            ...{
+                                'href': inputFeed['href'],
+                            }
+                        })}
                     >
                         Copy URL
                     </Button>
                     <Button
                         variant="secondary"
-                        href={inputHrefUser}
+                        href={inputFeed['href_user']}
                         target="_blank"
                         disabled={!props.read_only}
                     >
@@ -267,8 +304,13 @@ export default function FeedForm(props) {
                 <Form.Control
                     as="textarea"
                     rows="3"
-                    value={inputNotes}
-                    onChange={e => setNotes(e.target.value)}
+                    value={inputFeed['notes']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'notes': e.target.value,
+                        }
+                    })}
                     disabled={props.read_only}
                 />
             </Form.Group>
@@ -278,13 +320,18 @@ export default function FeedForm(props) {
                 <Form.Control
                     as="textarea"
                     rows="3"
-                    value={inputJson}
-                    onChange={e => setJson(e.target.value)}
+                    value={inputFeed['json']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'json': e.target.value,
+                        }
+                    })}
                     disabled={props.read_only}
                 />
                 {/* <Button
                     variant="secondary"
-                    href={inputHrefUser}
+                    href={inputFeed['href_user']}
                     target="_blank"
                     disabled={!props.read_only}
                 >
@@ -292,7 +339,7 @@ export default function FeedForm(props) {
                 </Button> */}
                 {/* <Button
                     variant="secondary"
-                    href={inputHrefUser}
+                    href={inputFeed['href_user']}
                     target="_blank"
                     disabled={!props.read_only}
                 >
@@ -303,8 +350,13 @@ export default function FeedForm(props) {
             <Form.Group>
                 <Form.Label>Private</Form.Label>
                 <Form.Check 
-                    checked={inputPrivate}
-                    onChange={e => setPrivate(e.target.checked)}
+                    checked={inputFeed['private']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'private': e.target.checked,
+                        }
+                    })}
                     type="switch"
                     label="Feed is private?"
                     disabled={props.read_only}
@@ -314,14 +366,19 @@ export default function FeedForm(props) {
             <Form.Group>
                 <Form.Label>Frequency</Form.Label>
                 <RangeSlider
-                    value={inputFrequency}
+                    value={inputFeed['frequency']}
                     min={0}
                     max={frequencies.length-1}
 
                     tooltip='on'
                     tooltipLabel={currentValue => frequencies[currentValue]}
 
-                    onChange={e => setFrequency(e.target.value)}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'frequency': e.target.value,
+                        }
+                    })}
                     disabled={props.read_only}
                 />
                 <br/>
@@ -359,9 +416,9 @@ export default function FeedForm(props) {
             </ButtonGroup>
             <br/><br/>
             <div>
-                ID: {readonlyId ? readonlyId : 'undefined'}<br/>
-                Created: {readonlyCreated ? readonlyCreated : 'now()'}<br/>
-                Delayed: {readonlyDelayed ? readonlyDelayed : 'undefined'}
+                ID: {inputFeed['readonly_id'] ? inputFeed['readonly_id'] : 'undefined'}<br/>
+                Created: {inputFeed['readonly_created'] ? inputFeed['readonly_created'] : 'now()'}<br/>
+                Delayed: {inputFeed['readonly_delayed'] ? inputFeed['readonly_delayed'] : 'undefined'}
             </div>
 
             <Modal
@@ -450,9 +507,9 @@ export default function FeedForm(props) {
                     <ul>
                         <li><b>CURRENT</b></li>
                         <ul>
-                            <li>{inputTitle}</li>
-                            <li style={{ wordWrap: 'break-word' }}>{inputHref}</li>
-                            <li>{frequencies[inputFrequency]}</li>
+                            <li>{inputFeed['title']}</li>
+                            <li style={{ wordWrap: 'break-word' }}>{inputFeed['href']}</li>
+                            <li>{frequencies[inputFeed['frequency']]}</li>
                         </ul>
                         {similarFeeds.map(feed => (
                             <li>
@@ -463,13 +520,13 @@ export default function FeedForm(props) {
                                     <b>{feed._id}</b>: {feed.title}
                                 </a>
                                 <ul>
-                                    { inputTitle !== feed.title &&
-                                        <li>{inputTitle}</li>
+                                    { inputFeed['title'] !== feed.title &&
+                                        <li>{inputFeed['title']}</li>
                                     }
-                                    { inputHref !== feed.href &&
+                                    { inputFeed['href'] !== feed.href &&
                                         <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
                                     }
-                                    { frequencies[inputFrequency] !== feed.frequency &&
+                                    { frequencies[inputFeed['frequency']] !== feed.frequency &&
                                         <li>{feed.frequency}</li>
                                     }
                                 </ul>
