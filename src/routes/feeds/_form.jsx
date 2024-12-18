@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import FeedsApi from '../../api/feeds';
-import FrequencyApi from '../../api/frequencies';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
-import { UpdatesList } from './../updates/components/Updates';
 import FeedExplain from './feed_explain';
+import { UpdatesList } from '../updates/components/Updates';
+import FeedsApi from '../../api/feeds';
+import FrequencyApi from '../../api/frequencies';
 
 
 export default function FeedForm(props) {
@@ -66,13 +66,6 @@ export default function FeedForm(props) {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
                     console.log('readFeed() ->', typeof result, result);
-                    const frequency = (frequencies) => {
-                        frequencies.forEach((element, index) => {
-                            if (result.frequency === element) {
-                                return index;
-                            }
-                        })
-                    };
                     setInputFeed({
                         'title': result.title,
                         'href': result.href,
@@ -211,13 +204,13 @@ export default function FeedForm(props) {
                         variant="secondary"
                         onClick={() => HandleTestUrl()}
                     >
-                        Test URL
+                        Test
                     </Button>
                     <Button
                         variant="secondary"
                         onClick={() => navigator.clipboard.writeText(inputFeed['href'])}
                     >
-                        Copy URL
+                        Copy
                     </Button>
                 </ButtonGroup>
             </Form.Group>
@@ -257,7 +250,7 @@ export default function FeedForm(props) {
                     </Button>
                     {/* <Button
                         variant="secondary"
-                        href={inputHrefUser}
+                        href={inputFeed['href_user']}
                         target="_blank"
                         disabled={!props.read_only}
                     >
