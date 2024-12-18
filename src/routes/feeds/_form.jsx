@@ -10,6 +10,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 
 import { UpdatesList } from './../updates/components/Updates';
+import FeedExplain from './feed_explain';
 
 
 export default function FeedForm(props) {
@@ -494,55 +495,13 @@ export default function FeedForm(props) {
                 </Modal.Footer>
             </Modal>
             
-            <Modal
-                show={modalSimilarFeedsVisible}
-                onHide={() => setModalSimilarFeedsVisible(false)}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Similar feeds detected:
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <ul>
-                        <li><b>CURRENT</b></li>
-                        <ul>
-                            <li>{inputFeed['title']}</li>
-                            <li style={{ wordWrap: 'break-word' }}>{inputFeed['href']}</li>
-                            <li>{frequencies[inputFeed['frequency']]}</li>
-                        </ul>
-                        {similarFeeds.map(feed => (
-                            <li>
-                                <a
-                                    href={"/feeds/"+feed._id}
-                                    title={"href: "+feed.href}
-                                >
-                                    <b>{feed._id}</b>: {feed.title}
-                                </a>
-                                <ul>
-                                    { inputFeed['title'] !== feed.title &&
-                                        <li>{inputFeed['title']}</li>
-                                    }
-                                    { inputFeed['href'] !== feed.href &&
-                                        <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
-                                    }
-                                    { frequencies[inputFeed['frequency']] !== feed.frequency &&
-                                        <li>{feed.frequency}</li>
-                                    }
-                                </ul>
-                            </li>
-                        ))}
-                    </ul>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={() => setModalSimilarFeedsVisible(false)}
-                    >
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <FeedExplain
+                visible={modalSimilarFeedsVisible}
+                setVisible={setModalSimilarFeedsVisible}
+                frequencies={frequencies}
+                inputFeed={inputFeed}
+                similarFeeds={similarFeeds}
+            />
         </Form>
     )
 }
