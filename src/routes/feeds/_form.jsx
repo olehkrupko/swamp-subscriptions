@@ -452,6 +452,7 @@ export default function FeedForm(props) {
                         <ul>
                             <li>{inputTitle}</li>
                             <li style={{ wordWrap: 'break-word' }}>{inputHref}</li>
+                            <li>{frequencies[inputFrequency]}</li>
                         </ul>
                         {similarFeeds.map(feed => (
                             <li>
@@ -464,6 +465,7 @@ export default function FeedForm(props) {
                                 <ul>
                                     <li>{feed.title}</li>
                                     <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
+                                    <li>{feed.frequency}</li>
                                 </ul>
                             </li>
                         ))}
