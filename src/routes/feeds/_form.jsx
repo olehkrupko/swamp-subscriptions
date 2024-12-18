@@ -463,9 +463,15 @@ export default function FeedForm(props) {
                                     <b>{feed._id}</b>: {feed.title}
                                 </a>
                                 <ul>
-                                    <li>{feed.title}</li>
-                                    <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
-                                    <li>{feed.frequency}</li>
+                                    { inputTitle !== feed.title &&
+                                        <li>{inputTitle}</li>
+                                    }
+                                    { inputHref !== feed.href &&
+                                        <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
+                                    }
+                                    { frequencies[inputFrequency] !== feed.frequency &&
+                                        <li>{feed.frequency}</li>
+                                    }
                                 </ul>
                             </li>
                         ))}
