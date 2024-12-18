@@ -22,9 +22,9 @@ export default function FeedExplain(props) {
                             'href': result.explained.href,
                             'href_user': result.explained.href_user,
                             'private': result.explained.private,
-                            // 'frequency': props.frequencies.indexOf(result.explained.frequency),
-                            // 'notes': result.explained.notes,
-                            // 'json': JSON.stringify(result.explained.json),
+                            'frequency': props.frequencies.indexOf(result.explained.frequency),
+                            'notes': result.explained.notes,
+                            'json': JSON.stringify(result.explained.json),
                         }
                     });
 
