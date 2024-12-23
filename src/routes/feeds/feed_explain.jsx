@@ -55,11 +55,11 @@ export default function FeedExplain(props) {
      * If there are similat feeds — it blocks push with ExplainModal
      * check_similar=false allows to ignore similar feeds, Feed is not pushed in this case & page reset
      */
-    function HandlePush(check_similar=true) {
+    function HandlePush() {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
-                    if (result.similar_feeds.length && check_similar) {
+                    if (result.similar_feeds.length) {
                         props.setInputFeed({
                             ...props.inputFeed,
                             ...{
@@ -75,8 +75,6 @@ export default function FeedExplain(props) {
                         
                         setSimilarFeeds(result.similar_feeds);
                         setVisible(true);
-                    } else if (result.similar_feeds.length && !check_similar) {
-                        HandleResetFeed()
                     } else {
                         let data = {
                             title: result.explained.title,
@@ -103,6 +101,32 @@ export default function FeedExplain(props) {
                             )
                     }
                 },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    }
+
+    function HandlePushIgnore() {
+        FeedsApi.pushFeedHref(props.inputFeed['href'])
+            .then(
+                (result) => {
+                    if (result.complited === true) {
+                        HandleResetFeed();
+                    } else {
+                        // // // // request seems not completed, reason unknown?
+                        console.log('pushFeedHref() ->', typeof result, result)
+                        // Note: it's important to handle errors here
+                        // instead of a catch() block so that we don't swallow
+                        // exceptions from actual bugs in components.
+                        // (error) => {
+                        //     setError(error);
+                        // }
+                    }
+                }
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
@@ -200,7 +224,7 @@ export default function FeedExplain(props) {
 
             <Button
                 variant="secondary"
-                onClick={() => HandlePush(false)}
+                onClick={() => HandlePushIgnore()}
                 disabled={props.feed_id}
             >
                 Push&Ignore
