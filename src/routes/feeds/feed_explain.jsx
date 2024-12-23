@@ -19,7 +19,7 @@ export default function FeedExplain(props) {
      * Explain Feed from URL
      */
     function HandleExplain() {
-        FeedsApi.explainFeedUrl(props.inputFeed['href'], props.inputFeed['readonly_id'])
+        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
                     props.setInputFeed({
@@ -56,7 +56,7 @@ export default function FeedExplain(props) {
      * check_similar=false allows to ignore similar feeds, Feed is not pushed in this case & page reset
      */
     function HandlePush(check_similar=true) {
-        FeedsApi.explainFeedUrl(props.inputFeed['href'], props.inputFeed['readonly_id'])
+        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'])
             .then(
                 (result) => {
                     if (result.similar_feeds.length && check_similar) {

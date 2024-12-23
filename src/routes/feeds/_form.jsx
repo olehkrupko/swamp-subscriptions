@@ -93,7 +93,7 @@ export default function FeedForm(props) {
     }, [ frequencies, props.feed_id, ]);
 
     function HandleTestUrl() {
-        FeedsApi.testFeedUrl(inputFeed['href'])
+        FeedsApi.parseFeedHref(inputFeed['href'])
             .then(
                 (result) => {
                     setUpdates(result);
