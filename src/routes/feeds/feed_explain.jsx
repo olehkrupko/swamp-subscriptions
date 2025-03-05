@@ -210,6 +210,7 @@ export default function FeedExplain(props) {
             <Button
                 variant="secondary"
                 onClick={() => HandleExplain()}
+                disabled={props.read_only}
             >
                 Explain
             </Button>

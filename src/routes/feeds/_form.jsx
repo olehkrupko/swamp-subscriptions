@@ -230,6 +230,7 @@ export default function FeedForm(props) {
                         inputFeed={inputFeed}
                         setInputFeed={setInputFeed}
                         feed_id={props.feed_id}
+                        read_only={props.read_only}
                     />
                     <Button
                         variant="secondary"
