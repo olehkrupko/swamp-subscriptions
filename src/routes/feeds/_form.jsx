@@ -49,7 +49,7 @@ export default function FeedForm(props) {
     });
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-    const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
+    const [modalParseHrefVisible, setModalParseHrefVisible] = useState(false);
     
     const [updates, setUpdates] = useState([]);
 
@@ -92,12 +92,12 @@ export default function FeedForm(props) {
         }
     }, [ frequencies, props.feed_id, ]);
 
-    function HandleTestUrl() {
+    function HandleParseHref() {
         FeedsApi.parseFeedHref(inputFeed['href'])
             .then(
                 (result) => {
                     setUpdates(result);
-                    setModalTestUrlVisible(true);
+                    setModalParseHrefVisible(true);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -233,9 +233,9 @@ export default function FeedForm(props) {
                     />
                     <Button
                         variant="secondary"
-                        onClick={() => HandleTestUrl()}
+                        onClick={() => HandleParseHref()}
                     >
-                        Test
+                        Parse
                     </Button>
                     <Button
                         variant="secondary"
@@ -417,8 +417,8 @@ export default function FeedForm(props) {
             </Modal>
             
             <Modal
-                show={modalTestUrlVisible}
-                onHide={() => setModalTestUrlVisible(false)}
+                show={modalParseHrefVisible}
+                onHide={() => setModalParseHrefVisible(false)}
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -433,7 +433,7 @@ export default function FeedForm(props) {
                 <Modal.Footer>
                     <Button
                         variant="primary"
-                        onClick={() => setModalTestUrlVisible(false)}
+                        onClick={() => setModalParseHrefVisible(false)}
                     >
                         Close
                     </Button>
@@ -441,8 +441,8 @@ export default function FeedForm(props) {
             </Modal>
             
             <Modal
-                show={modalTestUrlVisible}
-                onHide={() => setModalTestUrlVisible(false)}
+                show={modalParseHrefVisible}
+                onHide={() => setModalParseHrefVisible(false)}
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -457,7 +457,7 @@ export default function FeedForm(props) {
                 <Modal.Footer>
                     <Button
                         variant="primary"
-                        onClick={() => setModalTestUrlVisible(false)}
+                        onClick={() => setModalParseHrefVisible(false)}
                     >
                         Close
                     </Button>
