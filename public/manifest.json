@@ -19,7 +19,7 @@
     }
   ],
   "start_url": "http://192.168.0.155:30011/updates/list",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "scope": "/updates/list"
