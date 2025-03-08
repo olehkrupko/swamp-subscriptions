@@ -5,14 +5,17 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 
 import FeedsApi from '../../api/feeds';
+import { UpdatesList } from '../updates/components/Updates';
 
 
 export default function FeedExplain(props) {
     const navigate = useNavigate();
     
     const [similarFeeds, setSimilarFeeds] = useState([]);
+    const [parsedUpdates, setParsedUpdates] = useState([]);
     
-    const [visible, setVisible] = useState(false);
+    const [similarFeedModalVisible, setSimilarFeedModalVisible] = useState(false);
+    const [modalParseHrefVisible, setModalParseHrefVisible] = useState(false);
 
 
     /*
@@ -136,16 +139,34 @@ export default function FeedExplain(props) {
             )
     }
 
+
+    function HandleParseHref() {
+        FeedsApi.parseFeedHref(props.inputFeed['href'])
+            .then(
+                (result) => {
+                    setParsedUpdates(result);
+                    setModalParseHrefVisible(true);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                // (error) => {
+                //     setError(error);
+                // }
+            )
+    };
+
+
     function HandleResetFeed() {
         window.location.reload();
     }
 
 
-    function ExplainModal() {
+    function SimilarDetectedModal() {
         return (
             <Modal
-                show={visible}
-                onHide={() => setVisible(false)}
+                show={similarFeedModalVisible}
+                onHide={() => setSimilarFeedModalVisible(false)}
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -194,7 +215,7 @@ export default function FeedExplain(props) {
                         </Button>
                         <Button
                             variant="primary"
-                            onClick={() => setVisible(false)}
+                            onClick={() => setSimilarFeedModalVisible(false)}
                         >
                             Close
                         </Button>
@@ -202,7 +223,36 @@ export default function FeedExplain(props) {
                 </Modal.Footer>
             </Modal>
         )
-    }
+    };
+
+
+    function ParseHrefModal() {
+        return (
+            <Modal
+                show={modalParseHrefVisible}
+                onHide={() => setModalParseHrefVisible(false)}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Data returned by test request to URL:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <UpdatesList
+                        updates={parsedUpdates}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="primary"
+                        onClick={() => setModalParseHrefVisible(false)}
+                    >
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    };
 
 
     return (
@@ -230,8 +280,17 @@ export default function FeedExplain(props) {
             >
                 Push&Ignore
             </Button>
-            
-            {ExplainModal()}
+
+            <Button
+                variant="secondary"
+                onClick={() => HandleParseHref()}
+            >
+                Parse
+            </Button>
+
+            {SimilarDetectedModal()}
+
+            {ParseHrefModal()}
         </>
     )
 }

@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 import FeedExplain from './feed_explain';
-import { UpdatesList } from '../updates/components/Updates';
 import FeedsApi from '../../api/feeds';
 import FrequencyApi from '../../api/frequencies';
 
@@ -49,9 +48,6 @@ export default function FeedForm(props) {
     });
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-    const [modalParseHrefVisible, setModalParseHrefVisible] = useState(false);
-    
-    const [updates, setUpdates] = useState([]);
 
     useEffect(() => {
         FrequencyApi.getFrequencies()
@@ -91,22 +87,6 @@ export default function FeedForm(props) {
                 })
         }
     }, [ frequencies, props.feed_id, ]);
-
-    function HandleParseHref() {
-        FeedsApi.parseFeedHref(inputFeed['href'])
-            .then(
-                (result) => {
-                    setUpdates(result);
-                    setModalParseHrefVisible(true);
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
-            )
-    };
 
     const HandleSubmit = event => {
         event.preventDefault();
@@ -232,12 +212,10 @@ export default function FeedForm(props) {
                         feed_id={props.feed_id}
                         read_only={props.read_only}
                     />
-                    <Button
-                        variant="secondary"
-                        onClick={() => HandleParseHref()}
-                    >
-                        Parse
-                    </Button>
+                    {/* <FormParse
+                        inputFeed={inputFeed}
+                        setUpdates={setUpdates}
+                    /> */}
                     <Button
                         variant="secondary"
                         onClick={() => navigator.clipboard.writeText(inputFeed['href'])}
@@ -413,54 +391,6 @@ export default function FeedForm(props) {
                         onClick={HandleDelete}
                     >
                         Delete
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            
-            <Modal
-                show={modalParseHrefVisible}
-                onHide={() => setModalParseHrefVisible(false)}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Data returned by test request to URL:
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <UpdatesList
-                        updates={updates}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={() => setModalParseHrefVisible(false)}
-                    >
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            
-            <Modal
-                show={modalParseHrefVisible}
-                onHide={() => setModalParseHrefVisible(false)}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Data returned by test request to URL:
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <UpdatesList
-                        updates={updates}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={() => setModalParseHrefVisible(false)}
-                    >
-                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
