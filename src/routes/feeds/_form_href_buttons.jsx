@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 
 import FeedsApi from '../../api/feeds';
+import UpdatesApi from '../../api/updates';
 import { UpdatesList } from '../updates/components/Updates';
 
 
@@ -112,7 +113,7 @@ export default function HrefButtons(props) {
 
 
     function HandleParseHref() {
-        FeedsApi.parseFeedHref(props.inputFeed['href'])
+        UpdatesApi.parseHrefUpdates(props.inputFeed['href'])
             .then(
                 (result) => {
                     setParsedUpdates(result);
