@@ -271,6 +271,13 @@ export default function FeedExplain(props) {
                 Parse
             </Button>
 
+            <Button
+                variant="secondary"
+                onClick={() => navigator.clipboard.writeText(props.inputFeed['href'])}
+            >
+                Copy
+            </Button>
+
             {SimilarDetectedModal()}
 
             {ParseHrefModal()}

@@ -212,16 +212,6 @@ export default function FeedForm(props) {
                         feed_id={props.feed_id}
                         read_only={props.read_only}
                     />
-                    {/* <FormParse
-                        inputFeed={inputFeed}
-                        setUpdates={setUpdates}
-                    /> */}
-                    <Button
-                        variant="secondary"
-                        onClick={() => navigator.clipboard.writeText(inputFeed['href'])}
-                    >
-                        Copy
-                    </Button>
                 </ButtonGroup>
             </Form.Group>
             <Form.Group>
