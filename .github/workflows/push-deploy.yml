@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - '55-feeds-quick-add'
 jobs:
   deploy_code:
     runs-on: self-hosted
