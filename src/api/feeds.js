@@ -68,7 +68,7 @@ export default class FeedsApi {
         }
         // options: 'explain' (default), 'push', 'push_ignore'
         if (mode) {
-            mode += `&mode=${mode}`;
+            url += `&mode=${mode}`;
         }
         return fetch(url, {method: 'GET'})
             .then(res => res.json())

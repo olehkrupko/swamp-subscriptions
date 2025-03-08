@@ -71,10 +71,10 @@ export default function HrefButtons(props) {
                         // there are similar feeds:
                         // load data to form & show diff modal
                         LoadAndCompare(result);
-                    } else if (result._id) {
+                    } else if (result.explained._id) {
                         // no similar feeds:
                         // redirect to newly created feed
-                        navigate("/feeds/" + result._id);
+                        navigate("/feeds/" + result.explained._id);
                     } else {
                         // unexpeted result, raise error
                         // setError(error);
