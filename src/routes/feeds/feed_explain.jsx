@@ -239,7 +239,7 @@ export default function FeedExplain(props) {
 
 
     return (
-        <>
+        <ButtonGroup>
             <Button
                 variant="secondary"
                 onClick={() => HandleExplain()}
@@ -281,6 +281,6 @@ export default function FeedExplain(props) {
             {SimilarDetectedModal()}
 
             {ParseHrefModal()}
-        </>
+        </ButtonGroup>
     )
 }

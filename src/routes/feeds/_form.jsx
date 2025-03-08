@@ -204,15 +204,13 @@ export default function FeedForm(props) {
                     placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
-                <ButtonGroup>
-                    <FeedExplain
-                        frequencies={frequencies}
-                        inputFeed={inputFeed}
-                        setInputFeed={setInputFeed}
-                        feed_id={props.feed_id}
-                        read_only={props.read_only}
-                    />
-                </ButtonGroup>
+                <FeedExplain
+                    frequencies={frequencies}
+                    inputFeed={inputFeed}
+                    setInputFeed={setInputFeed}
+                    feed_id={props.feed_id}
+                    read_only={props.read_only}
+                />
             </Form.Group>
             <Form.Group>
                 <CustomFormLabel>Title</CustomFormLabel>
