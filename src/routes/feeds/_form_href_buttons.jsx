@@ -71,31 +71,14 @@ export default function HrefButtons(props) {
                         // there are similar feeds:
                         // load data to form & show diff modal
                         LoadAndCompare(result);
+                    } else if (result._id) {
+                        // no similar feeds:
+                        // redirect to newly created feed
+                        navigate("/feeds/" + result._id);
                     } else {
-                        // no similar feeds detected
-                        let data = {
-                            title: result.explained.title,
-                            href: result.explained.href,
-                            href_user: result.explained.href_user,
-                            private: result.explained.private,
-                            frequency: props.frequencies.indexOf(result.explained.frequency),
-                            notes: result.explained.notes,
-                            json: JSON.stringify(result.explained.json),
-                        }
-                
-                        FeedsApi.createFeed(data)
-                            .then(
-                                (result) => {
-                                    console.log('createFeed() ->', typeof result, result)
-                                    navigate("/feeds/"+ result._id);
-                                },
-                                // Note: it's important to handle errors here
-                                // instead of a catch() block so that we don't swallow
-                                // exceptions from actual bugs in components.
-                                // (error) => {
-                                //     setError(error);
-                                // }
-                            )
+                        // unexpeted result, raise error
+                        // setError(error);
+                        console.log('HandleParseHref() ->', 'error', result);
                     }
                 },
                 // Note: it's important to handle errors here
