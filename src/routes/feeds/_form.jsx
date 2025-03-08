@@ -8,9 +8,9 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
-import FeedExplain from './feed_explain';
 import FeedsApi from '../../api/feeds';
 import FrequencyApi from '../../api/frequencies';
+import HrefButtons from './_form_href_buttons';
 
 const CustomButtonGroup = styled(ButtonGroup)`
     margin: 10px 0;
@@ -204,7 +204,7 @@ export default function FeedForm(props) {
                     placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
-                <FeedExplain
+                <HrefButtons
                     frequencies={frequencies}
                     inputFeed={inputFeed}
                     setInputFeed={setInputFeed}

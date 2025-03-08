@@ -8,7 +8,7 @@ import FeedsApi from '../../api/feeds';
 import { UpdatesList } from '../updates/components/Updates';
 
 
-export default function FeedExplain(props) {
+export default function HrefButtons(props) {
     const navigate = useNavigate();
     
     const [similarFeeds, setSimilarFeeds] = useState([]);
