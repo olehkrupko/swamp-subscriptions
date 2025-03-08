@@ -18,30 +18,35 @@ export default function FeedExplain(props) {
     const [modalParseHrefVisible, setModalParseHrefVisible] = useState(false);
 
 
+    function LoadAndCompare(result) {
+        props.setInputFeed({
+            ...props.inputFeed,
+            ...{
+                'title': result.explained.title,
+                'href': result.explained.href,
+                'href_user': result.explained.href_user,
+                'private': result.explained.private,
+                'frequency': props.frequencies.indexOf(result.explained.frequency),
+                'notes': result.explained.notes,
+                'json': JSON.stringify(result.explained.json),
+            }
+        });
+
+        if (result.similar_feeds.length) {
+            setSimilarFeeds(result.similar_feeds);
+            setSimilarFeedModalVisible(true);
+        }
+    };
+
+
     /*
      * Explain Feed from URL
      */
     function HandleExplain() {
-        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'])
+        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'explain')
             .then(
                 (result) => {
-                    props.setInputFeed({
-                        ...props.inputFeed,
-                        ...{
-                            'title': result.explained.title,
-                            'href': result.explained.href,
-                            'href_user': result.explained.href_user,
-                            'private': result.explained.private,
-                            'frequency': props.frequencies.indexOf(result.explained.frequency),
-                            'notes': result.explained.notes,
-                            'json': JSON.stringify(result.explained.json),
-                        }
-                    });
-
-                    if (result.similar_feeds.length) {
-                        setSimilarFeeds(result.similar_feeds);
-                        setVisible(true);
-                    }
+                    LoadAndCompare(result);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -55,30 +60,19 @@ export default function FeedExplain(props) {
 
     /*
      * Explain Feed from URL & push it to DB
-     * If there are similat feeds — it blocks push with ExplainModal
-     * check_similar=false allows to ignore similar feeds, Feed is not pushed in this case & page reset
+     * If there are similar feeds — it blocks push with SimilarDetectedModal
+     * If no issues arise — redirect to newly created feed's page
      */
     function HandlePush() {
-        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'])
+        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push')
             .then(
                 (result) => {
                     if (result.similar_feeds.length) {
-                        props.setInputFeed({
-                            ...props.inputFeed,
-                            ...{
-                                'title': result.explained.title,
-                                'href': result.explained.href,
-                                'href_user': result.explained.href_user,
-                                'private': result.explained.private,
-                                'frequency': props.frequencies.indexOf(result.explained.frequency),
-                                'notes': result.explained.notes,
-                                'json': JSON.stringify(result.explained.json),
-                            }
-                        });
-                        
-                        setSimilarFeeds(result.similar_feeds);
-                        setVisible(true);
+                        // there are similar feeds:
+                        // load data to form & show diff modal
+                        LoadAndCompare(result);
                     } else {
+                        // no similar feeds detected
                         let data = {
                             title: result.explained.title,
                             href: result.explained.href,
@@ -113,22 +107,15 @@ export default function FeedExplain(props) {
             )
     }
 
+    /*
+     * Explain Feed from URL & push it to DB
+     * If there are any issues — they are ignored and page reset.
+     */
     function HandlePushIgnore() {
-        FeedsApi.pushFeedHref(props.inputFeed['href'])
+        FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push_ignore')
             .then(
                 (result) => {
-                    if (result.complited === true) {
-                        HandleResetFeed();
-                    } else {
-                        // // // // request seems not completed, reason unknown?
-                        console.log('pushFeedHref() ->', typeof result, result)
-                        // Note: it's important to handle errors here
-                        // instead of a catch() block so that we don't swallow
-                        // exceptions from actual bugs in components.
-                        // (error) => {
-                        //     setError(error);
-                        // }
-                    }
+                    HandleResetFeed();
                 }
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow

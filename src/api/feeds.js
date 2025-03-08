@@ -61,19 +61,16 @@ export default class FeedsApi {
             .then(res => res.json())
     }
 
-    static async explainFeedHref(href, _id) {
+    static async explainFeedHref(href, _id, mode) {
         let url = `${SWAMP_API}/feeds/parse/explain/?href=${href}`;
         if (_id) {
             url += `&_id=${_id}`;
         }
+        // options: 'explain' (default), 'push', 'push_ignore'
+        if (mode) {
+            mode += `&mode=${mode}`;
+        }
         return fetch(url, {method: 'GET'})
-            .then(res => res.json())
-    }
-
-    static async pushFeedHref(href) {
-        return fetch(`${SWAMP_API}/feeds/parse/push/?href=${href}`, {
-            method: 'GET'
-        })
             .then(res => res.json())
     }
 }
