@@ -1,14 +1,24 @@
 import { useState, useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import FeedsApi from '../../api/feeds';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
 
-import { UpdatesList } from './../updates/components/Updates';
+import FeedsApi from '../../api/feeds';
+import FrequencyApi from '../../api/frequencies';
+import HrefButtons from './_form_href_buttons';
+
+const CustomButtonGroup = styled(ButtonGroup)`
+    margin: 10px 0;
+`;
+const CustomFormLabel = styled(Form.Label)`
+    margin-top: 10px;
+    margin-bottom: 0;
+`;
 
 
 export default function FeedForm(props) {
@@ -16,25 +26,31 @@ export default function FeedForm(props) {
 
     const [frequencies, setFrequencies] = useState([]);
 
-    const [inputTitle, setTitle] = useState('');
-    const [inputHref, setHref] = useState('');
-    const [inputHrefUser, setHrefUser] = useState('');
-    const [inputPrivate, setPrivate] = useState(false);
-    const [inputFrequency, setFrequency] = useState(1);
-    const [inputNotes, setNotes] = useState('');
-    const [inputJson, setJson] = useState('{}');
+    // inputFeed['title']
+    // setInputFeed({
+    //     ...inputFeed,
+    //     ...{
+    //         'title': result.title,
+    //     }
+    // })
+    const [inputFeed, setInputFeed] = useState({
+        'title': '',
+        'href': '',
+        'href_user': '',
+        'private': false,
+        'frequency': 1,
+        'notes': '',
+        'json': '{}',
 
-    const [readonlyId, setReadonlyId] = useState('');
-    const [readonlyCreated, setReadonlyCreated] = useState('');
-    const [readonlyDelayed, setReadonlyDelayed] = useState('');
+        'readonly_id': null,
+        'readonly_created': '',
+        'readonly_delayed': '',
+    });
 
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-    const [modalTestUrlVisible, setModalTestUrlVisible] = useState(false);
-    
-    const [updates, setUpdates] = useState([]);
 
     useEffect(() => {
-        FeedsApi.getFrequencies()
+        FrequencyApi.getFrequencies()
             .then(
                 (result) => {
                     console.log('getFrequencies() ->', typeof result, result)
@@ -55,36 +71,33 @@ export default function FeedForm(props) {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
                     console.log('readFeed() ->', typeof result, result);
-                    setTitle(result.title);
-                    setHref(result.href);
-                    setHrefUser(result.href_user);
-                    setPrivate(result.private);
-                    setNotes(result.notes);
-                    setJson(JSON.stringify(result.json));
+                    setInputFeed({
+                        'title': result.title,
+                        'href': result.href,
+                        'href_user': result.href_user,
+                        'private': result.private,
+                        'frequency': frequencies.indexOf(result.frequency),
+                        'notes': result.notes,
+                        'json': JSON.stringify(result.json),
 
-                    setReadonlyId(result._id);
-                    setReadonlyCreated(result._created);
-                    setReadonlyDelayed(result._delayed);
-
-                    frequencies.forEach((element, index) => {
-                        if (result.frequency === element) {
-                            setFrequency(index);
-                        }
-                    });
+                        'readonly_id': result._id,
+                        'readonly_created': result._created,
+                        'readonly_delayed': result._delayed,
+                    })
                 })
         }
-    }, [ frequencies, props.feed_id, ])
+    }, [ frequencies, props.feed_id, ]);
 
     const HandleSubmit = event => {
         event.preventDefault();
         let data = {
-            title: inputTitle,
-            href: inputHref,
-            href_user: inputHrefUser,
-            private: inputPrivate,
-            frequency: frequencies[inputFrequency],
-            notes: inputNotes,
-            json: JSON.parse(inputJson),
+            title: inputFeed['title'],
+            href: inputFeed['href'],
+            href_user: inputFeed['href_user'],
+            private: inputFeed['private'],
+            frequency: frequencies[inputFeed['frequency']],
+            notes: inputFeed['notes'],
+            json: JSON.parse(inputFeed['json']),
         }
 
         if (props.feed_id) {
@@ -119,22 +132,6 @@ export default function FeedForm(props) {
         }
     };
 
-    const HandleTestUrl = event => {
-        FeedsApi.testFeedUrl(inputHref)
-            .then(
-                (result) => {
-                    setUpdates(result);
-                    setModalTestUrlVisible(true);
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
-            )
-    }
-
     const HandleDelete = event => {
         event.preventDefault();
         FeedsApi.deleteFeed(props.feed_id)
@@ -154,144 +151,9 @@ export default function FeedForm(props) {
             )
     };
 
-    return (
-        <Form
-            onSubmit={HandleSubmit}
-        >
-            <Form.Group>
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                    value={inputTitle}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="Enter feed name. TODO: generate from URL"
-                    disabled={props.read_only}
-                />
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>URL</Form.Label>
-                <Form.Control
-                    value={inputHref}
-                    onChange={e => setHref(e.target.value)}
-                    placeholder="Enter feed URL"
-                    disabled={props.read_only}
-                />
-                <ButtonGroup>
-                    <Button
-                        variant="secondary"
-                        onClick={() => HandleTestUrl()}
-                    >
-                        Test URL
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        onClick={() => navigator.clipboard.writeText(inputHref)}
-                    >
-                        Copy URL
-                    </Button>
-                </ButtonGroup>
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Public URL</Form.Label>
-                <Form.Control
-                    value={inputHrefUser}
-                    onChange={e => setHrefUser(e.target.value)}
-                    placeholder="Optional user-frienly URL"
-                    disabled={props.read_only}
-                />
-                <ButtonGroup>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setHrefUser(inputHref)}
-                    >
-                        Copy URL
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        href={inputHrefUser}
-                        target="_blank"
-                        disabled={!props.read_only}
-                    >
-                        Open URL
-                    </Button>
-                    {/* <Button
-                        variant="secondary"
-                        href={inputHrefUser}
-                        target="_blank"
-                        disabled={!props.read_only}
-                    >
-                        Generate main URL from user-friendly one (placeholder)
-                    </Button> */}
-                </ButtonGroup>
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Notes</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows="3"
-                    value={inputNotes}
-                    onChange={e => setNotes(e.target.value)}
-                    disabled={props.read_only}
-                />
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>JSON</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows="3"
-                    value={inputJson}
-                    onChange={e => setJson(e.target.value)}
-                    disabled={props.read_only}
-                />
-                {/* <Button
-                    variant="secondary"
-                    href={inputHrefUser}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Verify JSON
-                </Button> */}
-                {/* <Button
-                    variant="secondary"
-                    href={inputHrefUser}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Format JSON
-                </Button> */}
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Private</Form.Label>
-                <Form.Check 
-                    checked={inputPrivate}
-                    onChange={e => setPrivate(e.target.checked)}
-                    type="switch"
-                    label="Feed is private?"
-                    disabled={props.read_only}
-                />
-            </Form.Group>
-            <br/>
-            <Form.Group>
-                <Form.Label>Frequency</Form.Label>
-                <RangeSlider
-                    value={inputFrequency}
-                    min={0}
-                    max={frequencies.length-1}
-
-                    tooltip='on'
-                    tooltipLabel={currentValue => frequencies[currentValue]}
-
-                    onChange={e => setFrequency(e.target.value)}
-                    disabled={props.read_only}
-                />
-                <br/>
-            </Form.Group>
-            <br/>
-            <ButtonGroup>
+    function renderMainButtons() {
+        return (
+            <CustomButtonGroup>
                 <Button
                     variant={props.read_only ? "secondary" : "primary"}
                     type="submit"
@@ -320,13 +182,181 @@ export default function FeedForm(props) {
                 >
                     Delete
                 </Button>
-            </ButtonGroup>
-            <br/><br/>
-            <div>
-                ID: {readonlyId ? readonlyId : 'undefined'}<br/>
-                Created: {readonlyCreated ? readonlyCreated : 'now()'}<br/>
-                Delayed: {readonlyDelayed ? readonlyDelayed : 'undefined'}
-            </div>
+            </CustomButtonGroup>
+        )
+    }
+
+    return (
+        <Form
+            onSubmit={HandleSubmit}
+        >
+            {renderMainButtons()}
+            <Form.Group>
+                <CustomFormLabel>URL</CustomFormLabel>
+                <Form.Control
+                    value={inputFeed['href']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'href': e.target.value,
+                        }
+                    })}
+                    placeholder="Enter feed URL"
+                    disabled={props.read_only}
+                />
+                <HrefButtons
+                    frequencies={frequencies}
+                    inputFeed={inputFeed}
+                    setInputFeed={setInputFeed}
+                    feed_id={props.feed_id}
+                    read_only={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Title</CustomFormLabel>
+                <Form.Control
+                    value={inputFeed['title']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'title': e.target.value,
+                        }
+                    })}
+                    placeholder="Enter feed name. TODO: generate from URL"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>JSON</CustomFormLabel>
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputFeed['json']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'json': e.target.value,
+                        }
+                    })}
+                    disabled={props.read_only}
+                />
+                {/* <Button
+                    variant="secondary"
+                    href={inputFeed['href_user']}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Verify JSON
+                </Button> */}
+                {/* <Button
+                    variant="secondary"
+                    href={inputFeed['href_user']}
+                    target="_blank"
+                    disabled={!props.read_only}
+                >
+                    Format JSON
+                </Button> */}
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Private</CustomFormLabel>
+                <Form.Check 
+                    checked={inputFeed['private']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'private': e.target.checked,
+                        }
+                    })}
+                    type="switch"
+                    label="Feed is private?"
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Frequency</CustomFormLabel>
+                <RangeSlider
+                    value={inputFeed['frequency']}
+                    min={0}
+                    max={frequencies.length-1}
+
+                    tooltip='on'
+                    tooltipLabel={currentValue => frequencies[currentValue]}
+
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'frequency': e.target.value,
+                        }
+                    })}
+                    disabled={props.read_only}
+                />
+                <br/>
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Public URL</CustomFormLabel>
+                <Form.Control
+                    value={inputFeed['href_user']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'href_user': e.target.value,
+                        }
+                    })}
+                    placeholder="Optional user-frienly URL"
+                    disabled={props.read_only}
+                />
+                <ButtonGroup>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setInputFeed({
+                            ...inputFeed,
+                            ...{
+                                'href': inputFeed['href'],
+                            }
+                        })}
+                    >
+                        Copy URL
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        href={inputFeed['href_user']}
+                        target="_blank"
+                        disabled={!props.read_only}
+                    >
+                        Open URL
+                    </Button>
+                    {/* <Button
+                        variant="secondary"
+                        href={inputFeed['href_user']}
+                        target="_blank"
+                        disabled={!props.read_only}
+                    >
+                        Generate main URL from user-friendly one (placeholder)
+                    </Button> */}
+                </ButtonGroup>
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>Notes</CustomFormLabel>
+                <Form.Control
+                    as="textarea"
+                    rows="3"
+                    value={inputFeed['notes']}
+                    onChange={e => setInputFeed({
+                        ...inputFeed,
+                        ...{
+                            'notes': e.target.value,
+                        }
+                    })}
+                    disabled={props.read_only}
+                />
+            </Form.Group>
+            <Form.Group>
+                <CustomFormLabel>System</CustomFormLabel>
+                <div>ID: {inputFeed['readonly_id'] ? inputFeed['readonly_id'] : 'undefined'}</div>
+                <div>Created: {inputFeed['readonly_created'] ? inputFeed['readonly_created'] : 'now()'}</div>
+                <div>Delayed: {inputFeed['readonly_delayed'] ? inputFeed['readonly_delayed'] : 'undefined'}</div>
+            </Form.Group>
+            {renderMainButtons()}
 
             <Modal
                 show={modalDeleteVisible}
@@ -349,30 +379,6 @@ export default function FeedForm(props) {
                         onClick={HandleDelete}
                     >
                         Delete
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            
-            <Modal
-                show={modalTestUrlVisible}
-                onHide={() => setModalTestUrlVisible(false)}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Data returned by test request to URL:
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <UpdatesList
-                        updates={updates}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="primary"
-                        onClick={() => setModalTestUrlVisible(false)}
-                    >
-                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>

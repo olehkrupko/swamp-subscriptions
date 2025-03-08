@@ -13,4 +13,11 @@ export default class UpdatesApi {
         })
             .then(res => res.json())
     }
+
+    static async parseHrefUpdates(href) {
+        return fetch(`${SWAMP_API}/updates/parse/?href=${href}`, {
+            method: 'GET',
+        })
+            .then(res => res.json())
+    }
 }
