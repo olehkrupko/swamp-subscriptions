@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'dependabot/npm_and_yarn/npm_and_yarn-6054cae836'
 jobs:
   deploy_code:
     runs-on: self-hosted
