@@ -55,7 +55,7 @@ export default function FeedExplain(props) {
                 //     setError(error);
                 // }
             )
-    }
+    };
 
 
     /*
@@ -105,7 +105,8 @@ export default function FeedExplain(props) {
                 //     setError(error);
                 // }
             )
-    }
+    };
+
 
     /*
      * Explain Feed from URL & push it to DB
@@ -115,7 +116,7 @@ export default function FeedExplain(props) {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push_ignore')
             .then(
                 (result) => {
-                    HandleResetFeed();
+                    window.location.reload();
                 }
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -142,11 +143,6 @@ export default function FeedExplain(props) {
                 // }
             )
     };
-
-
-    function HandleResetFeed() {
-        window.location.reload();
-    }
 
 
     function SimilarDetectedModal() {
@@ -196,7 +192,7 @@ export default function FeedExplain(props) {
                     <ButtonGroup>
                         <Button
                             variant="secondary"
-                            onClick={() => HandleResetFeed()}
+                            onClick={() => window.location.reload()}
                         >
                             Reset
                         </Button>
