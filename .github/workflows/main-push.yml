@@ -15,8 +15,9 @@ jobs:
 
     steps:
       - name: build, tag & push Docker image
-        uses: olehkrupko/actions/node-docker@18-docker-build-node-image
+        uses: olehkrupko/actions/docker-ghcr@18-docker-build-node-image
         with:
           image-name: ${{ github.repository }}
           is-latest: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          Dockerfile: Dockerfile.node
