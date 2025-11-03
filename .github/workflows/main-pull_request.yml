@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  python-docker:
+  node-docker:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: build, tag & push Docker image
-        uses: olehkrupko/actions/python-docker@main
+        uses: olehkrupko/actions/node-docker@18-docker-build-node-image
         with:
           image-name: ${{ github.repository }}
           is-latest: false
