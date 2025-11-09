@@ -1,6 +1,8 @@
 {
   "short_name": "Swamp",
   "name": "Swamp Subscriptions",
+  "start_url": "/updates/list",
+  "scope": "/updates/list",
   "icons": [
     {
       "src": "favicon-96x96.weeds.png",
@@ -21,9 +23,7 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "https://swamp.krupko.space/updates/list",
   "display": "fullscreen",
   "theme_color": "#000000",
-  "scope": "/updates/list"
   "background_color": "#000000",
 }
