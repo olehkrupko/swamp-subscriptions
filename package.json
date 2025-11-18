@@ -1,5 +1,6 @@
 {
   "name": "subscriptions",
+  "homepage": "/updates/list",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
