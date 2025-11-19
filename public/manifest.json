@@ -1,8 +1,8 @@
 {
   "short_name": "Swamp",
   "name": "Swamp Subscriptions",
-  "start_url": "/updates/list",
-  "scope": "/updates/list",
+  "start_url": "/updates/",
+  "scope": "/updates/",
   "icons": [
     {
       "src": "favicon-96x96.weeds.png",

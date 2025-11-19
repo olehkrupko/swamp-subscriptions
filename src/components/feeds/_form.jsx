@@ -5,7 +5,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import RangeSlider from 'react-bootstrap-range-slider';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styled from 'styled-components';
 
 import FeedsApi from '../../api/feeds';

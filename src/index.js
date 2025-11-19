@@ -5,15 +5,15 @@ import {
   Route,
 } from "react-router-dom";
 import './index.css';
-import App from './App.jsx';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 import FeedsList from "./routes/feeds/list";
 import FeedsView from "./routes/feeds/view";
 import FeedEdit from "./routes/feeds/edit";
 import FeedsCreate from "./routes/feeds/create";
 import FeedsLayout from "./routes/feeds/_layout"
-import UpdatesLayout from "./routes/updates/_layout"
-import UpdatesList from "./routes/updates/list"
+import UpdatesLayout from "./components/updates/_layout"
+import UpdatesList from "./components/updates/list"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

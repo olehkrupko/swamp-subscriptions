@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import FeedsApi from '../../api/feeds';
 import UpdatesApi from '../../api/updates';
