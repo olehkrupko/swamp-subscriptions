@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import './index.css';
-import App from './App';
+import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
 import FeedsList from "./routes/feeds/list";
 import FeedsView from "./routes/feeds/view";
@@ -36,7 +36,7 @@ root.render(
                     element={<FeedsLayout />}
                 >
                     <Route
-                        index  // not working?
+                        index
                         path="list"
                         element={<FeedsList />}
                     />

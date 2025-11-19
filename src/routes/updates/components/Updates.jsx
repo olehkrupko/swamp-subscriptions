@@ -110,15 +110,15 @@ function GroupFooter(props) {
     function renderTag(tag) {
         if (['journalism', 'favourite'].includes(tag)) {
             return(
-                <AttrPositive>#{tag}</AttrPositive>
+                <AttrPositive key={`tag-${tag}`}>#{tag}</AttrPositive>
             )
         } else if ([].includes(tag)) {
             return(
-                <AttrWarning>#{tag}</AttrWarning>
+                <AttrWarning key={`tag-${tag}`}>#{tag}</AttrWarning>
             )
         } else {
             return(
-                <Attr>#{tag}</Attr>
+                <Attr key={`tag-${tag}`}>#{tag}</Attr>
             )
         }
     }
@@ -194,7 +194,7 @@ export function UpdatesList(props) {
     return (
         <ListGroup>
             {props.updates.map((update) => (
-                <ListGroup.Item>
+                <ListGroup.Item key={update.id}>
                     <Update>
                         <Primary>
                             <PrimaryA
@@ -232,7 +232,7 @@ export default function Updates(props) {
     return (
         <div>
             {processed.map(feed => (
-                <Group>
+                <Group key={feed.feed_data._id}>
                     <GroupHeader
                         feed_data={feed.feed_data}
                     />

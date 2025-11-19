@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import Navigation from './components/navbar';
+import Navigation from './components/navbar.jsx';
 
 import themeRunner from './components/theme-picker';
 import './App.css';
