@@ -8,12 +8,10 @@ import FeedsLayout from "./components/feeds/_layout.jsx";
 import FeedsCreate from "./components/feeds/create.jsx";
 import UpdatesList from "./components/updates/index.jsx";
 
-import { redirect } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import ReactDOM from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 
 
 const router = createBrowserRouter([

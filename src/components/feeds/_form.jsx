@@ -4,12 +4,10 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import RangeSlider from 'react-bootstrap-range-slider';
 import { useNavigate } from "react-router";
 import styled from 'styled-components';
 
 import FeedsApi from '../../api/feeds';
-import FrequencyApi from '../../api/frequencies';
 import HrefButtons from './_form_href_buttons';
 
 const CustomButtonGroup = styled(ButtonGroup)`
@@ -50,23 +48,6 @@ export default function FeedForm(props) {
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
 
     useEffect(() => {
-        FrequencyApi.getFrequencies()
-            .then(
-                (result) => {
-                    console.log('getFrequencies() ->', typeof result, result)
-                    setFrequencies(result);
-                },
-                // // Note: it's important to handle errors here
-                // // instead of a catch() block so that we don't swallow
-                // // exceptions from actual bugs in components.
-                // (error) => {
-                //     setIsLoaded(true);
-                //     setError(error);
-                // }
-            )
-    }, [])
-
-    useEffect(() => {
         if (typeof props.feed_id !== "undefined") {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
@@ -76,7 +57,7 @@ export default function FeedForm(props) {
                         'href': result.href,
                         'href_user': result.href_user,
                         'private': result.private,
-                        'frequency': frequencies.indexOf(result.frequency),
+                        'frequency': result.frequency,
                         'notes': result.notes,
                         'json': JSON.stringify(result.json),
 
@@ -186,6 +167,39 @@ export default function FeedForm(props) {
         )
     }
 
+    function renderFrequencies() {
+        const frequencies = [
+            'minutes',
+            'hours',
+            'days',
+            'weeks',
+            'months',
+            'years',
+            'never',
+        ];
+
+        return (
+            <ButtonGroup>
+                {
+                    frequencies.map((freq, idx) => (
+                        <Button
+                            key={idx}
+                            variant={inputFeed['frequency'] === freq.toUpperCase() ? "dark" : "secondary"}
+                            onClick={() => setInputFeed({
+                                ...inputFeed,
+                                ...{
+                                    'frequency': freq.toUpperCase(),
+                                }
+                            })}
+                        >
+                            {freq.toUpperCase()}
+                        </Button>
+                    ))
+                }
+            </ButtonGroup>
+        )
+    }
+
     return (
         <Form
             onSubmit={HandleSubmit}
@@ -274,22 +288,8 @@ export default function FeedForm(props) {
             </Form.Group>
             <Form.Group>
                 <CustomFormLabel>Frequency</CustomFormLabel>
-                <RangeSlider
-                    value={inputFeed['frequency']}
-                    min={0}
-                    max={frequencies.length-1}
-
-                    tooltip='on'
-                    tooltipLabel={currentValue => frequencies[currentValue]}
-
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'frequency': e.target.value,
-                        }
-                    })}
-                    disabled={props.read_only}
-                />
+                <br/>
+                {renderFrequencies()}
                 <br/>
             </Form.Group>
             <Form.Group>
