@@ -2,11 +2,11 @@ import { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import FeedsApi from '../../api/feeds';
 import UpdatesApi from '../../api/updates';
-import { UpdatesList } from '../updates/components/Updates';
+import { UpdatesList } from '../updates/_list';
 
 
 export default function HrefButtons(props) {

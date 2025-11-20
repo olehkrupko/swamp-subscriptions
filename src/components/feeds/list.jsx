@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -32,7 +32,7 @@ export default function FeedsList() {
         return(
             <ListGroup>
                 {props.feeds.map((feed) => (
-                    <ListGroup.Item>
+                    <ListGroup.Item key={feed._id}>
                         <span
                             onClick={() =>  navigate("/feeds/"+ feed._id)}
                         >

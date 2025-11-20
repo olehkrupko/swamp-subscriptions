@@ -1,2 +1,2 @@
 // getting it from Docker environment variables
-export const SWAMP_API = process.env.REACT_APP_SWAMP_API
+export const SWAMP_API = import.meta.env.VITE_SWAMPAPI

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 import UpdatesApi from '../../api/updates';
-import Updates from './components/Updates';
-import UpdatesFilter from './components/UpdatesFilter';
-import UpdatesFooter from './components/UpdatesFooter';
+import Updates from './_list';
+import UpdatesFilter from './_filter';
+import UpdatesFooter from './_footer';
 
   
 export default function FeedsList() {
