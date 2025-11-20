@@ -36,7 +36,7 @@ export default function FeedForm(props) {
         'href': '',
         'href_user': '',
         'private': false,
-        'frequency': 1,
+        'frequency': 'DAYS',
         'notes': '',
         'json': '{}',
 
@@ -76,7 +76,7 @@ export default function FeedForm(props) {
             href: inputFeed['href'],
             href_user: inputFeed['href_user'],
             private: inputFeed['private'],
-            frequency: frequencies[inputFeed['frequency']],
+            frequency: inputFeed['frequency'],
             notes: inputFeed['notes'],
             json: JSON.parse(inputFeed['json']),
         }
@@ -183,6 +183,7 @@ export default function FeedForm(props) {
                                     'frequency': freq.toUpperCase(),
                                 }
                             })}
+                            disabled={props.read_only}
                         >
                             {freq.toUpperCase()}
                         </Button>
