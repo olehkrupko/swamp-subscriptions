@@ -168,15 +168,7 @@ export default function FeedForm(props) {
     }
 
     function renderFrequencies() {
-        const frequencies = [
-            'minutes',
-            'hours',
-            'days',
-            'weeks',
-            'months',
-            'years',
-            'never',
-        ];
+        const frequencies = ['minutes', 'hours', 'days', 'weeks', 'months', 'years', 'never'];
 
         return (
             <ButtonGroup>
