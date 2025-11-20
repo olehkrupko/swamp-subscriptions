@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 80,  // Change to your desired port
-    host: '0.0.0.0'  // Listen on all interfaces (useful for Docker)
+    host: '0.0.0.0',  // Listen on all interfaces (useful for Docker)
+    allowedHosts: [
+      'swamp.krupko.space',
+    ],
   },
   test: {
     globals: true,
