@@ -7,8 +7,10 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router";
 import styled from 'styled-components';
 
-import FeedsApi from '../../api/feeds';
 import HrefButtons from './_form_href_buttons';
+import FeedsApi from '../../api/feeds';
+import { getThemeHighlight } from '../theme-picker';
+
 
 const CustomButtonGroup = styled(ButtonGroup)`
     margin: 10px 0;
@@ -176,7 +178,7 @@ export default function FeedForm(props) {
                     frequencies.map((freq, idx) => (
                         <Button
                             key={idx}
-                            variant={inputFeed['frequency'] === freq.toUpperCase() ? "dark" : "secondary"}
+                            variant={inputFeed['frequency'] === freq.toUpperCase() ? getThemeHighlight() : "secondary"}
                             onClick={() => setInputFeed({
                                 ...inputFeed,
                                 ...{
