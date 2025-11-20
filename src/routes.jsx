@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import './index.css';
 import App from './App.jsx';
-import FeedsList from "./routes/feeds/list.jsx";
-import FeedsView from "./routes/feeds/view.jsx";
-import FeedEdit from "./routes/feeds/edit.jsx";
-import FeedsLayout from "./routes/feeds/_layout.jsx";
-import FeedsCreate from "./routes/feeds/create.jsx";
-import UpdatesList from "./components/updates/list.jsx";
+import FeedsList from "./components/feeds/list.jsx";
+import FeedsView from "./components/feeds/view.jsx";
+import FeedEdit from "./components/feeds/edit.jsx";
+import FeedsLayout from "./components/feeds/_layout.jsx";
+import FeedsCreate from "./components/feeds/create.jsx";
+import UpdatesList from "./components/updates/index.jsx";
 
 import { redirect } from "react-router";
 import { RouterProvider } from "react-router/dom";

@@ -7,13 +7,13 @@ import {
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import FeedsList from "./routes/feeds/list";
-import FeedsView from "./routes/feeds/view";
-import FeedEdit from "./routes/feeds/edit";
-import FeedsCreate from "./routes/feeds/create";
-import FeedsLayout from "./routes/feeds/_layout"
-import UpdatesLayout from "./components/updates/_layout"
-import UpdatesList from "./components/updates/list"
+import FeedsList from "./components/feeds/list";
+import FeedsView from "./components/feeds/view";
+import FeedEdit from "./components/feeds/edit";
+import FeedsCreate from "./components/feeds/create";
+import FeedsLayout from "./components/feeds/_layout"
+import UpdatesLayout from "./components/updates"
+import UpdatesList from "./components/updates"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

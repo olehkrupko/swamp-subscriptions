@@ -3,7 +3,7 @@ import { useParams, } from "react-router";
 
 import FeedForm from './_form';
 import UpdatesApi from '../../api/updates';
-import Updates from './../updates/components/Updates';
+import Updates from '../updates/_list';
 
 
 export default function FeedsView() {
