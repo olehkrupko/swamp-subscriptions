@@ -2,9 +2,7 @@ name: Push main - package Docker image
 run-name: Push main - package Docker image for ${{ github.ref_name }}
 
 on:
-  push:
-    branches:
-      - main
+  push: main
 
 jobs:
   node-docker:
