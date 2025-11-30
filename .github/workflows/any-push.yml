@@ -1,6 +1,9 @@
 name: Push - Lint JS code
 run-name: Push - Lint JS code for ${{ github.ref_name }}
 
+permissions:
+  contents: read
+
 on: push
 
 concurrency:
