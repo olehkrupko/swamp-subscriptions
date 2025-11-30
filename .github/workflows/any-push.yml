@@ -1,0 +1,35 @@
+name: Push - Lint JS code
+run-name: Push - Lint JS code for ${{ github.ref_name }}
+
+on: push
+
+concurrency:
+  group: swamp-subscriptions-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Test & Lint swamp-subscriptions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: swamp-subscriptions/package.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: swamp-subscriptions
+
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: swamp-subscriptions
+
+      - name: Run tests
+        run: npm test --silent
+        working-directory: swamp-subscriptions
