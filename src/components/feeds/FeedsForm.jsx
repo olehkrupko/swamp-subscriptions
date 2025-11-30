@@ -7,9 +7,9 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router";
 import styled from 'styled-components';
 
-import HrefButtons from './_form_href_buttons';
+import FeedsFormHrefButtons from './FeedsFormHrefButtons';
+import { getThemeHighlight } from '../ThemePicker';
 import FeedsApi from '../../api/feeds';
-import { getThemeHighlight } from '../theme-picker';
 
 
 const CustomButtonGroup = styled(ButtonGroup)`
@@ -21,18 +21,11 @@ const CustomFormLabel = styled(Form.Label)`
 `;
 
 
-export default function FeedForm(props) {
+export default function FeedsForm(props) {
     const navigate = useNavigate();
 
     const [frequencies, setFrequencies] = useState([]);
 
-    // inputFeed['title']
-    // setInputFeed({
-    //     ...inputFeed,
-    //     ...{
-    //         'title': result.title,
-    //     }
-    // })
     const [inputFeed, setInputFeed] = useState({
         'title': '',
         'href': '',
@@ -90,13 +83,6 @@ export default function FeedForm(props) {
                         console.log('updateFeed() ->', typeof result, result)
                         navigate("/feeds/"+ props.feed_id);
                     },
-                    // // Note: it's important to handle errors here
-                    // // instead of a catch() block so that we don't swallow
-                    // // exceptions from actual bugs in components.
-                    // (error) => {
-                    //     setIsLoaded(true);
-                    //     setError(error);
-                    // }
                 )
         } else {
             FeedsApi.createFeed(data)
@@ -105,12 +91,6 @@ export default function FeedForm(props) {
                         console.log('createFeed() ->', typeof result, result)
                         navigate("/feeds/"+ result._id);
                     },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
-                    // (error) => {
-                    //     setError(error);
-                    // }
                 )
         }
     };
@@ -125,12 +105,6 @@ export default function FeedForm(props) {
                         navigate("/feeds/list");
                     }
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     };
 
@@ -213,7 +187,7 @@ export default function FeedForm(props) {
                     placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
-                <HrefButtons
+                <FeedsFormHrefButtons
                     frequencies={frequencies}
                     inputFeed={inputFeed}
                     setInputFeed={setInputFeed}
@@ -249,22 +223,6 @@ export default function FeedForm(props) {
                     })}
                     disabled={props.read_only}
                 />
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Verify JSON
-                </Button> */}
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Format JSON
-                </Button> */}
             </Form.Group>
             <Form.Group>
                 <CustomFormLabel>Private</CustomFormLabel>
@@ -320,14 +278,6 @@ export default function FeedForm(props) {
                     >
                         Open URL
                     </Button>
-                    {/* <Button
-                        variant="secondary"
-                        href={inputFeed['href_user']}
-                        target="_blank"
-                        disabled={!props.read_only}
-                    >
-                        Generate main URL from user-friendly one (placeholder)
-                    </Button> */}
                 </ButtonGroup>
             </Form.Group>
             <Form.Group>

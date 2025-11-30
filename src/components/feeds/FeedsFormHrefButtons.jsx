@@ -1,15 +1,16 @@
 import { useState } from 'react'
+
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router";
 
+import { UpdatesList } from '../updates/Updates';
 import FeedsApi from '../../api/feeds';
 import UpdatesApi from '../../api/updates';
-import { UpdatesList } from '../updates/_list';
 
 
-export default function HrefButtons(props) {
+export default function FeedsFormHrefButtons(props) {
     const navigate = useNavigate();
     
     const [similarFeeds, setSimilarFeeds] = useState([]);
@@ -40,74 +41,38 @@ export default function HrefButtons(props) {
     };
 
 
-    /*
-     * Explain Feed from URL
-     */
     function HandleExplain() {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'explain')
             .then(
                 (result) => {
                     LoadAndCompare(result);
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     };
 
 
-    /*
-     * Explain Feed from URL & push it to DB
-     * If there are similar feeds — it blocks push with SimilarDetectedModal
-     * If no issues arise — redirect to newly created feed's page
-     */
     function HandlePush() {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push')
             .then(
                 (result) => {
                     if (result.similar_feeds.length) {
-                        // there are similar feeds:
-                        // load data to form & show diff modal
                         LoadAndCompare(result);
                     } else if (result.explained._id) {
-                        // no similar feeds:
-                        // redirect to newly created feed
                         navigate("/feeds/" + result.explained._id);
                     } else {
-                        // unexpeted result, raise error
-                        // setError(error);
                         console.log('HandleParseHref() ->', 'error', result);
                     }
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     };
 
 
-    /*
-     * Explain Feed from URL & push it to DB
-     * If there are any issues — they are ignored and page reset.
-     */
     function HandlePushIgnore() {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push_ignore')
             .then(
                 (result) => {
                     window.location.reload();
                 }
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     }
 
@@ -119,12 +84,6 @@ export default function HrefButtons(props) {
                     setParsedUpdates(result);
                     setModalParseHrefVisible(true);
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     };
 

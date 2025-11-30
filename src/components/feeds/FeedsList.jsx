@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from "react-router";
 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { useNavigate } from "react-router";
+
 import FeedsApi from '../../api/feeds';
 
 
@@ -19,12 +20,6 @@ export default function FeedsList() {
                     console.log('getFeeds() ->', typeof result, result)
                     setFeeds(result);
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     }, [])
 
