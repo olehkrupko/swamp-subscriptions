@@ -1,5 +1,4 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-
 import styled from 'styled-components';
 
 
@@ -153,7 +152,7 @@ function GroupFooter(props) {
 }
 
 
-export function UpdatesList(props) {
+export function UpdatesGroupList(props) {
     function datetime_str_format(dt_str) {
         const not_including = ['+', '-']
         if (!not_including.some(function(v) { return dt_str.includes(v); })) {
@@ -215,7 +214,7 @@ export function UpdatesList(props) {
 }
 
 
-export default function Updates(props) {
+export default function UpdatesFeedList(props) {
     let processed = [];
     props.updates.forEach((item) => {
         if (processed.length === 0 || processed.at(-1).feed_data._id !== item.feed_id) {
@@ -236,7 +235,7 @@ export default function Updates(props) {
                     <GroupHeader
                         feed_data={feed.feed_data}
                     />
-                    <UpdatesList
+                    <UpdatesGroupList
                         updates={feed.updates}
                     />
                     <GroupFooter

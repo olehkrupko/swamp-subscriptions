@@ -3,7 +3,7 @@ import { useEffect, useState, } from "react";
 import { useParams } from "react-router";
 
 import FeedsForm from './FeedsForm';
-import Updates from '../updates/Updates';
+import UpdatesFeedList from '../updates/Updates';
 import UpdatesApi from '../../api/updates';
 
 
@@ -25,12 +25,12 @@ export default function FeedsView() {
     return (
         <main>
             <h2>View Feed</h2>
-            <FeedForm
+            <FeedsForm
                 read_only={true}
                 feed_id={feed_id}
             />
             {updates &&
-                <Updates
+                <UpdatesFeedList
                     updates={updates}
                 />
             }

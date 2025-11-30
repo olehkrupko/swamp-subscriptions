@@ -5,7 +5,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router";
 
-import { UpdatesList } from '../updates/Updates';
+import { UpdatesList } from '../updates/UpdatesFeedList';
 import FeedsApi from '../../api/feeds';
 import UpdatesApi from '../../api/updates';
 
