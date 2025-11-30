@@ -3,7 +3,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 
-export default function UpdatesFilter(props) {
+export default function UpdatesFeedFilter(props) {
     function kwargsUpdate(key, value) {
         let dict = {};
         Object.assign(dict, props.kwargs);

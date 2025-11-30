@@ -1,11 +1,11 @@
-import FeedForm from './_form';
+import FeedsForm from './FeedsForm';
 
 
 export default function FeedsCreate() {
     return (
         <main>
             <h2>Create Feed</h2>
-            <FeedForm />
+            <FeedsForm />
         </main>
     );
 }
