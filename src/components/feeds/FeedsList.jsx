@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 
 import FeedsApi from '../../api/feeds';
 

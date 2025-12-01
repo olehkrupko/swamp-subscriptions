@@ -3,9 +3,9 @@ import { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 
-import { UpdatesList } from '../updates/UpdatesFeedList';
+import UpdatesFeedList from '../updates/UpdatesFeedList';
 import FeedsApi from '../../api/feeds';
 import UpdatesApi from '../../api/updates';
 
@@ -164,7 +164,7 @@ export default function FeedsFormHrefButtons(props) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <UpdatesList
+                    <UpdatesFeedList
                         updates={parsedUpdates}
                     />
                 </Modal.Body>
