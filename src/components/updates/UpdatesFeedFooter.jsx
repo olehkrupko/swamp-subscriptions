@@ -1,6 +1,5 @@
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
-
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import styled from 'styled-components';
 
 
@@ -11,7 +10,7 @@ const Centered = styled.div`
 `;
 
 
-export default function UpdatesFooter(props) {
+export default function UpdatesFeedFooter(props) {
     return(
         <Centered>
             <ButtonGroup>

@@ -14,15 +14,15 @@ export default function Navigation() {
     return (
         <NavbarDarker>
             <Container>
-                <Navbar.Brand href="/">
+                <Navbar.Brand href="/updates/">
                     SUBSCRIPTIONS
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Nav.Link href="/updates/list">
-                    Updates
-                </Nav.Link>
                 <Nav.Link href="/feeds/list">
                     Feeds
+                </Nav.Link>
+                <Nav.Link href="/feeds/create">
+                    Create
                 </Nav.Link>
             </Container>
         </NavbarDarker>

@@ -4,13 +4,13 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import RangeSlider from 'react-bootstrap-range-slider';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import styled from 'styled-components';
 
+import FeedsFormHrefButtons from './FeedsFormHrefButtons';
+import { getThemeHighlight } from '../ThemePicker';
 import FeedsApi from '../../api/feeds';
-import FrequencyApi from '../../api/frequencies';
-import HrefButtons from './_form_href_buttons';
+
 
 const CustomButtonGroup = styled(ButtonGroup)`
     margin: 10px 0;
@@ -21,10 +21,8 @@ const CustomFormLabel = styled(Form.Label)`
 `;
 
 
-export default function FeedForm(props) {
+export default function FeedsForm(props) {
     const navigate = useNavigate();
-
-    const [frequencies, setFrequencies] = useState([]);
 
     // inputFeed['title']
     // setInputFeed({
@@ -38,7 +36,7 @@ export default function FeedForm(props) {
         'href': '',
         'href_user': '',
         'private': false,
-        'frequency': 1,
+        'frequency': 'DAYS',
         'notes': '',
         'json': '{}',
 
@@ -50,23 +48,6 @@ export default function FeedForm(props) {
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
 
     useEffect(() => {
-        FrequencyApi.getFrequencies()
-            .then(
-                (result) => {
-                    console.log('getFrequencies() ->', typeof result, result)
-                    setFrequencies(result);
-                },
-                // // Note: it's important to handle errors here
-                // // instead of a catch() block so that we don't swallow
-                // // exceptions from actual bugs in components.
-                // (error) => {
-                //     setIsLoaded(true);
-                //     setError(error);
-                // }
-            )
-    }, [])
-
-    useEffect(() => {
         if (typeof props.feed_id !== "undefined") {
             FeedsApi.readFeed(props.feed_id)
                 .then((result) => {
@@ -76,7 +57,7 @@ export default function FeedForm(props) {
                         'href': result.href,
                         'href_user': result.href_user,
                         'private': result.private,
-                        'frequency': frequencies.indexOf(result.frequency),
+                        'frequency': result.frequency,
                         'notes': result.notes,
                         'json': JSON.stringify(result.json),
 
@@ -86,7 +67,7 @@ export default function FeedForm(props) {
                     })
                 })
         }
-    }, [ frequencies, props.feed_id, ]);
+    }, [ props.feed_id ]);
 
     const HandleSubmit = event => {
         event.preventDefault();
@@ -95,7 +76,7 @@ export default function FeedForm(props) {
             href: inputFeed['href'],
             href_user: inputFeed['href_user'],
             private: inputFeed['private'],
-            frequency: frequencies[inputFeed['frequency']],
+            frequency: inputFeed['frequency'],
             notes: inputFeed['notes'],
             json: JSON.parse(inputFeed['json']),
         }
@@ -107,13 +88,6 @@ export default function FeedForm(props) {
                         console.log('updateFeed() ->', typeof result, result)
                         navigate("/feeds/"+ props.feed_id);
                     },
-                    // // Note: it's important to handle errors here
-                    // // instead of a catch() block so that we don't swallow
-                    // // exceptions from actual bugs in components.
-                    // (error) => {
-                    //     setIsLoaded(true);
-                    //     setError(error);
-                    // }
                 )
         } else {
             FeedsApi.createFeed(data)
@@ -122,12 +96,6 @@ export default function FeedForm(props) {
                         console.log('createFeed() ->', typeof result, result)
                         navigate("/feeds/"+ result._id);
                     },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
-                    // (error) => {
-                    //     setError(error);
-                    // }
                 )
         }
     };
@@ -142,12 +110,6 @@ export default function FeedForm(props) {
                         navigate("/feeds/list");
                     }
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                // (error) => {
-                //     setError(error);
-                // }
             )
     };
 
@@ -186,6 +148,32 @@ export default function FeedForm(props) {
         )
     }
 
+    function renderFrequencies() {
+        const frequencies = ['minutes', 'hours', 'days', 'weeks', 'months', 'years', 'never'];
+
+        return (
+            <ButtonGroup>
+                {
+                    frequencies.map((freq, idx) => (
+                        <Button
+                            key={idx}
+                            variant={inputFeed['frequency'] === freq.toUpperCase() ? getThemeHighlight() : "secondary"}
+                            onClick={() => setInputFeed({
+                                ...inputFeed,
+                                ...{
+                                    'frequency': freq.toUpperCase(),
+                                }
+                            })}
+                            disabled={props.read_only}
+                        >
+                            {freq.toUpperCase()}
+                        </Button>
+                    ))
+                }
+            </ButtonGroup>
+        )
+    }
+
     return (
         <Form
             onSubmit={HandleSubmit}
@@ -204,7 +192,7 @@ export default function FeedForm(props) {
                     placeholder="Enter feed URL"
                     disabled={props.read_only}
                 />
-                <HrefButtons
+                <FeedsFormHrefButtons
                     frequencies={frequencies}
                     inputFeed={inputFeed}
                     setInputFeed={setInputFeed}
@@ -240,22 +228,6 @@ export default function FeedForm(props) {
                     })}
                     disabled={props.read_only}
                 />
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Verify JSON
-                </Button> */}
-                {/* <Button
-                    variant="secondary"
-                    href={inputFeed['href_user']}
-                    target="_blank"
-                    disabled={!props.read_only}
-                >
-                    Format JSON
-                </Button> */}
             </Form.Group>
             <Form.Group>
                 <CustomFormLabel>Private</CustomFormLabel>
@@ -274,22 +246,8 @@ export default function FeedForm(props) {
             </Form.Group>
             <Form.Group>
                 <CustomFormLabel>Frequency</CustomFormLabel>
-                <RangeSlider
-                    value={inputFeed['frequency']}
-                    min={0}
-                    max={frequencies.length-1}
-
-                    tooltip='on'
-                    tooltipLabel={currentValue => frequencies[currentValue]}
-
-                    onChange={e => setInputFeed({
-                        ...inputFeed,
-                        ...{
-                            'frequency': e.target.value,
-                        }
-                    })}
-                    disabled={props.read_only}
-                />
+                <br/>
+                {renderFrequencies()}
                 <br/>
             </Form.Group>
             <Form.Group>
@@ -325,14 +283,6 @@ export default function FeedForm(props) {
                     >
                         Open URL
                     </Button>
-                    {/* <Button
-                        variant="secondary"
-                        href={inputFeed['href_user']}
-                        target="_blank"
-                        disabled={!props.read_only}
-                    >
-                        Generate main URL from user-friendly one (placeholder)
-                    </Button> */}
                 </ButtonGroup>
             </Form.Group>
             <Form.Group>

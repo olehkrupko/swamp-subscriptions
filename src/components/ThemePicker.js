@@ -2,11 +2,20 @@ const THEME_LIGHT = 'light';
 const THEME_DARK = 'dark';
 
 
-export function getTheme() {
+function getTheme() {
     if (window.matchMedia && window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).matches) {
         return THEME_DARK;
     } else {
         return THEME_LIGHT;
+    }
+}
+
+
+export function getThemeHighlight() {
+    if (window.matchMedia && window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).matches) {
+        return THEME_LIGHT;
+    } else {
+        return THEME_DARK;
     }
 }
 
@@ -17,7 +26,7 @@ function setTheme(theme) {
 
 
 export function watchTheme() {
-    window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).addEventListener('change', event => {
+    window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).addEventListener('change', _ => {
         console.log(`changed to ${getTheme()} mode`);
         setTheme(getTheme());
     });

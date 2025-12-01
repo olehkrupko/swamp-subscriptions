@@ -2,9 +2,7 @@ name: Push main - package Docker image
 run-name: Push main - package Docker image for ${{ github.ref_name }}
 
 on:
-  push:
-    branches:
-      - main
+  push: main
 
 jobs:
   node-docker:
@@ -15,7 +13,7 @@ jobs:
 
     steps:
       - name: build, tag & push Docker image
-        uses: olehkrupko/actions/docker-ghcr@18-docker-build-node-image
+        uses: olehkrupko/actions/docker-ghcr@main
         with:
           image-name: ${{ github.repository }}
           is-latest: true
