@@ -24,8 +24,13 @@ const CustomFormLabel = styled(Form.Label)`
 export default function FeedsForm(props) {
     const navigate = useNavigate();
 
-    const [frequencies, setFrequencies] = useState([]);
-
+    // inputFeed['title']
+    // setInputFeed({
+    //     ...inputFeed,
+    //     ...{
+    //         'title': result.title,
+    //     }
+    // })
     const [inputFeed, setInputFeed] = useState({
         'title': '',
         'href': '',
@@ -62,7 +67,7 @@ export default function FeedsForm(props) {
                     })
                 })
         }
-    }, [ frequencies, props.feed_id, ]);
+    }, [ props.feed_id ]);
 
     const HandleSubmit = event => {
         event.preventDefault();
