@@ -2,7 +2,9 @@ name: PR main - package Docker image
 run-name: PR main - package Docker image for ${{ github.ref_name }}
 
 on:
-  pull_request: main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   node-docker:

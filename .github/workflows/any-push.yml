@@ -1,5 +1,5 @@
-name: Push - Lint JS code
-run-name: Push - Lint JS code for ${{ github.ref_name }}
+name: Push - Lint & Test JS code
+run-name: Push - Lint & Test JS code for ${{ github.ref_name }}
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   lint:
-    name: Test & Lint swamp-subscriptions
+    name: Lint & Test JS code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

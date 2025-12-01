@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 
+import PropTypes from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 
 import FeedsApi from '../../api/feeds';
 
@@ -74,3 +75,7 @@ export default function FeedsList() {
         </main>
     );
 }
+
+FeedsList.propTypes = {
+    feeds: PropTypes.array,
+};

@@ -1,9 +1,9 @@
-import { useEffect, useState, } from "react";
+import { useEffect, useState, } from 'react';
 
-import { useParams } from "react-router";
+import { useParams } from 'react-router';
 
 import FeedsForm from './FeedsForm';
-import UpdatesFeedList from '../updates/Updates';
+import UpdatesFeedList from '../updates/UpdatesFeedList';
 import UpdatesApi from '../../api/updates';
 
 

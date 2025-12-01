@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from 'react-router';
 import './index.css';
 import App from './App.jsx';
 import FeedsLayout from "./components/feeds/Feeds.jsx";
