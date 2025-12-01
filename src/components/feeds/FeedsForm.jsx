@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import FeedsFormHrefButtons from './FeedsFormHrefButtons';
