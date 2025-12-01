@@ -26,7 +26,7 @@ function setTheme(theme) {
 
 
 export function watchTheme() {
-    window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).addEventListener('change', _ => {
+    window.matchMedia(`(prefers-color-scheme: ${THEME_DARK})`).addEventListener('change', function() {
         console.log(`changed to ${getTheme()} mode`);
         setTheme(getTheme());
     });

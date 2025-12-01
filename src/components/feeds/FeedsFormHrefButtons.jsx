@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
@@ -28,7 +29,7 @@ export default function FeedsFormHrefButtons(props) {
                 'href': result.explained.href,
                 'href_user': result.explained.href_user,
                 'private': result.explained.private,
-                'frequency': props.frequencies.indexOf(result.explained.frequency),
+                'frequency': result.explained.frequency,
                 'notes': result.explained.notes,
                 'json': JSON.stringify(result.explained.json),
             }
@@ -38,7 +39,7 @@ export default function FeedsFormHrefButtons(props) {
             setSimilarFeeds(result.similar_feeds);
             setSimilarFeedModalVisible(true);
         }
-    };
+    }
 
 
     function HandleExplain() {
@@ -48,7 +49,7 @@ export default function FeedsFormHrefButtons(props) {
                     LoadAndCompare(result);
                 },
             )
-    };
+    }
 
 
     function HandlePush() {
@@ -64,13 +65,13 @@ export default function FeedsFormHrefButtons(props) {
                     }
                 },
             )
-    };
+    }
 
 
     function HandlePushIgnore() {
         FeedsApi.explainFeedHref(props.inputFeed['href'], props.inputFeed['readonly_id'], 'push_ignore')
             .then(
-                (result) => {
+                function () {
                     window.location.reload();
                 }
             )
@@ -85,7 +86,7 @@ export default function FeedsFormHrefButtons(props) {
                     setModalParseHrefVisible(true);
                 },
             )
-    };
+    }
 
 
     function SimilarDetectedModal() {
@@ -108,7 +109,7 @@ export default function FeedsFormHrefButtons(props) {
                             <li>{props.frequencies[props.inputFeed['frequency']]}</li>
                         </ul>
                         {similarFeeds.map(feed => (
-                            <li>
+                            <li key={feed.id}>
                                 <a
                                     href={"/feeds/"+feed._id}
                                     title={"href: "+feed.href}
@@ -149,7 +150,7 @@ export default function FeedsFormHrefButtons(props) {
                 </Modal.Footer>
             </Modal>
         )
-    };
+    }
 
 
     function ParseHrefModal() {
@@ -178,7 +179,7 @@ export default function FeedsFormHrefButtons(props) {
                 </Modal.Footer>
             </Modal>
         )
-    };
+    }
 
 
     return (
@@ -227,3 +228,11 @@ export default function FeedsFormHrefButtons(props) {
         </ButtonGroup>
     )
 }
+
+FeedsFormHrefButtons.propTypes = {
+    feed_id: PropTypes.string,
+    inputFeed: PropTypes.object.isRequired,
+    setInputFeed: PropTypes.func.isRequired,
+    frequencies: PropTypes.array.isRequired,
+    read_only: PropTypes.bool,
+};

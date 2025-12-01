@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
@@ -10,6 +11,7 @@ import styled from 'styled-components';
 import FeedsFormHrefButtons from './FeedsFormHrefButtons';
 import { getThemeHighlight } from '../ThemePicker';
 import FeedsApi from '../../api/feeds';
+import { SWAMP_FREQUENCIES } from '../../api/settings';
 
 
 const CustomButtonGroup = styled(ButtonGroup)`
@@ -149,12 +151,10 @@ export default function FeedsForm(props) {
     }
 
     function renderFrequencies() {
-        const frequencies = ['minutes', 'hours', 'days', 'weeks', 'months', 'years', 'never'];
-
         return (
             <ButtonGroup>
                 {
-                    frequencies.map((freq, idx) => (
+                    SWAMP_FREQUENCIES.map((freq, idx) => (
                         <Button
                             key={idx}
                             variant={inputFeed['frequency'] === freq.toUpperCase() ? getThemeHighlight() : "secondary"}
@@ -193,7 +193,6 @@ export default function FeedsForm(props) {
                     disabled={props.read_only}
                 />
                 <FeedsFormHrefButtons
-                    frequencies={frequencies}
                     inputFeed={inputFeed}
                     setInputFeed={setInputFeed}
                     feed_id={props.feed_id}
@@ -335,3 +334,9 @@ export default function FeedsForm(props) {
         </Form>
     )
 }
+
+
+FeedsForm.propTypes = {
+    feed_id: PropTypes.string,
+    read_only: PropTypes.bool,
+};

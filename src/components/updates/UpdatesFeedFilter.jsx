@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -68,3 +69,8 @@ export default function UpdatesFeedFilter(props) {
         </>
     )
 }
+
+UpdatesFeedFilter.propTypes = {
+    kwargs: PropTypes.object.isRequired,
+    setKwargs: PropTypes.func.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import styled from 'styled-components';
@@ -44,3 +45,9 @@ export default function UpdatesFeedFooter(props) {
         </Centered>
     )
 }
+
+UpdatesFeedFooter.propTypes = {
+    kwargs: PropTypes.object.isRequired,
+    setKwargs: PropTypes.func.isRequired,
+    LIMIT_DEFAULT: PropTypes.number.isRequired,
+};
