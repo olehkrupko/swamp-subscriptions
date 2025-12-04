@@ -106,7 +106,7 @@ export default function FeedsFormHrefButtons(props) {
                         <ul>
                             <li>{props.inputFeed['title']}</li>
                             <li style={{ wordWrap: 'break-word' }}>{props.inputFeed['href']}</li>
-                            <li>{props.frequencies[props.inputFeed['frequency']]}</li>
+                            <li>{props.inputFeed['frequency']}</li>
                         </ul>
                         {similarFeeds.map(feed => (
                             <li key={feed.id}>
@@ -124,7 +124,7 @@ export default function FeedsFormHrefButtons(props) {
                                     { props.inputFeed['href'] !== feed.href &&
                                         <li style={{ wordWrap: 'break-word' }}>{feed.href}</li>
                                     }
-                                    { props.frequencies[props.inputFeed['frequency']] !== feed.frequency &&
+                                    { props.inputFeed['frequency'] !== feed.frequency &&
                                         <li>{feed.frequency}</li>
                                     }
                                 </ul>
