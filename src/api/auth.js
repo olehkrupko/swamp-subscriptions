@@ -8,5 +8,6 @@ export default class AuthApi {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ username, password })
         })
+            .then(res => res.json())
     }
 }
