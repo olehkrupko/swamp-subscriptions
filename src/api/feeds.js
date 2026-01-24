@@ -19,6 +19,7 @@ export default class FeedsApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+            credentials: 'include',
         })
             .then(res => res.json())
     }
@@ -40,6 +41,7 @@ export default class FeedsApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+            credentials: 'include',
         })
             .then(res => res.json())
     }
@@ -50,6 +52,7 @@ export default class FeedsApi {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
         })
             .then(res => res.json())
     }

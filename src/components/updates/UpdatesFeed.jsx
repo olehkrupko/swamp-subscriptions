@@ -10,7 +10,10 @@ export default function UpdatesFeed() {
     const LIMIT_DEFAULT = 300;
 
     const [updates, setUpdates] = useState([]);
-    const [kwargs, setKwargs] = useState({limit: LIMIT_DEFAULT});
+    const [kwargs, setKwargs] = useState({
+        limit: LIMIT_DEFAULT,
+        private: false,
+    });
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
