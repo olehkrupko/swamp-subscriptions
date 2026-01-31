@@ -229,7 +229,7 @@ export default function UpdatesFeedList(props) {
     return (
         <div>
             {processed.map(feed => (
-                <Group key={feed.feed_data._id}>
+                <Group key={feed.feed_data._id+'+'+feed.updates[0].id}>
                     <GroupHeader
                         feed_data={feed.feed_data}
                     />
