@@ -17,27 +17,23 @@ export default function UpdatesFeedFooter(props) {
             <ButtonGroup>
                 <Button
                     variant="secondary"
-                    onClick={() => {
-                        props.setKwargs({
-                            ...props.kwargs,
-                            ...{
-                                limit: props.kwargs['limit'] + props.LIMIT_DEFAULT,
-                            }
-                        });
-                    }}
+                    onClick={() => props.setKwargs({
+                        ...props.kwargs,
+                        ...{
+                            'limit': parseInt(props.kwargs.get('limit')) + props.DEFAULT_LIMIT,
+                        }
+                    })}
                 >
                     More!
                 </Button>
                 <Button
                     variant="secondary"
-                    onClick={() => {
-                        props.setKwargs({
-                            ...props.kwargs,
-                            ...{
-                                limit: props.LIMIT_DEFAULT,
-                            }
-                        });
-                    }}
+                    onClick={() => props.setKwargs({
+                        ...props.kwargs,
+                        ...{
+                            'limit': props.DEFAULT_LIMIT,
+                        }
+                    })}
                 >
                     Reset
                 </Button>
@@ -49,5 +45,5 @@ export default function UpdatesFeedFooter(props) {
 UpdatesFeedFooter.propTypes = {
     kwargs: PropTypes.object.isRequired,
     setKwargs: PropTypes.func.isRequired,
-    LIMIT_DEFAULT: PropTypes.number.isRequired,
+    DEFAULT_LIMIT: PropTypes.number.isRequired,
 };

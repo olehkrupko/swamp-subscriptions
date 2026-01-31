@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { useSearchParams } from "react-router";
+
 import Updates from './UpdatesFeedList';
 import UpdatesFeedFilter from './UpdatesFeedFilter';
 import UpdatesFeedFooter from './UpdatesFeedFooter';
@@ -7,20 +9,24 @@ import UpdatesApi from '../../api/updates';
 
   
 export default function UpdatesFeed() {
-    const LIMIT_DEFAULT = 300;
+    const DEFAULT_LIMIT = 300;
+    const DEFAULT_KWARGS = {
+        limit: DEFAULT_LIMIT,
+        private: false,
+    }
 
     const [updates, setUpdates] = useState([]);
-    const [kwargs, setKwargs] = useState({
-        limit: LIMIT_DEFAULT,
-        private: false,
-    });
     const [showFilters, setShowFilters] = useState(false);
 
+    let [kwargs, setKwargs] = useSearchParams(DEFAULT_KWARGS);
+
     useEffect(() => {
-        UpdatesApi.getUpdates(kwargs)
+        UpdatesApi.getUpdates(
+            Object.fromEntries( kwargs.entries() )
+        )
             .then(
                 (result) => {
-                    // console.log(typeof result, result)
+                    // console.log(typeof result, result);
                     setUpdates(result);
                 },
                 // Note: it's important to handle errors here
@@ -30,7 +36,7 @@ export default function UpdatesFeed() {
                 //     setError(error);
                 // }
             )
-    }, [kwargs])
+    }, [kwargs]);
 
     return (
         <main>
@@ -44,6 +50,7 @@ export default function UpdatesFeed() {
             { showFilters && <UpdatesFeedFilter
                 kwargs={kwargs}
                 setKwargs={setKwargs}
+                DEFAULT_KWARGS={DEFAULT_KWARGS}
             /> }
 
             <Updates
@@ -53,7 +60,7 @@ export default function UpdatesFeed() {
             <UpdatesFeedFooter
                 kwargs={kwargs}
                 setKwargs={setKwargs}
-                LIMIT_DEFAULT={LIMIT_DEFAULT}
+                DEFAULT_LIMIT={DEFAULT_LIMIT}
             />
         </main>
     );
