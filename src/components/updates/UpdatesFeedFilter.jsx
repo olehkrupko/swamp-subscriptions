@@ -26,7 +26,7 @@ export default function UpdatesFeedFilter(props) {
             >
                 <Dropdown.Item
                     onClick={() => props.setKwargs({
-                        ...props.kwargs,
+                        ...Object.fromEntries(props.kwargs.entries()),
                         ...{
                             'private': false,
                         }
@@ -37,7 +37,7 @@ export default function UpdatesFeedFilter(props) {
                 </Dropdown.Item>
                 <Dropdown.Item
                     onClick={() => props.setKwargs({
-                        ...props.kwargs,
+                        ...Object.fromEntries(props.kwargs.entries()),
                         ...{
                             'private': true,
                         }
@@ -49,7 +49,7 @@ export default function UpdatesFeedFilter(props) {
                 <Dropdown.Divider />
                 <Dropdown.Item
                     onClick={() => props.setKwargs({
-                        ...props.kwargs,
+                        ...Object.fromEntries(props.kwargs.entries()),
                         ...{
                             'private': 'all',
                         }

@@ -18,7 +18,7 @@ export default function UpdatesFeedFooter(props) {
                 <Button
                     variant="secondary"
                     onClick={() => props.setKwargs({
-                        ...props.kwargs,
+                        ...Object.fromEntries(props.kwargs.entries()),
                         ...{
                             'limit': parseInt(props.kwargs.get('limit')) + props.DEFAULT_LIMIT,
                         }
@@ -29,7 +29,7 @@ export default function UpdatesFeedFooter(props) {
                 <Button
                     variant="secondary"
                     onClick={() => props.setKwargs({
-                        ...props.kwargs,
+                        ...Object.fromEntries(props.kwargs.entries()),
                         ...{
                             'limit': props.DEFAULT_LIMIT,
                         }
