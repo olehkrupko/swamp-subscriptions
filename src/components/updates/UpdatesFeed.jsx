@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router";
 import Updates from './UpdatesFeedList';
 import UpdatesFeedFilter from './UpdatesFeedFilter';
 import UpdatesFeedFooter from './UpdatesFeedFooter';
-import UpdatesApi from '../../api/updates';
+import UpdatesApi from '../../api/Updates';
 
   
 export default function UpdatesFeed() {
