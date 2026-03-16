@@ -35,6 +35,9 @@ module.exports = {
       version: 'detect',
     },
   },
+  globals: {
+    vi: 'readonly',
+  },
   plugins: ['filenames'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.js'] }],
