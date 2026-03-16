@@ -7,8 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router';
 
 import UpdatesFeedList from '../updates/UpdatesFeedList';
-import FeedsApi from '../../api/feeds';
-import UpdatesApi from '../../api/updates';
+import FeedsApi from '../../api/Feeds';
+import UpdatesApi from '../../api/Updates';
 
 
 export default function FeedsFormHrefButtons(props) {

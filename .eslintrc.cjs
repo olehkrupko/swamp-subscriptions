@@ -15,6 +15,7 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
+    jest: true,
   },
   extends: [
     'eslint:recommended',
@@ -37,10 +38,10 @@ module.exports = {
   plugins: ['filenames'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.js'] }],
-    // Enforce PascalCase for component filenames. Allows index.js files.
+    // Enforce PascalCase for component filenames. Allows index.js and *.test.jsx files.
     'filenames/match-regex': [
       'error',
-      '^[A-Z][a-zA-Z0-9]*(?:[A-Z][a-zA-Z0-9]*)?$|^index$|^index\.(js|jsx)$',
+      '^(?:[A-Z][a-zA-Z0-9]*(?:[A-Z][a-zA-Z0-9]*)?(?:\\.test)?|[A-Z][a-zA-Z0-9]*(?:[A-Z][a-zA-Z0-9]*)?\\.test\\.(js|jsx)|index|index\\.(js|jsx))$',
       true,
     ],
   },

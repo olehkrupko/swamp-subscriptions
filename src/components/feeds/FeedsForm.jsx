@@ -10,8 +10,8 @@ import styled from 'styled-components';
 
 import FeedsFormHrefButtons from './FeedsFormHrefButtons';
 import { getThemeHighlight } from '../ThemePicker';
-import FeedsApi from '../../api/feeds';
-import { SWAMP_FREQUENCIES } from '../../api/settings';
+import FeedsApi from '../../api/Feeds';
+import { SWAMP_FREQUENCIES } from '../../api/Settings';
 
 
 const CustomButtonGroup = styled(ButtonGroup)`

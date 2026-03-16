@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Message from 'react-bootstrap/Alert';
 
-import AuthApi from '../../api/auth';
+import AuthApi from '../../api/Auth';
 
 
 const LoginForm = () => {

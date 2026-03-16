@@ -1,4 +1,4 @@
-import { SWAMP_API } from './settings.js';
+import { SWAMP_API } from './Settings.js';
 
 
 export default class UpdatesApi {
