@@ -21,7 +21,13 @@ export default class FeedsApi {
             body: JSON.stringify(data),
             credentials: 'include',
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401) {
+                    window.location.href = '/login/'
+                    return null
+                }
+                return res.json()
+            })
     }
 
     static async readFeed(feed_id) {
@@ -43,7 +49,13 @@ export default class FeedsApi {
             body: JSON.stringify(data),
             credentials: 'include',
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401) {
+                    window.location.href = '/login/'
+                    return null
+                }
+                return res.json()
+            })
     }
 
     static async deleteFeed(feed_id) {
@@ -54,7 +66,13 @@ export default class FeedsApi {
             },
             credentials: 'include',
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401) {
+                    window.location.href = '/login/'
+                    return null
+                }
+                return res.json()
+            })
     }
 
     static async explainFeedHref(href, _id, mode) {
