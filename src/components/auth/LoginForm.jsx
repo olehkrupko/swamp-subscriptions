@@ -7,7 +7,7 @@ import Message from 'react-bootstrap/Alert';
 import AuthApi from '../../api/auth';
 
 
-const LoginForm = ({ setToken }) => {
+const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
