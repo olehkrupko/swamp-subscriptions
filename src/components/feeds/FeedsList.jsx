@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useNavigate } from 'react-router';
 
-import FeedsApi from '../../api/feeds';
+import FeedsApi from '../../api/Feeds';
 
 
 export default function FeedsList() {
