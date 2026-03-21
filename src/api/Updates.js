@@ -1,4 +1,4 @@
-import { SWAMP_API } from './Settings.js';
+import RequestApi from './Request.js';
 
 
 export default class UpdatesApi {
@@ -11,19 +11,14 @@ export default class UpdatesApi {
             }
         ).join('&')
 
-        return fetch(`${SWAMP_API}/updates/?${kwarg_str}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        return RequestApi.make({
+            url: `/updates/?${kwarg_str}`
         })
-            .then(res => res.json())
     }
 
     static async parseHrefUpdates(href) {
-        return fetch(`${SWAMP_API}/updates/parse/?href=${href}`, {
-            method: 'GET',
+        return RequestApi.make({
+            url: `/updates/parse/?href=${href}`
         })
-            .then(res => res.json())
     }
 }

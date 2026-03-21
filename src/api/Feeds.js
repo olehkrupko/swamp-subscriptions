@@ -1,82 +1,47 @@
-import { SWAMP_API } from './Settings.js';
+import RequestApi from './Request.js';
 
 
 export default class FeedsApi {
     static async getFeeds() {
-        return fetch(`${SWAMP_API}/feeds/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        return RequestApi.make({
+            url: '/feeds/'
         })
-            .then(res => res.json())
     }
 
     static async createFeed(data) {
-        return fetch(`${SWAMP_API}/feeds/`, {
+        return RequestApi.make({
+            url: '/feeds/',
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: JSON.stringify(data),
-            credentials: 'include',
+            credentials: true
         })
-            .then(res => {
-                if (res.status === 401) {
-                    window.location.href = '/login/'
-                    return null
-                }
-                return res.json()
-            })
     }
 
     static async readFeed(feed_id) {
-        return fetch(`${SWAMP_API}/feeds/${feed_id}/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        return RequestApi.make({
+            url: `/feeds/${feed_id}/`
         })
-            .then(res => res.json())
     }
 
     static async updateFeed(feed_id, data) {
-        return fetch(`${SWAMP_API}/feeds/${feed_id}/`, {
+        return RequestApi.make({
+            url: `/feeds/${feed_id}/`,
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: JSON.stringify(data),
-            credentials: 'include',
+            credentials: true
         })
-            .then(res => {
-                if (res.status === 401) {
-                    window.location.href = '/login/'
-                    return null
-                }
-                return res.json()
-            })
     }
 
     static async deleteFeed(feed_id) {
-        return fetch(`${SWAMP_API}/feeds/${feed_id}/`, {
+        return RequestApi.make({
+            url: `/feeds/${feed_id}/`,
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
+            credentials: true
         })
-            .then(res => {
-                if (res.status === 401) {
-                    window.location.href = '/login/'
-                    return null
-                }
-                return res.json()
-            })
     }
 
     static async explainFeedHref(href, _id, mode) {
-        let url = `${SWAMP_API}/feeds/parse/?href=${href}`;
+        let url = `/feeds/parse/?href=${href}`;
         if (_id) {
             url += `&_id=${_id}`;
         }
@@ -84,7 +49,8 @@ export default class FeedsApi {
         if (mode) {
             url += `&mode=${mode}`;
         }
-        return fetch(url, {method: 'GET'})
-            .then(res => res.json())
+        return RequestApi.make({
+            url: url
+        })
     }
 }
