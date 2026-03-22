@@ -19,13 +19,13 @@ export default class RequestApi {
         })
             .then(response => {
                 if (!credentials && response.status === 401 /* Unauthorized */) {
-                    window.location.href = '/login/'
-                    return null
+                    window.location.href = '/login/';
+                    return null;
                 }
-                return response.json();
+                return response;
             })
             .then(response => response.json())  // Parse JSON data
-            // .then(data => console.log(data))     // Handle the data
+            // .then(data => console.log(data); return response;)     // Handle the data
             .catch(error => console.error(error))  // Handle errors
     }
 }
