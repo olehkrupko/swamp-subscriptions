@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styled from 'styled-components';
@@ -77,6 +79,8 @@ const AttrWarning = styled(Attr)`
 
 
 export default function UpdatesFeedList(props) {
+    const [groups, setGroups] = useState([]);
+
     function GroupHeader(props) {
         return (
             <h4>
@@ -213,23 +217,26 @@ export default function UpdatesFeedList(props) {
         )
     }
 
-    let processed = [];
-    props.updates.forEach((item) => {
-        if (processed.length === 0 || processed.at(-1).feed_data._id !== item.feed_id) {
+    useEffect(() => {
+        let processed = [];
+        props.updates.forEach((item) => {
             let { feed_data, ...item_only } = item;
-            processed.push({
-                feed_data: feed_data,
-                updates: [item_only],
-            })
-        } else {
-            processed.at(-1).updates.push(item)
-        }
-    });
+            if (processed.length === 0 || processed.at(-1).feed_data._id !== item_only.feed_id) {
+                processed.push({
+                    feed_data: feed_data,
+                    updates: [item_only],
+                })
+            } else {
+                processed.at(-1).updates.push(item_only);
+            }
+        });
+        setGroups(processed);
+    }, [props.updates])
 
     return (
         <div>
-            {processed.map(feed => (
-                <Group key={feed.feed_data._id}>
+            {groups.map(feed => (
+                <Group key={feed.feed_data._id+'+'+feed.updates[0].id}>
                     <GroupHeader
                         feed_data={feed.feed_data}
                     />
@@ -242,7 +249,7 @@ export default function UpdatesFeedList(props) {
                 </Group>
             ))}
         </div>
-    )
+    );
 }
 
 UpdatesFeedList.propTypes = {

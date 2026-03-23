@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 
 import FeedsForm from './FeedsForm';
 import UpdatesFeedList from '../updates/UpdatesFeedList';
-import UpdatesApi from '../../api/updates';
+import UpdatesApi from '../../api/Updates';
 
 
 export default function FeedsView() {

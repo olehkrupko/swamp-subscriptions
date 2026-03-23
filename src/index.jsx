@@ -12,6 +12,7 @@ import { RouterProvider } from "react-router/dom";
 import ReactDOM from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
+import LoginForm from './components/auth/LoginForm.jsx';
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
                 ]
             },
             {path: "updates", Component: UpdatesFeed},
+            {path: "login", Component: LoginForm},
             {path: "*", Component: () => <h1>404: Route Not Found</h1>}
         ]
     },

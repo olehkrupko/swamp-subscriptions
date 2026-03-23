@@ -9,12 +9,13 @@ export default defineConfig({
     host: '0.0.0.0',  // Listen on all interfaces (useful for Docker)
     allowedHosts: [
       'swamp.krupko.space',
+      'ds220-plus',
     ],
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: 'src/setupTests.js',
+    setupFiles: 'src/SetupTests.js',
     transformMode: {
       web: [/\.[jt]sx?$/]
     }
